@@ -1,0 +1,77 @@
+.salt-theme {
+  --salt-typography-fontFamily-sans: "Public Sans", "Open Sans", -apple-system, sans-serif; /* @kind font */
+  /* Real Fusion display face is "Sons" (per @cdaoui/fusion-theme, referenced as --jpmc-typography-fontFamily-sons) —
+     a proprietary JPMC font not available to this project. Public Sans is substituted; flagged for the user. */
+  --salt-typography-fontFamily-display: "Public Sans", "Open Sans", -apple-system, sans-serif; /* @kind font */
+  --salt-typography-fontFamily-mono: "PT Mono", "Courier New", monospace; /* @kind font */
+  --salt-typography-fontFamily-serif: "Source Serif 4", Georgia, serif; /* @kind font */
+
+  --salt-typography-fontWeight-light: 300; /* @kind other */
+  --salt-typography-fontWeight-regular: 400; /* @kind other */
+  --salt-typography-fontWeight-medium: 500; /* @kind other */
+  --salt-typography-fontWeight-semiBold: 600; /* @kind other */
+  --salt-typography-fontWeight-bold: 700; /* @kind other */
+  --salt-typography-fontWeight-extraBold: 800; /* @kind other */
+
+  --salt-text-fontFamily: var(--salt-typography-fontFamily-sans);
+  --salt-text-fontWeight: var(--salt-typography-fontWeight-regular);
+  --salt-text-fontWeight-strong: var(--salt-typography-fontWeight-semiBold);
+  --salt-text-fontSize: 14px;
+  --salt-text-lineHeight: 20px;
+  --salt-text-letterSpacing: 0;
+
+  --salt-text-action-fontFamily: var(--salt-typography-fontFamily-sans);
+  --salt-text-action-fontWeight: var(--salt-typography-fontWeight-semiBold);
+  --salt-text-action-letterSpacing: 0.4px;
+  --salt-text-action-textTransform: none;
+  --salt-text-action-textAlign: center;
+
+  --salt-text-label-fontFamily: var(--salt-typography-fontFamily-sans);
+  --salt-text-label-fontWeight: var(--salt-typography-fontWeight-medium);
+  --salt-text-label-fontSize: 12px;
+  --salt-text-label-lineHeight: 16px;
+
+  --salt-text-notation-fontFamily: var(--salt-typography-fontFamily-sans);
+  --salt-text-notation-fontWeight: var(--salt-typography-fontWeight-semiBold);
+  --salt-text-notation-fontSize: 11px;
+  --salt-text-notation-lineHeight: 14px;
+
+  --salt-text-code-fontFamily: var(--salt-typography-fontFamily-mono);
+
+  /* Headings */
+  --salt-text-h1-fontFamily: var(--salt-typography-fontFamily-display);
+  --salt-text-h1-fontWeight: var(--salt-typography-fontWeight-semiBold);
+  --salt-text-h1-fontSize: 32px;
+  --salt-text-h1-lineHeight: 42px;
+
+  --salt-text-h2-fontFamily: var(--salt-typography-fontFamily-display);
+  --salt-text-h2-fontWeight: var(--salt-typography-fontWeight-semiBold);
+  --salt-text-h2-fontSize: 24px;
+  --salt-text-h2-lineHeight: 32px;
+
+  --salt-text-h3-fontFamily: var(--salt-typography-fontFamily-display);
+  --salt-text-h3-fontWeight: var(--salt-typography-fontWeight-semiBold);
+  --salt-text-h3-fontSize: 18px;
+  --salt-text-h3-lineHeight: 24px;
+
+  --salt-text-h4-fontFamily: var(--salt-typography-fontFamily-display);
+  --salt-text-h4-fontWeight: var(--salt-typography-fontWeight-semiBold);
+  --salt-text-h4-fontSize: 14px;
+  --salt-text-h4-lineHeight: 18px;
+
+  --salt-text-display1-fontFamily: var(--salt-typography-fontFamily-display);
+  --salt-text-display1-fontWeight: var(--salt-typography-fontWeight-semiBold);
+  --salt-text-display1-fontSize: 68px;
+  --salt-text-display1-lineHeight: 88px;
+
+  --salt-text-display2-fontFamily: var(--salt-typography-fontFamily-display);
+  --salt-text-display2-fontWeight: var(--salt-typography-fontWeight-semiBold);
+  --salt-text-display2-fontSize: 54px;
+  --salt-text-display2-lineHeight: 70px;
+
+  /* Marketing/hero headline — serif, used only for portal-style hero moments (e.g. "Discover the Firm's Data and AI capabilities") */
+  --salt-text-hero-fontFamily: var(--salt-typography-fontFamily-serif);
+  --salt-text-hero-fontWeight: var(--salt-typography-fontWeight-regular);
+  --salt-text-hero-fontSize: 40px;
+  --salt-text-hero-lineHeight: 50px;
+}

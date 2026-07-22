@@ -1,0 +1,15 @@
+.salt-theme {
+  color: var(--salt-content-primary-foreground);
+  font-family: var(--salt-text-fontFamily);
+  font-size: var(--salt-text-fontSize);
+  line-height: var(--salt-text-lineHeight);
+  letter-spacing: var(--salt-text-letterSpacing);
+  background: var(--salt-palette-background-secondary);
+  transition: background-color var(--salt-duration-perceptible) ease-in-out, color var(--salt-duration-perceptible) ease-in-out;
+}
+:where(.salt-theme) :focus-visible {
+  outline: var(--salt-focused-outline);
+  outline-offset: var(--salt-focused-outlineOffset);
+}
+.salt-theme a { color: var(--salt-palette-accent); }
+.salt-theme a:hover { color: var(--salt-palette-accent-strong); }

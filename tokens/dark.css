@@ -1,0 +1,51 @@
+/* Dark mode — activated with data-mode="dark" on the .salt-theme root (or
+   any descendant), matching Salt's own dark-mode convention. Only the
+   palette/background/foreground/container layer needs to flip; accent,
+   status and typography tokens are shared between modes. */
+.salt-theme[data-mode="dark"] {
+  --salt-palette-background-primary: var(--salt-color-background-jet);
+  --salt-palette-background-secondary: var(--salt-color-background-granite);
+  --salt-palette-background-tertiary: var(--salt-color-background-leather);
+
+  --salt-palette-foreground-primary: var(--salt-color-white);
+  --salt-palette-foreground-primary-alt: var(--salt-color-black);
+  --salt-palette-foreground-secondary: var(--salt-color-gray-300);
+  --salt-palette-foreground-visited: var(--salt-color-purple-200);
+
+  --salt-palette-neutral: var(--salt-color-gray-400);
+  --salt-palette-neutral-weaker: var(--salt-color-gray-700);
+  --salt-palette-neutral-weakest: var(--salt-color-gray-800);
+
+  --salt-content-primary-foreground: var(--salt-palette-foreground-primary);
+  --salt-content-secondary-foreground: var(--salt-palette-foreground-secondary);
+  --salt-content-bold-foreground: var(--salt-color-black);
+  --salt-content-foreground-visited: var(--salt-palette-foreground-visited);
+
+  --salt-container-primary-background: var(--salt-palette-background-secondary);
+  --salt-container-primary-borderColor: var(--salt-color-gray-700);
+  --salt-container-secondary-background: var(--salt-palette-background-tertiary);
+  --salt-container-secondary-borderColor: var(--salt-color-gray-700);
+  --salt-container-tertiary-background: var(--salt-color-background-granite);
+  --salt-container-tertiary-borderColor: var(--salt-color-gray-700);
+
+  --salt-actionable-bold-foreground: var(--salt-color-black);
+  --salt-actionable-bold-background: var(--salt-color-gray-200);
+  --salt-actionable-bold-background-hover: var(--salt-color-white);
+  --salt-actionable-bold-background-active: var(--salt-color-gray-300);
+
+  --salt-actionable-foreground: var(--salt-color-gray-200);
+  --salt-actionable-background-hover: var(--salt-color-gray-800);
+  --salt-actionable-background-active: var(--salt-color-gray-700);
+  --salt-actionable-borderColor: var(--salt-color-gray-600);
+  --salt-actionable-borderColor-hover: var(--salt-color-gray-400);
+
+  --salt-actionable-subtle-foreground: var(--salt-color-gray-200);
+  --salt-actionable-subtle-background-hover: var(--salt-color-gray-800);
+  --salt-actionable-subtle-background-active: var(--salt-color-gray-700);
+
+  --salt-editable-primary-background: var(--salt-color-background-granite);
+  --salt-editable-secondary-background: var(--salt-color-background-leather);
+  --salt-editable-borderColor: var(--salt-color-gray-600);
+  --salt-editable-borderColor-hover: var(--salt-color-gray-400);
+  --salt-editable-borderColor-readonly: var(--salt-color-gray-700);
+}

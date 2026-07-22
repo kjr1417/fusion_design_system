@@ -1,0 +1,265 @@
+.salt-theme {
+  --salt-color-black-rgb: 0, 0, 0;
+  --salt-color-white-rgb: 255, 255, 255;
+  --salt-color-black: rgb(var(--salt-color-black-rgb));
+  --salt-color-white: rgb(var(--salt-color-white-rgb));
+
+  /* Gray scale */
+  --salt-color-gray-100: rgb(230, 233, 235);
+  --salt-color-gray-200: rgb(211, 213, 216);
+  --salt-color-gray-300: rgb(177, 181, 185);
+  --salt-color-gray-400: rgb(145, 149, 154);
+  --salt-color-gray-500: rgb(114, 119, 125);
+  --salt-color-gray-600: rgb(95, 100, 106);
+  --salt-color-gray-700: rgb(76, 81, 87);
+  --salt-color-gray-800: rgb(58, 63, 68);
+  --salt-color-gray-900: rgb(41, 46, 51);
+
+  /* Blue (accent) */
+  --salt-color-blue-100: rgb(234, 246, 255);
+  --salt-color-blue-200: rgb(199, 222, 255);
+  --salt-color-blue-300: rgb(154, 189, 245);
+  --salt-color-blue-400: rgb(102, 156, 232);
+  --salt-color-blue-500: rgb(21, 92, 147);
+  --salt-color-blue-600: rgb(0, 94, 166);
+  --salt-color-blue-700: rgb(0, 69, 126);
+  --salt-color-blue-800: rgb(0, 45, 89);
+  --salt-color-blue-900: rgb(0, 23, 54);
+
+  /* Green (positive) */
+  --salt-color-green-100: rgb(234, 245, 242);
+  --salt-color-green-200: rgb(184, 229, 209);
+  --salt-color-green-300: rgb(137, 204, 173);
+  --salt-color-green-400: rgb(83, 176, 135);
+  --salt-color-green-500: rgb(0, 135, 93);
+  --salt-color-green-600: rgb(0, 107, 72);
+  --salt-color-green-700: rgb(0, 86, 55);
+  --salt-color-green-800: rgb(0, 63, 37);
+  --salt-color-green-900: rgb(0, 41, 21);
+
+  /* Red (negative) */
+  --salt-color-red-100: rgb(255, 236, 234);
+  --salt-color-red-200: rgb(255, 193, 186);
+  --salt-color-red-300: rgb(255, 147, 138);
+  --salt-color-red-400: rgb(255, 93, 87);
+  --salt-color-red-500: rgb(229, 33, 53);
+  --salt-color-red-600: rgb(186, 23, 41);
+  --salt-color-red-700: rgb(145, 13, 30);
+  --salt-color-red-800: rgb(105, 4, 19);
+  --salt-color-red-900: rgb(69, 0, 2);
+
+  /* Purple */
+  --salt-color-purple-100: rgb(246, 240, 250);
+  --salt-color-purple-200: rgb(240, 214, 245);
+  --salt-color-purple-500: rgb(162, 91, 173);
+  --salt-color-purple-800: rgb(73, 21, 82);
+
+  /* Teal */
+  --salt-color-teal-100: rgb(224, 244, 244);
+  --salt-color-teal-500: rgb(0, 150, 152);
+  --salt-color-teal-700: rgb(0, 92, 94);
+
+  /* Indigo */
+  --salt-color-indigo-100: rgb(232, 234, 252);
+  --salt-color-indigo-500: rgb(74, 86, 204);
+  --salt-color-indigo-700: rgb(43, 52, 133);
+
+  /* Domain categorical colors — distinct hues for data-taxonomy chips
+     (Data/AI/Governance/Technical/Documentation). Kept clear of green/red,
+     which are reserved for positive/negative status. */
+  --domain-data-fill: var(--salt-color-blue-100);
+  --domain-data-bold: var(--salt-color-blue-500);
+  --domain-data-text: var(--salt-color-blue-700);
+  --domain-ai-fill: var(--salt-color-purple-100);
+  --domain-ai-bold: var(--salt-color-purple-500);
+  --domain-ai-text: var(--salt-color-purple-800);
+  --domain-governance-fill: var(--salt-color-indigo-100);
+  --domain-governance-bold: var(--salt-color-indigo-500);
+  --domain-governance-text: var(--salt-color-indigo-700);
+  --domain-technical-fill: var(--salt-color-teal-100);
+  --domain-technical-bold: var(--salt-color-teal-500);
+  --domain-technical-text: var(--salt-color-teal-700);
+  --domain-documentation-fill: var(--salt-color-gray-100);
+  --domain-documentation-bold: var(--salt-color-gray-600);
+  --domain-documentation-text: var(--salt-color-gray-800);
+
+
+  /* Orange — Fusion's real brand-interactive accent (--jpmc-color-orange-*),
+     confirmed by the Fusion Theme Showcase doc, also reused for the
+     "warning" semantic slot. Exact hex values live in the private
+     @cdaoui/fusion-theme package and were not available to this project;
+     this scale is a reasonable approximation. Swap in the real values if
+     you get access to @cdaoui/fusion-theme. */
+  --salt-color-orange-100: rgb(255, 237, 224);
+  --salt-color-orange-200: rgb(255, 210, 179);
+  --salt-color-orange-300: rgb(250, 173, 122);
+  --salt-color-orange-400: rgb(240, 133, 74);
+  --salt-color-orange-500: rgb(224, 90, 33);
+  --salt-color-orange-600: rgb(191, 71, 22);
+  --salt-color-orange-700: rgb(153, 55, 15);
+  --salt-color-orange-800: rgb(112, 39, 9);
+  --salt-color-orange-900: rgb(71, 24, 4);
+
+  /* Backgrounds */
+  --salt-color-background-snow: rgb(255, 255, 255);
+  --salt-color-background-marble: rgb(245, 247, 248);
+  --salt-color-background-limestone: rgb(250, 248, 242);
+  --salt-color-background-titanium: rgb(226, 228, 229);
+  --salt-color-background-jet: rgb(16, 24, 32);
+  --salt-color-background-granite: rgb(26, 34, 41);
+  --salt-color-background-leather: rgb(38, 41, 43);
+}
+
+/* ---- Semantic palette (accent set to blue) ---- */
+.salt-theme {
+  --salt-palette-accent: var(--salt-color-blue-500);
+  --salt-palette-accent-strong: var(--salt-color-blue-600);
+  --salt-palette-accent-stronger: var(--salt-color-blue-700);
+  --salt-palette-accent-weak: var(--salt-color-blue-400);
+  --salt-palette-accent-weaker: var(--salt-color-blue-200);
+  --salt-palette-accent-weakest: var(--salt-color-blue-100);
+
+  --salt-palette-neutral: var(--salt-color-gray-500);
+  --salt-palette-neutral-strong: var(--salt-color-gray-600);
+  --salt-palette-neutral-stronger: var(--salt-color-gray-700);
+  --salt-palette-neutral-weak: var(--salt-color-gray-400);
+  --salt-palette-neutral-weaker: var(--salt-color-gray-200);
+  --salt-palette-neutral-weakest: var(--salt-color-gray-100);
+
+  --salt-palette-background-primary: var(--salt-color-background-snow);
+  --salt-palette-background-secondary: var(--salt-color-background-marble);
+  --salt-palette-background-tertiary: var(--salt-color-background-limestone);
+
+  --salt-palette-foreground-primary: var(--salt-color-black);
+  --salt-palette-foreground-primary-alt: var(--salt-color-white);
+  --salt-palette-foreground-secondary: var(--salt-color-gray-700);
+  --salt-palette-foreground-visited: var(--salt-color-purple-800);
+
+  --salt-palette-positive: var(--salt-color-green-500);
+  --salt-palette-positive-strong: var(--salt-color-green-600);
+  --salt-palette-positive-weaker: var(--salt-color-green-200);
+  --salt-palette-positive-weakest: var(--salt-color-green-100);
+
+  --salt-palette-negative: var(--salt-color-red-500);
+  --salt-palette-negative-strong: var(--salt-color-red-600);
+  --salt-palette-negative-weaker: var(--salt-color-red-200);
+  --salt-palette-negative-weakest: var(--salt-color-red-100);
+
+  --salt-palette-warning: var(--salt-color-orange-500);
+  --salt-palette-warning-strong: var(--salt-color-orange-600);
+  --salt-palette-warning-weaker: var(--salt-color-orange-200);
+  --salt-palette-warning-weakest: var(--salt-color-orange-100);
+
+  --salt-palette-info: var(--salt-color-blue-500);
+  --salt-palette-info-strong: var(--salt-color-blue-600);
+  --salt-palette-info-weakest: var(--salt-color-blue-100);
+}
+
+/* ---- Characteristics (semantic aliases consumed by components) ---- */
+.salt-theme {
+  --salt-content-primary-foreground: var(--salt-palette-foreground-primary);
+  --salt-content-secondary-foreground: var(--salt-palette-foreground-secondary);
+  --salt-content-accent-foreground: var(--salt-palette-accent);
+  --salt-content-bold-foreground: var(--salt-color-white);
+  --salt-content-foreground-visited: var(--salt-palette-foreground-visited);
+
+  --salt-container-primary-background: var(--salt-palette-background-primary);
+  --salt-container-primary-borderColor: var(--salt-color-gray-200);
+  --salt-container-secondary-background: var(--salt-palette-background-secondary);
+  --salt-container-secondary-borderColor: var(--salt-color-gray-200);
+  --salt-container-tertiary-background: var(--salt-palette-background-tertiary);
+  --salt-container-tertiary-borderColor: var(--salt-color-gray-200);
+
+  --salt-actionable-accented-bold-foreground: var(--salt-color-white);
+  --salt-actionable-accented-bold-background: var(--salt-palette-accent);
+  --salt-actionable-accented-bold-background-hover: var(--salt-palette-accent-strong);
+  --salt-actionable-accented-bold-background-active: var(--salt-palette-accent-stronger);
+  --salt-actionable-accented-bold-borderColor: transparent;
+
+  --salt-actionable-accented-foreground: var(--salt-palette-accent);
+  --salt-actionable-accented-background: transparent;
+  --salt-actionable-accented-background-hover: var(--salt-palette-accent-weakest);
+  --salt-actionable-accented-background-active: var(--salt-palette-accent-weaker);
+  --salt-actionable-accented-borderColor: var(--salt-palette-accent);
+  --salt-actionable-accented-borderColor-hover: var(--salt-palette-accent-strong);
+
+  --salt-actionable-accented-subtle-foreground: var(--salt-palette-accent);
+  --salt-actionable-accented-subtle-background: transparent;
+  --salt-actionable-accented-subtle-background-hover: var(--salt-palette-accent-weakest);
+  --salt-actionable-accented-subtle-background-active: var(--salt-palette-accent-weaker);
+  --salt-actionable-accented-subtle-borderColor: transparent;
+
+  --salt-actionable-bold-foreground: var(--salt-color-white);
+  --salt-actionable-bold-background: var(--salt-color-gray-800);
+  --salt-actionable-bold-background-hover: var(--salt-color-gray-900);
+  --salt-actionable-bold-background-active: var(--salt-color-black);
+  --salt-actionable-bold-borderColor: transparent;
+
+  --salt-actionable-foreground: var(--salt-color-gray-800);
+  --salt-actionable-background: transparent;
+  --salt-actionable-background-hover: var(--salt-color-gray-100);
+  --salt-actionable-background-active: var(--salt-color-gray-200);
+  --salt-actionable-borderColor: var(--salt-color-gray-400);
+  --salt-actionable-borderColor-hover: var(--salt-color-gray-600);
+
+  --salt-actionable-subtle-foreground: var(--salt-color-gray-800);
+  --salt-actionable-subtle-background: transparent;
+  --salt-actionable-subtle-background-hover: var(--salt-color-gray-100);
+  --salt-actionable-subtle-background-active: var(--salt-color-gray-200);
+  --salt-actionable-subtle-borderColor: transparent;
+
+  --salt-actionable-negative-bold-foreground: var(--salt-color-white);
+  --salt-actionable-negative-bold-background: var(--salt-palette-negative);
+  --salt-actionable-negative-bold-background-hover: var(--salt-palette-negative-strong);
+  --salt-actionable-negative-bold-borderColor: transparent;
+  --salt-actionable-negative-foreground: var(--salt-palette-negative);
+  --salt-actionable-negative-background: transparent;
+  --salt-actionable-negative-background-hover: var(--salt-palette-negative-weakest);
+  --salt-actionable-negative-borderColor: var(--salt-palette-negative);
+  --salt-actionable-negative-subtle-foreground: var(--salt-palette-negative);
+  --salt-actionable-negative-subtle-background: transparent;
+  --salt-actionable-negative-subtle-background-hover: var(--salt-palette-negative-weakest);
+  --salt-actionable-negative-subtle-borderColor: transparent;
+
+  --salt-editable-primary-background: var(--salt-color-white);
+  --salt-editable-secondary-background: var(--salt-color-gray-100);
+  --salt-editable-borderColor: var(--salt-color-gray-400);
+  --salt-editable-borderColor-hover: var(--salt-color-gray-600);
+  --salt-editable-borderColor-active: var(--salt-palette-accent);
+  --salt-editable-borderColor-readonly: var(--salt-color-gray-300);
+
+  --salt-selectable-borderColor: var(--salt-color-gray-500);
+  --salt-selectable-foreground: var(--salt-color-gray-700);
+  --salt-selectable-borderColor-hover: var(--salt-color-gray-600);
+  --salt-selectable-foreground-hover: var(--salt-color-gray-800);
+  --salt-selectable-borderColor-selected: var(--salt-palette-accent);
+  --salt-selectable-foreground-selected: var(--salt-palette-accent);
+
+  --salt-status-error-background: var(--salt-palette-negative-weakest);
+  --salt-status-error-borderColor: var(--salt-palette-negative);
+  --salt-status-error-foreground-decorative: var(--salt-palette-negative);
+  --salt-status-warning-background: var(--salt-palette-warning-weakest);
+  --salt-status-warning-borderColor: var(--salt-palette-warning);
+  --salt-status-warning-foreground-decorative: var(--salt-palette-warning);
+  --salt-status-success-background: var(--salt-palette-positive-weakest);
+  --salt-status-success-borderColor: var(--salt-palette-positive);
+  --salt-status-info-borderColor: var(--salt-palette-info);
+
+  --salt-sentiment-accent-background: var(--salt-palette-accent);
+
+  --salt-focused-outlineColor: var(--salt-palette-accent);
+  --salt-focused-outlineWidth: 2px;
+  --salt-focused-outlineStyle: solid;
+  --salt-focused-outlineOffset: 1px;
+  --salt-focused-outline: var(--salt-focused-outlineWidth) var(--salt-focused-outlineStyle) var(--salt-focused-outlineColor);
+  --salt-focused-outlineInset: 0;
+
+  --salt-cursor-hover: pointer; /* @kind other */
+  --salt-cursor-active: pointer; /* @kind other */
+  --salt-cursor-disabled: not-allowed; /* @kind other */
+  --salt-cursor-readonly: default; /* @kind other */
+  --salt-cursor-text: text; /* @kind other */
+  --salt-cursor-pending: progress; /* @kind other */
+  --salt-focused-outlineStyle: solid; /* @kind other */
+  --salt-focused-outlineInset: 0; /* @kind other */
+}

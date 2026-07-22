@@ -1,0 +1,35 @@
+/* Public Sans stands in for the JPM "Amplitude" corporate typeface, which is
+   proprietary and was not provided with this design system. Swap the src
+   below for the real Amplitude webfont files when available. Open Sans and
+   PT Mono are Salt's real, open-source type choices and are used as-is. */
+@font-face {
+  font-family: "Open Sans";
+  src: url("https://fonts.gstatic.com/s/opensans/v40/memtYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4gaVI.ttf") format("truetype");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Public Sans";
+  src: url("https://fonts.gstatic.com/s/publicsans/v14/ijwGs572Xtc6ZYbrRJDUEme9CAmZOdU-YExheavY.ttf") format("truetype");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+/* Source Serif 4 stands in for the serif display face seen in Fusion portal
+   hero headlines ("Discover the Firm's Data and AI capabilities"); the real
+   typeface was not provided. Flagged for the user — swap when available. */
+@font-face {
+  font-family: "Source Serif 4";
+  src: url("https://fonts.gstatic.com/s/sourceserif4/v10/vEFy2_tTDB4M7-auWDN0ahZJW3IX2ih5nk3AucvUHf6OAVIJmeUDygwjihE.ttf") format("truetype");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PT Mono";
+  src: url("https://fonts.gstatic.com/s/ptmono/v13/9oRONYoBnWILk-9ru2PSjKfaeQ.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

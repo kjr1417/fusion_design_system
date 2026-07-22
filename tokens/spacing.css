@@ -1,0 +1,29 @@
+.salt-theme {
+  /* Spacing scale (density-independent) */
+  --salt-spacing-25: 4px;
+  --salt-spacing-50: 8px;
+  --salt-spacing-75: 12px;
+  --salt-spacing-100: 16px;
+  --salt-spacing-150: 24px;
+  --salt-spacing-200: 32px;
+  --salt-spacing-250: 40px;
+  --salt-spacing-300: 48px;
+  --salt-spacing-400: 64px;
+  --salt-spacing-500: 80px;
+  --salt-spacing-600: 96px;
+
+  --salt-spacing-fixed-100: 1px;
+  --salt-spacing-fixed-200: 2px;
+  --salt-spacing-fixed-300: 3px;
+  --salt-spacing-fixed-400: 4px;
+
+  /* Low density only (Salt's --salt-density-low) — this system does not implement medium/high/touch density */
+  --salt-size-base: 36px;
+  --salt-size-icon: 16px;
+  --salt-size-adornment: 12px;
+  --salt-size-bar: 4px;
+  --salt-size-selectable: 18px;
+  --salt-size-fixed-100: 1px;
+  --salt-size-fixed-200: 2px;
+}
+

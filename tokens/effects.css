@@ -1,0 +1,34 @@
+.salt-theme {
+  /* Corner radius (rounded, medium density) */
+  --salt-curve-0: 0; /* @kind radius */
+  --salt-curve-50: 4px; /* @kind radius */
+  --salt-curve-100: 8px; /* @kind radius */
+  --salt-curve-150: 10px; /* @kind radius */
+  --salt-curve-200: 14px; /* @kind radius */
+  --salt-curve-250: 18px; /* @kind radius */
+  --salt-curve-300: 24px; /* @kind radius */
+  --salt-curve-999: 999px; /* @kind radius */
+
+  --salt-palette-corner-weaker: var(--salt-curve-50);
+  --salt-palette-corner-weak: var(--salt-curve-100);
+  --salt-palette-corner: var(--salt-curve-150);
+  --salt-palette-corner-strong: var(--salt-curve-200);
+  --salt-palette-corner-stronger: var(--salt-curve-250);
+  /* "Friendlier, more approachable" surfaces from the Fusion theme screenshots — hero search bars, chat composer, suggestion cards */
+  --salt-palette-corner-soft: var(--salt-curve-300);
+  --salt-palette-corner-strongest: var(--salt-curve-999);
+
+  --salt-shadow-lowest: 0 1px 3px 0 rgba(16, 24, 32, 0.1);
+  --salt-shadow-lower: 0 2px 4px 0 rgba(16, 24, 32, 0.1);
+  --salt-shadow-low: 0 4px 8px 0 rgba(16, 24, 32, 0.15);
+  --salt-shadow-mediumLow: 0 6px 10px 0 rgba(16, 24, 32, 0.2);
+  --salt-shadow-medium: 0 12px 40px 0 rgba(16, 24, 32, 0.3);
+  --salt-overlayable-shadow: var(--salt-shadow-lowest);
+  --salt-overlayable-shadow-hover: var(--salt-shadow-low);
+  --salt-overlayable-backdrop: rgba(16, 24, 32, 0.5);
+
+  --salt-duration-instant: 100ms; /* @kind other */
+  --salt-duration-perceptible: 200ms; /* @kind other */
+  --salt-duration-immediate: 0ms; /* @kind other */
+  --salt-zIndex-default: 1; /* @kind other */
+}
