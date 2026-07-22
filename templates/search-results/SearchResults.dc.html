@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Search Results" description="Platform-wide search results: top search bar, faceted filter rail, AI overview, and category-accented result rows. Use for any search view in Fusion." -->
+<helmet>
+<script src="./ds-base.js"></script>
+<style>
+  *{box-sizing:border-box}
+  .sr-desc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .sr-card{--saltCard-padding:20px 24px;--saltCard-accent-color:var(--accent);--accent:var(--salt-color-gray-400);--tileBg:var(--salt-color-gray-100);--tileFg:var(--salt-color-gray-700);--eyebrow:var(--salt-content-secondary-foreground);--icon:url(../../assets/icons/file.svg)}
+  .sr-glyph{display:inline-block;width:20px;height:20px;background:currentColor;-webkit-mask:var(--icon) center/contain no-repeat;mask:var(--icon) center/contain no-repeat}
+  .sr-mrow{border-top:1px solid var(--salt-color-gray-100)}
+  .sr-mrow:first-child{border-top:none}
+  .sr-dataset{--accent:var(--domain-data-bold);--tileBg:var(--domain-data-fill);--tileFg:var(--domain-data-bold);--eyebrow:var(--domain-data-text);--icon:url(../../assets/icons/database.svg)}
+  .sr-dataproduct{--accent:var(--domain-data-bold);--tileBg:var(--domain-data-fill);--tileFg:var(--domain-data-bold);--eyebrow:var(--domain-data-text);--icon:url(../../assets/icons/database.svg)}
+  .sr-dashboard{--accent:var(--domain-data-bold);--tileBg:var(--domain-data-fill);--tileFg:var(--domain-data-bold);--eyebrow:var(--domain-data-text);--icon:url(../../assets/icons/chart-column.svg)}
+  .sr-model{--accent:var(--domain-ai-bold);--tileBg:var(--domain-ai-fill);--tileFg:var(--domain-ai-bold);--eyebrow:var(--domain-ai-text);--icon:url(../../assets/icons/tree.svg)}
+  .sr-agentic{--accent:var(--domain-ai-bold);--tileBg:var(--domain-ai-fill);--tileFg:var(--domain-ai-bold);--eyebrow:var(--domain-ai-text);--icon:url(../../assets/icons/settings.svg)}
+  .sr-skill{--accent:var(--domain-ai-bold);--tileBg:var(--domain-ai-fill);--tileFg:var(--domain-ai-bold);--eyebrow:var(--domain-ai-text);--icon:url(../../assets/icons/list.svg)}
+  .sr-usecase{--accent:var(--domain-governance-bold);--tileBg:var(--domain-governance-fill);--tileFg:var(--domain-governance-bold);--eyebrow:var(--domain-governance-text);--icon:url(../../assets/icons/bookmark.svg)}
+  .sr-process{--accent:var(--domain-governance-bold);--tileBg:var(--domain-governance-fill);--tileFg:var(--domain-governance-bold);--eyebrow:var(--domain-governance-text);--icon:url(../../assets/icons/refresh.svg)}
+  .sr-report{--accent:var(--domain-documentation-bold);--tileBg:var(--domain-documentation-fill);--tileFg:var(--domain-documentation-bold);--eyebrow:var(--domain-documentation-text);--icon:url(../../assets/icons/document.svg)}
+  .sr-glossary{--accent:var(--domain-documentation-bold);--tileBg:var(--domain-documentation-fill);--tileFg:var(--domain-documentation-bold);--eyebrow:var(--domain-documentation-text);--icon:url(../../assets/icons/file.svg)}
+</style>
+</helmet>
+<div class="salt-theme" style="min-height:100vh;background:var(--salt-palette-background-secondary);font-family:var(--salt-text-fontFamily);color:var(--salt-content-primary-foreground)">
+
+  <x-import component-from-global-scope="FusionDesignSystem_5ec875.GlobalNav" search-value="{{ query }}" hint-size="100%,68px" style="position:sticky;top:0;z-index:20;border-bottom:1px solid var(--salt-color-gray-200)"></x-import>
+
+  <div style="display:flex;align-items:flex-start">
+  <div style="flex:1;min-width:0">
+  <div style="display:grid;grid-template-columns:300px minmax(0,1fr);gap:28px;padding:28px;max-width:1480px;margin:0 auto;align-items:start">
+
+    <aside style="background:transparent;border:none;border-radius:0;padding:4px 8px 0 0;position:sticky;top:92px;--salt-text-fontSize:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--salt-color-gray-200)">
+        <h2 style="margin:0;font-size:20px;font-weight:700">Filters</h2>
+        <span style="color:var(--salt-content-secondary-foreground)">{{ chevronUp }}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:22px;margin-top:20px">
+        <sc-for list="{{ filterGroups }}" as="g" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--salt-content-secondary-foreground)">{{ g.heading }}</div>
+            <div style="display:flex;flex-direction:column;gap:11px">
+              <sc-for list="{{ g.options }}" as="o" hint-placeholder-count="3">
+                <x-import component-from-global-scope="FusionDesignSystem_5ec875.Checkbox" label="{{ o.label }}" hint-size="100%,22px"></x-import>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </aside>
+
+    <main style="display:flex;flex-direction:column;gap:20px;min-width:0">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px 20px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0;flex:1 1 420px">
+          <h1 style="margin:0;font-size:28px;font-weight:800;line-height:1.2">Results for &ldquo;{{ query }}&rdquo;</h1>
+          <span style="font-size:15px;color:var(--salt-content-secondary-foreground)">{{ rangeLabel }} of {{ total }}</span>
+          <x-import component-from-global-scope="FusionDesignSystem_5ec875.Button" appearance="transparent" sentiment="accented" hint-size="130px,32px">Clear search &times;</x-import>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:14px;color:var(--salt-content-secondary-foreground);white-space:nowrap">Sort by</span>
+            <x-import component-from-global-scope="FusionDesignSystem_5ec875.Dropdown" options="{{ sortOptions }}" hint-size="170px,40px"></x-import>
+          </div>
+        </div>
+      </div>
+
+      <sc-if value="{{ showAiOverview }}" hint-placeholder-val="{{ true }}">
+        <div style="background:var(--salt-container-primary-background);border:1px solid var(--salt-color-gray-100);border-radius:12px;padding:22px 24px;box-shadow:0 1px 2px rgba(16,24,32,.04),0 8px 20px -6px rgba(16,24,32,.12)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <span style="display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--domain-ai-fill);color:var(--domain-ai-bold)">{{ sparkleIcon }}</span>
+            <span style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--domain-ai-text)">AI Overview</span>
+          </div>
+          <p style="margin:0;font-size:15px;line-height:1.55;color:var(--salt-content-primary-foreground)">{{ aiSummary }}</p>
+        </div>
+      </sc-if>
+
+      <sc-for list="{{ results }}" as="r" hint-placeholder-count="4">
+        <div class="sr-card sr-{{ r.typeKey }}" onClick="{{ r.onSelect }}" style="display:flex;gap:18px;align-items:flex-start;background:var(--salt-container-primary-background);border:1px solid var(--salt-color-gray-100);border-left:4px solid var(--accent);border-radius:12px;padding:20px 24px;box-shadow:0 1px 2px rgba(16,24,32,.04),0 8px 20px -6px rgba(16,24,32,.12);cursor:pointer;transition:box-shadow .15s ease,transform .15s ease" style-hover="box-shadow:0 2px 4px rgba(16,24,32,.06),0 14px 30px -8px rgba(16,24,32,.18);transform:translateY(-2px)">
+          <span style="display:grid;place-items:center;width:40px;height:40px;border-radius:10px;flex-shrink:0;background:var(--tileBg);color:var(--tileFg)"><span class="sr-glyph"></span></span>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--eyebrow)">{{ r.eyebrow }}</span>
+            <h3 style="margin:0;font-size:19px;font-weight:700;line-height:1.25">{{ r.title }}</h3>
+            <p class="sr-desc" style="margin:0;font-size:15px;line-height:1.5;color:var(--salt-content-secondary-foreground)">{{ r.description }}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:22px;margin-top:6px">
+              <sc-for list="{{ r.meta }}" as="m" hint-placeholder-count="2">
+                <span style="display:inline-flex;align-items:center;gap:7px;font-size:14px;color:var(--salt-content-secondary-foreground)">{{ m.icon }}{{ m.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+          <x-import component-from-global-scope="FusionDesignSystem_5ec875.Button" appearance="solid" sentiment="accented" hint-size="96px,40px" style="flex-shrink:0;align-self:center">View {{ arrowIcon }}</x-import>
+        </div>
+      </sc-for>
+    </main>
+  </div>
+  </div>
+
+  <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+    <div class="sr-{{ sel.typeKey }}" style="position:sticky;top:61px;align-self:flex-start;height:calc(100vh - 61px);width:460px;max-width:94vw;flex-shrink:0;background:var(--salt-container-primary-background);border-left:1px solid var(--salt-color-gray-200);display:flex;flex-direction:column;overflow-y:auto">
+      <div style="padding:26px 30px 22px;border-bottom:1px solid var(--salt-color-gray-200)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="display:grid;place-items:center;width:32px;height:32px;border-radius:9px;background:var(--tileBg);color:var(--tileFg)"><span class="sr-glyph"></span></span>
+            <span style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--eyebrow)">{{ sel.eyebrow }}</span>
+          </div>
+          <button onClick="{{ closePanel }}" aria-label="Close" style="display:grid;place-items:center;width:34px;height:34px;border:none;background:none;border-radius:8px;cursor:pointer;color:var(--salt-content-secondary-foreground)" style-hover="background:var(--salt-color-gray-100)">{{ closeIcon }}</button>
+        </div>
+        <h2 style="margin:0 0 8px;font-size:26px;font-weight:800;line-height:1.2">{{ sel.title }}</h2>
+        <div style="display:inline-flex;align-items:center;gap:7px;font-family:var(--salt-text-code-fontFamily,monospace);font-size:14px;color:var(--salt-content-secondary-foreground);margin-bottom:20px">{{ sel.detail.id }}{{ copyIcon }}</div>
+        <div style="display:flex;gap:10px">
+          <x-import component-from-global-scope="FusionDesignSystem_5ec875.Button" appearance="solid" sentiment="accented" hint-size="110px,40px">{{ externalIcon }}&nbsp;View</x-import>
+          <x-import component-from-global-scope="FusionDesignSystem_5ec875.Button" appearance="bordered" sentiment="neutral" hint-size="130px,40px">{{ favIcon }}&nbsp;Favorite</x-import>
+        </div>
+      </div>
+      <div style="padding:22px 30px;border-bottom:1px solid var(--salt-color-gray-200)">
+        <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--salt-content-secondary-foreground);margin-bottom:10px">Description</div>
+        <p style="margin:0;font-size:15px;line-height:1.55;color:var(--salt-content-primary-foreground)">{{ sel.description }}</p>
+      </div>
+      <div style="padding:22px 30px 32px">
+        <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--salt-content-secondary-foreground);margin-bottom:12px">Metadata</div>
+        <div style="border:1px solid var(--salt-color-gray-200);border-radius:10px;overflow:hidden">
+          <sc-for list="{{ sel.detail.metadata }}" as="m2" hint-placeholder-count="5">
+            <div class="sr-mrow" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:13px 16px;font-size:14px">
+              <strong style="font-weight:700;color:var(--salt-content-primary-foreground)">{{ m2.label }}</strong>
+              <span style="color:var(--salt-content-primary-foreground)">{{ m2.value }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--salt-content-secondary-foreground);margin:22px 0 12px">Tags</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ sel.detail.tags }}" as="t" hint-placeholder-count="2">
+            <span style="display:inline-flex;align-items:center;padding:5px 12px;border:1px solid var(--eyebrow);border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--eyebrow)">{{ t }}</span>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:900},&quot;query&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;AI Research Sample Dataset&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;total&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:49,&quot;min&quot;:0,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;showAiOverview&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+class Component extends DCLogic {
+  // Render any Fusion icon (assets/icons/*.svg) as a currentColor-tinted mask,
+  // so every glyph comes from the one design-system icon set.
+  dsIcon(name, size = 16) {
+    const url = `url(../../assets/icons/${name}.svg)`;
+    return React.createElement('span', { style: { display: 'inline-block', width: size, height: size, flexShrink: 0, background: 'currentColor', WebkitMask: `${url} center/contain no-repeat`, mask: `${url} center/contain no-repeat` } });
+  }
+
+  state = { selected: null };
+
+  defaults() {
+    const mk = (typeKey, eyebrow, title, description, meta, detail) => {
+      return { typeKey, eyebrow, title, description, meta, detail };
+    };
+    const md = (rows) => rows.map(([label, value]) => ({ label, value }));
+    return {
+      query: this.props.query || 'AI Research Sample Dataset',
+      total: this.props.total ?? 49,
+      rangeLabel: '1–9',
+      sortOptions: [{ label: 'Relevance', value: 'rel' }, { label: 'Most recent', value: 'date' }, { label: 'Name (A–Z)', value: 'name' }],
+      viewOptions: [{ label: 'List', value: 'list' }, { label: 'Grid', value: 'grid' }],
+      showAiOverview: this.props.showAiOverview ?? true,
+      aiSummary: 'Nine assets match your search across datasets, use cases, and models. The strongest match is the AI Research Adoption use case, which bundles the referenced sample dataset with governed models and controls.',
+      filterGroups: [
+        { heading: 'Data', name: 'flt-data', options: [{ label: 'Data Product', value: 'dp' }, { label: 'Dataset', value: 'ds' }, { label: 'Dashboard', value: 'db' }] },
+        { heading: 'AI / ML', name: 'flt-ai', options: [{ label: 'Agentic System', value: 'ag' }, { label: 'Model', value: 'mo' }, { label: 'Skill', value: 'sk' }] },
+        { heading: 'Governance', name: 'flt-gov', options: [{ label: 'Glossary Term', value: 'gt' }, { label: 'Process', value: 'pr' }, { label: 'Report', value: 're' }, { label: 'Use Case', value: 'uc' }] },
+      ],
+      results: [
+        mk('usecase', 'Use Case', 'AI Research Adoption', 'A stream of projects to speed the adoption of Infinite AI by AI Research.', [{ icon: this.dsIcon('bookmark'), label: 'Phase: Development' }, { icon: this.dsIcon('calendar'), label: 'Apr 9, 2026' }],
+          { id: '106650', tags: ['Agentic System - Intended Usage'], metadata: md([['Owner', 'Ade Onigbanjo (U400914)'], ['Business Objective', 'AI Enablement'], ['Phase', 'Development'], ['Development LOB', '—'], ['Consuming LOB', 'Corporate'], ['Last Modified Date', 'Apr 9, 2026']]) }),
+        mk('usecase', 'Use Case', 'AI Research Experimentation [Planning and Knowledge Management GenAI]', 'Governed experimentation workspace for planning and knowledge-management GenAI initiatives.', [{ icon: this.dsIcon('bookmark'), label: 'Phase: Planning' }, { icon: this.dsIcon('calendar'), label: 'Mar 22, 2026' }],
+          { id: '106712', tags: ['Planning', 'Knowledge Management'], metadata: md([['Owner', 'Priya Nair (U401238)'], ['Business Objective', 'Experimentation'], ['Phase', 'Planning'], ['Development LOB', 'AI Research'], ['Consuming LOB', 'Corporate'], ['Last Modified Date', 'Mar 22, 2026']]) }),
+        mk('dataset', 'Dataset', 'AI Research Sample Dataset', 'Curated sample dataset used across AI Research pilots, with lineage and governed access controls.', [{ icon: this.dsIcon('database'), label: 'Domain: AI Research' }, { icon: this.dsIcon('calendar'), label: 'Apr 2, 2026' }],
+          { id: 'DS-88213', tags: ['Curated', 'Governed Access'], metadata: md([['Owner', 'Data Platform Team'], ['Domain', 'AI Research'], ['Classification', 'Internal'], ['Rows', '2.4M'], ['Refresh', 'Daily'], ['Last Modified Date', 'Apr 2, 2026']]) }),
+        mk('model', 'Model', 'ai-research-classifier-v3', 'Fine-tuned classifier trained on the AI Research sample corpus for topic routing.', [{ icon: this.dsIcon('tree'), label: 'Owner: AI Platform' }, { icon: this.dsIcon('calendar'), label: 'Apr 11, 2026' }],
+          { id: 'MDL-40917', tags: ['Classifier', 'Fine-tuned'], metadata: md([['Owner', 'AI Platform'], ['Task', 'Topic routing'], ['Base Model', 'bert-base-uncased'], ['Framework', 'PyTorch'], ['Status', 'Approved'], ['Last Modified Date', 'Apr 11, 2026']]) }),
+      ],
+    };
+  }
+
+  renderVals() {
+    const d = this.defaults();
+    const results = d.results.map((r, i) => ({ ...r, onSelect: () => this.setState({ selected: i }) }));
+    const sel = this.state.selected != null ? results[this.state.selected] : null;
+    return {
+      ...d,
+      results,
+      panelOpen: !!sel,
+      sel: sel || {},
+      closePanel: () => this.setState({ selected: null }),
+      closeIcon: this.dsIcon('close', 18),
+      copyIcon: this.dsIcon('copy', 15),
+      favIcon: this.dsIcon('bookmark', 15),
+      externalIcon: this.dsIcon('expand', 15),
+      searchIcon: this.dsIcon('search', 16),
+      clearIcon: this.dsIcon('close', 16),
+      avatarIcon: this.dsIcon('user', 18),
+      sparkleIcon: this.dsIcon('info', 16),
+      chevronUp: this.dsIcon('chevron-up', 16),
+      arrowIcon: React.createElement('span', { style: { display: 'inline-block', width: 14, height: 14, marginLeft: 6, verticalAlign: 'middle', background: 'currentColor', WebkitMask: 'url(../../assets/icons/arrow-right.svg) center/contain no-repeat', mask: 'url(../../assets/icons/arrow-right.svg) center/contain no-repeat' } }),
+    };
+  }
+}
+</script>
+</body>
+</html>
