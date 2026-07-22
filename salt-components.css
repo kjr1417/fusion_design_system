@@ -243,6 +243,12 @@
 .saltToggleButton[aria-pressed="true"], .saltToggleButton[aria-checked="true"] { background: var(--toggleButton-background-selected); color: var(--toggleButton-text-color-selected); border-color: var(--toggleButton-borderColor-selected); }
 .saltToggleButton-neutral { --toggleButton-text-color: var(--salt-actionable-foreground); --toggleButton-text-color-hover: var(--salt-actionable-foreground-hover); --toggleButton-text-color-selected: var(--salt-actionable-bold-foreground); --toggleButton-background: transparent; --toggleButton-background-hover: var(--salt-actionable-background-hover); --toggleButton-background-selected: var(--salt-actionable-bold-background); --toggleButton-borderColor: transparent; --toggleButton-borderColor-hover: transparent; --toggleButton-borderColor-selected: transparent; }
 
+/* ===== salt-menu ===== */
+.saltMenuPanel { z-index: 9999; }
+.saltMenuPanel-container { background: var(--salt-container-primary-background); border: var(--salt-size-fixed-100) var(--salt-borderStyle-solid) var(--salt-color-gray-200); border-radius: var(--salt-palette-corner-weak, 8px); box-shadow: var(--salt-overlayable-shadow-popout, 0 4px 16px rgba(16,24,32,.16)); padding: var(--salt-spacing-50); min-width: 160px; display: flex; flex-direction: column; gap: 2px; }
+.saltMenuItem { padding: var(--salt-spacing-75) var(--salt-spacing-100); border-radius: var(--salt-palette-corner-weakest, 4px); font-family: var(--salt-text-fontFamily); font-size: var(--salt-text-fontSize); color: var(--salt-content-primary-foreground); white-space: nowrap; cursor: pointer; }
+.saltMenuItem:hover { background: var(--salt-actionable-subtle-background-hover); }
+
 /* ===== salt-tag ===== */
 .saltTag { height: calc(var(--salt-size-base) - var(--salt-spacing-100)); min-height: var(--salt-text-minHeight); display: flex; column-gap: var(--salt-spacing-50); align-items: center; padding: var(--salt-spacing-25) var(--salt-spacing-100); font-family: var(--salt-text-fontFamily); font-size: var(--salt-text-fontSize); font-weight: var(--salt-text-fontWeight); line-height: var(--salt-text-lineHeight); overflow: hidden; border-radius: var(--saltTag-borderRadius, var(--salt-palette-corner-strongest, 9999px)); width: fit-content; min-width: max-content; box-sizing: border-box; }
 .saltTag-primary { background: var(--tag-primary-background, var(--salt-category-1-background)); color: var(--tag-primary-foreground, var(--salt-category-1-foreground)); border: var(--salt-size-fixed-100) var(--salt-borderStyle-solid) transparent; }
