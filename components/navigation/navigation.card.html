@@ -22,7 +22,7 @@ function App() {
       <div style={{ margin: "-16px -16px 0", border: "1px solid var(--salt-separable-primary-borderColor)", borderRadius: 8, overflow: "hidden" }}>
         <GlobalNav logoSrc="../../assets/logo.svg" />
       </div>
-      <div style={{ border: "1px solid var(--salt-separable-primary-borderColor)", borderRadius: 8, overflow: "hidden" }}>
+      <div style={{ border: "1px solid var(--salt-separable-primary-borderColor)", borderRadius: 8, overflow: "visible", position: "relative", zIndex: 10 }}>
         <AppHeader
           breadcrumbItems={[{ label: "Catalog" }, { label: "AI Research" }]}
           versionHistory={["v2.3", "v2.2", "v2.1"]}

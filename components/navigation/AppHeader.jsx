@@ -123,7 +123,7 @@ export function AppHeader({
         height: 44, boxSizing: "border-box", display: "flex", alignItems: "center",
         justifyContent: "space-between", padding: "var(--salt-spacing-100) var(--salt-spacing-200)",
         background: "var(--salt-container-primary-background, #fff)",
-        borderBottom: "1px solid var(--salt-color-gray-200)", overflow: "visible",
+        borderBottom: "1px solid var(--salt-color-gray-200)", overflow: "visible", borderRadius: "inherit",
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-100)", minWidth: 0, flex: "1 1 auto", overflow: "visible" }}>
