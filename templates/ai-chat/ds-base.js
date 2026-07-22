@@ -3,7 +3,7 @@
 // the project root, '../_ds/<folder>' one level down) — one line to edit.
 (() => {
   const base = '../..';
-  for (const p of ["tokens/fonts.css","tokens/colors.css","tokens/dark.css","tokens/typography.css","tokens/spacing.css","tokens/effects.css","tokens/base.css","tokens/salt-support.css","styles.css","salt-components.css"]) {
+  for (const p of ["styles.css","salt-components.css"]) {
     const l = document.createElement('link');
     l.rel = 'stylesheet'; l.href = base + '/' + p;
     document.head.appendChild(l);
