@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Landing Page" description="Fusion home surface: OmniInput hero, a featured highlights block, and scroll-snapping card shelves (Products, Recently Viewed, Workflows, Guides) built entirely from ContentCard + Carousel." -->
+<helmet>
+<script src="./ds-base.js"></script>
+<style>
+  *{box-sizing:border-box}
+  .lp-viewall{display:inline-flex;align-items:center;gap:8px;font-size:16px;font-weight:700;color:var(--salt-content-primary-foreground);text-decoration:none;white-space:nowrap}
+  .lp-viewall:hover{opacity:.68}
+  .fusionOmni{max-width:920px!important;text-align:left}
+  .saltInteractableCard:hover{border-color:var(--salt-container-primary-borderColor)!important}
+  a{color:var(--salt-content-accent-foreground)}
+  a:hover{color:var(--salt-color-blue-700)}
+</style>
+</helmet>
+<div class="salt-theme salt-density-low" style="min-height:100vh;background:var(--salt-palette-background-secondary);font-family:var(--salt-text-fontFamily);color:var(--salt-content-primary-foreground)">
+
+  <x-import component-from-global-scope="FusionDesignSystem_5ec875.GlobalNav" show-search="{{ false }}" hint-size="100%,68px" style="position:sticky;top:0;z-index:20"></x-import>
+
+  
+
+  <section style="max-width: 1320px; margin: 0 auto; padding: 64px 40px 40px; text-align: center; width: 100%">
+    <div style="width:64px;height:3px;border-radius:2px;background:var(--salt-content-accent-foreground);margin:0 auto 28px"></div>
+    <h1 style="margin: 0 0 40px; font-size: 64px; line-height: 1.05; font-weight: 400; letter-spacing: -.02em">Discover the Firm's Data <span style="color:var(--salt-content-accent-foreground)"><br>and AI capabilities.</span></h1>
+    <x-import component-from-global-scope="FusionDesignSystem_5ec875.OmniInput" placeholders="{{ omniPlaceholders }}" modes="{{ omniModes }}" suggestions="{{ omniSuggestions }}" onSend="{{ noop }}" hint-size="100%,260px" style="width: 100%"></x-import>
+  </section><main style="max-width:1320px;margin:0 auto;padding:16px 40px 96px;display:flex;flex-direction:column;gap:64px">
+
+    <sc-if value="{{ showFeatured }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+        <h2 style="margin:0;font-size:32px;font-weight:800;letter-spacing:-.01em">Featured</h2>
+        <a class="lp-viewall" href="#">View all {{ arrowIcon }}</a>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+        <sc-for list="{{ featuredMedia }}" as="c" hint-placeholder-count="2">
+          <x-import component-from-global-scope="FusionDesignSystem_5ec875.ContentCard" interactive="{{ true }}" variant="media" media-height="{{ 220 }}" category="{{ c.category }}" icon="{{ c.icon }}" title="{{ c.title }}" description="{{ c.description }}" onClick="{{ noop }}" hint-size="100%,420px"></x-import>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px">
+        <sc-for list="{{ featuredTypes }}" as="c" hint-placeholder-count="4">
+          <x-import component-from-global-scope="FusionDesignSystem_5ec875.ContentCard" interactive="{{ true }}" category="{{ c.category }}" icon="{{ c.icon }}" eyebrow="{{ c.eyebrow }}" title="{{ c.title }}" description="{{ c.description }}" onClick="{{ noop }}" hint-size="100%,240px"></x-import>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+        <h2 style="margin:0;font-size:32px;font-weight:800;letter-spacing:-.01em">Products</h2>
+        <a class="lp-viewall" href="#">View all {{ arrowIcon }}</a>
+      </div>
+      <x-import component-from-global-scope="FusionDesignSystem_5ec875.Carousel" controls-placement="{{ controlsPlacement }}" gap="24px" hint-size="100%,300px"><x-import component-from-global-scope="FusionDesignSystem_5ec875.ContentCard" interactive="{{ true }}" category="ai" icon="{{ ic.tree }}" eyebrow="Build" title="Build with AI" description="Design, evaluate, and deploy AI agents and models with natural language or visual configuration." cta="{{ ctaOpen }}" onClick="{{ noop }}" hint-size="348px,240px"></x-import><x-import component-from-global-scope="FusionDesignSystem_5ec875.ContentCard" interactive="{{ true }}" category="data" icon="{{ ic.database }}" eyebrow="Data" title="Manage your Data" description="Register datasets, define contracts, track lineage, and monitor data quality across the platform." cta="{{ ctaOpen }}" onClick="{{ noop }}" hint-size="348px,240px"></x-import><x-import component-from-global-scope="FusionDesignSystem_5ec875.ContentCard" interactive="{{ true }}" category="governance" icon="{{ ic.check }}" eyebrow="Govern" title="Govern AI" description="Register use cases, manage model inventory, track performance, monitor lineage, and maintain audit trails." cta="{{ ctaOpen }}" onClick="{{ noop }}" hint-size="348px,240px"></x-import></x-import>
+    </div>
+
+    <sc-if value="{{ showRecentlyViewed }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+          <h2 style="margin:0;font-size:32px;font-weight:800;letter-spacing:-.01em">Recently Viewed</h2>
+          <a class="lp-viewall" href="#">View all {{ arrowIcon }}</a>
+        </div>
+        <x-import component-from-global-scope="FusionDesignSystem_5ec875.Carousel" controls-placement="{{ controlsPlacement }}" gap="24px" hint-size="100%,300px"><x-import component-from-global-scope="FusionDesignSystem_5ec875.ContentCard" interactive="{{ true }}" category="technical" icon="{{ ic.barchart }}" eyebrow="Evaluation" title="Evaluation Run #1" description="First evaluation pass — scored 94.2% across factuality, relevance, and safety metrics." cta="{{ ctaView }}" onClick="{{ noop }}" hint-size="348px,240px"></x-import><x-import component-from-global-scope="FusionDesignSystem_5ec875.ContentCard" interactive="{{ true }}" category="data" icon="{{ ic.document }}" eyebrow="Prompt" title="Compliance Checker Prompt" description="System prompt for detecting regulatory violations across CFC, SEC, and FCA frameworks." cta="{{ ctaView }}" onClick="{{ noop }}" hint-size="348px,240px"></x-import><x-import component-from-global-scope="FusionDesignSystem_5ec875.ContentCard" interactive="{{ true }}" category="documentation" icon="{{ ic.settings }}" eyebrow="Deployment" title="Staging Deployment" description="Active staging environment running the latest agent build with live traffic mirroring." cta="{{ ctaView }}" onClick="{{ noop }}" hint-size="348px,240px"></x-import></x-import>
+      </div>
+    </sc-if>
+
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+        <h2 style="margin:0;font-size:32px;font-weight:800;letter-spacing:-.01em">Workflows</h2>
+        <a class="lp-viewall" href="#">View all {{ arrowIcon }}</a>
+      </div>
+      <x-import component-from-global-scope="FusionDesignSystem_5ec875.Carousel" controls-placement="{{ controlsPlacement }}" gap="24px" hint-size="100%,300px"><x-import component-from-global-scope="FusionDesignSystem_5ec875.ContentCard" interactive="{{ true }}" category="governance" icon="{{ ic.list }}" eyebrow="Workflow" title="Client Comms Triage" description="Ingest client emails, classify by theme &amp; urgency, and output a prioritized leadership report." cta="{{ ctaOpen }}" onClick="{{ noop }}" hint-size="348px,240px"></x-import><x-import component-from-global-scope="FusionDesignSystem_5ec875.ContentCard" interactive="{{ true }}" category="governance" icon="{{ ic.chartcolumn }}" eyebrow="Workflow" title="Credit Risk Chatbot" description="Analyse portfolio exposure, detect concentration anomalies, and send automated risk alerts." cta="{{ ctaOpen }}" onClick="{{ noop }}" hint-size="348px,240px"></x-import><x-import component-from-global-scope="FusionDesignSystem_5ec875.ContentCard" interactive="{{ true }}" category="governance" icon="{{ ic.users }}" eyebrow="Workflow" title="KYC Compliance Agent" description="Review KYC documents against internal policies and produce a pass/fail compliance checklist." cta="{{ ctaOpen }}" onClick="{{ noop }}" hint-size="348px,240px"></x-import><x-import component-from-global-scope="FusionDesignSystem_5ec875.ContentCard" interactive="{{ true }}" category="governance" icon="{{ ic.chartline }}" eyebrow="Workflow" title="Settlement Watchdog" description="Monitor trade settlement failures, diagnose root causes, and alert ops with remediation steps." cta="{{ ctaOpen }}" onClick="{{ noop }}" hint-size="348px,240px"></x-import></x-import>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+        <h2 style="margin:0;font-size:32px;font-weight:800;letter-spacing:-.01em">Guides</h2>
+        <a class="lp-viewall" href="#">Browse docs {{ arrowIcon }}</a>
+      </div>
+      <x-import component-from-global-scope="FusionDesignSystem_5ec875.Carousel" controls-placement="{{ controlsPlacement }}" gap="24px" hint-size="100%,300px"><x-import component-from-global-scope="FusionDesignSystem_5ec875.ContentCard" interactive="{{ true }}" category="ai" icon="{{ ic.database }}" eyebrow="Guide" title="Access data in Fusion" description="Connect to internal databases, APIs, and document stores to ground your agents in real company data." cta="{{ ctaRead }}" onClick="{{ noop }}" hint-size="348px,240px"></x-import><x-import component-from-global-scope="FusionDesignSystem_5ec875.ContentCard" interactive="{{ true }}" category="ai" icon="{{ ic.tree }}" eyebrow="Guide" title="Build your first agent" description="Follow a guided walkthrough from problem statement to a deployed, evaluated AI agent." cta="{{ ctaRead }}" onClick="{{ noop }}" hint-size="348px,240px"></x-import><x-import component-from-global-scope="FusionDesignSystem_5ec875.ContentCard" interactive="{{ true }}" category="ai" icon="{{ ic.settings }}" eyebrow="Guide" title="Manage your application" description="Version, monitor, and maintain AI apps across teams with role-based access and audit logging." cta="{{ ctaRead }}" onClick="{{ noop }}" hint-size="348px,240px"></x-import><x-import component-from-global-scope="FusionDesignSystem_5ec875.ContentCard" interactive="{{ true }}" category="ai" icon="{{ ic.upload }}" eyebrow="Guide" title="Deploy a model" description="Register, evaluate, and promote models to production through a governed deployment pipeline." cta="{{ ctaRead }}" onClick="{{ noop }}" hint-size="348px,240px"></x-import></x-import>
+    </div>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:1500},&quot;showFeatured&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sections&quot;},&quot;showRecentlyViewed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sections&quot;},&quot;controlsPlacement&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;top&quot;,&quot;bottom&quot;],&quot;default&quot;:&quot;bottom&quot;,&quot;tsType&quot;:&quot;\&quot;top\&quot;|\&quot;bottom\&quot;&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+class Component extends DCLogic {
+  dsIcon(name, size = 20) {
+    const url = `url(../../assets/icons/${name}.svg)`;
+    return React.createElement('span', { style: { display: 'inline-block', width: size, height: size, flexShrink: 0, background: 'currentColor', WebkitMask: `${url} center/contain no-repeat`, mask: `${url} center/contain no-repeat` } });
+  }
+  // Returns a component (for props that expect a ComponentType, e.g. OmniInput suggestions).
+  iconComp(name, size = 16) { return () => this.dsIcon(name, size); }
+
+  renderVals() {
+    const icon = (n, s) => this.dsIcon(n, s);
+    const arrow = React.createElement('span', { style: { display: 'inline-block', width: 15, height: 15, background: 'currentColor', WebkitMask: 'url(../../assets/icons/arrow-right.svg) center/contain no-repeat', mask: 'url(../../assets/icons/arrow-right.svg) center/contain no-repeat' } });
+
+    const featuredMedia = [
+      { category: 'ai', icon: icon('tree', 56), title: 'Opus Model', description: 'High-performance large language model optimized for enterprise reasoning and generation tasks.' },
+      { category: 'technical', icon: icon('settings', 56), title: 'Agent Builder Marketing', description: 'Pre-built marketing agent template with audience segmentation, content generation, and campaign analytics.' },
+    ];
+
+    const featuredTypes = [
+      { category: 'data', icon: icon('database'), eyebrow: 'Dataset', title: 'A Dataset', description: 'Curated, PII-safe dataset with daily refresh cadence and full lineage tracking.' },
+      { category: 'governance', icon: icon('bookmark'), eyebrow: 'Use Case', title: 'A Use Case', description: 'Registered use case with model inventory and governance audit trail.' },
+      { category: 'ai', icon: icon('list'), eyebrow: 'Skill', title: 'A Skill', description: 'Reusable skill module composable into agents and workflows across teams.' },
+      { category: 'technical', icon: icon('app-switcher'), eyebrow: 'App', title: 'An App (Databricks)', description: 'Databricks-powered app with integrated compute and ML pipeline orchestration.' },
+    ];
+
+    const shelves = [];
+
+    const ic = {
+      tree: icon('tree'), settings: icon('settings'), database: icon('database'),
+      bookmark: icon('bookmark'), list: icon('list'), check: icon('check'),
+      barchart: icon('bar-chart'), document: icon('document'), users: icon('users'),
+      chartline: icon('chart-line'), chartcolumn: icon('chart-column'), upload: icon('upload'),
+    };
+
+    return {
+      showFeatured: this.props.showFeatured !== false,
+      controlsPlacement: this.props.controlsPlacement || 'bottom',
+      omniPlaceholders: [
+        'Build an agent to triage advisory-desk emails by theme and urgency…',
+        'Search models for low-latency summarization under $0.50 / 1M tokens',
+        'Find a PII-safe counterparty-risk dataset refreshed daily',
+        'Discover use cases and skills for KYC compliance review',
+        'Register a new dataset with lineage and a governed access contract',
+        'Launch a SageMaker or Databricks workspace for your team',
+      ],
+      omniModes: ['Search & Discover', 'Build a workflow', 'Analyze data'],
+      omniSuggestions: [
+        { label: 'Find a dataset', icon: this.iconComp('database') },
+        { label: 'Compare models', icon: this.iconComp('tree') },
+        { label: 'Discover agents', icon: this.iconComp('settings') },
+      ],
+      noop: () => {},
+      featuredMedia, featuredTypes, shelves, ic,
+      ctaOpen: { label: 'Open', href: '#' },
+      ctaView: { label: 'View', href: '#' },
+      ctaRead: { label: 'Read', href: '#' },
+      showRecentlyViewed: this.props.showRecentlyViewed !== false,
+      bellIcon: icon('notification', 20),
+      chevronIcon: icon('chevron-down', 16),
+      arrowIcon: arrow,
+    };
+  }
+}
+</script>
+</body>
+</html>
