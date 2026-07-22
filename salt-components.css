@@ -1,0 +1,310 @@
+/* ============================================================
+   Component-private implementation variables (NOT design tokens)
+   
+   These 246+ custom properties (--button-background, --icon-color, etc.)
+   are internal per-state/per-variant overrides following jpmorganchase/
+   salt-ds's own architecture. Each component reads real tokens from
+   tokens/*.css under .salt-theme, then redefines local vars per state
+   (:hover/:active/:disabled) for proper indirection. They are intentionally
+   NOT root-scoped — hoisting would collapse all button-hover colors into
+   one meaningless global. This is the real Salt DS pattern, extracted
+   verbatim from uploads/extracted_styles.css.
+   ============================================================ */
+
+/* ===== salt-icon ===== */
+.saltIcon{
+  --icon-color: currentColor;
+  --icon-size-multiplier: var(--saltIcon-size-multiplier, 1);
+  --icon-base-size: var(--salt-size-icon, 12px);
+  --icon-size: var(--saltIcon-size, max(calc(var(--icon-base-size) * var(--icon-size-multiplier)), 12px));
+  fill: var(--saltIcon-color, var(--icon-color));
+  display: inline-block;
+  margin: var(--saltIcon-margin, 0);
+  position: relative;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  min-width: var(--icon-size);
+  min-height: var(--icon-size);
+}
+.saltIcon-primary { --icon-color: var(--salt-content-primary-foreground); }
+.saltIcon-secondary { --icon-color: var(--salt-content-secondary-foreground); }
+
+/* ===== salt-text ===== */
+.saltText { --text-color: currentColor; }
+.saltText{
+  color: var(--saltText-color, var(--text-color));
+  font-family: var(--saltText-fontFamily, var(--salt-text-fontFamily));
+  font-size: var(--saltText-fontSize, var(--salt-text-fontSize));
+  line-height: var(--saltText-lineHeight, var(--salt-text-lineHeight));
+  font-weight: var(--saltText-fontWeight, var(--salt-text-fontWeight));
+  letter-spacing: var(--salt-text-letterSpacing);
+}
+.saltText-primary { --text-color: var(--salt-content-primary-foreground); }
+.saltText-secondary { --text-color: var(--salt-content-secondary-foreground); }
+.saltText-info { --text-color: var(--salt-status-info-foreground-informative); }
+.saltText-error { --text-color: var(--salt-status-error-foreground-informative); }
+.saltText-warning { --text-color: var(--salt-status-warning-foreground-informative); }
+.saltText-success { --text-color: var(--salt-status-success-foreground-informative); }
+.saltText strong { font-weight: var(--salt-text-fontWeight-strong); }
+.saltText-notation.saltText { font-family: var(--salt-text-notation-fontFamily); font-size: var(--salt-text-notation-fontSize); line-height: var(--salt-text-notation-lineHeight); }
+.saltText-action.saltText { font-family: var(--salt-text-action-fontFamily); letter-spacing: var(--salt-text-action-letterSpacing); text-transform: var(--salt-text-action-textTransform); text-align: var(--salt-text-action-textAlign); font-weight: var(--salt-text-action-fontWeight); }
+.salt-theme code.saltText, .saltText-code.saltText { font-family: var(--salt-text-code-fontFamily); }
+.saltText-display1.saltText { font-family: var(--salt-text-display1-fontFamily); font-size: var(--salt-text-display1-fontSize); font-weight: var(--salt-text-display1-fontWeight); line-height: var(--salt-text-display1-lineHeight); }
+.saltText-display2.saltText { font-family: var(--salt-text-display2-fontFamily); font-size: var(--salt-text-display2-fontSize); font-weight: var(--salt-text-display2-fontWeight); line-height: var(--salt-text-display2-lineHeight); }
+.salt-theme h1.saltText, .saltText-h1.saltText { font-family: var(--salt-text-h1-fontFamily); font-size: var(--salt-text-h1-fontSize); font-weight: var(--salt-text-h1-fontWeight); line-height: var(--salt-text-h1-lineHeight); }
+.salt-theme h2.saltText, .saltText-h2.saltText { font-family: var(--salt-text-h2-fontFamily); font-size: var(--salt-text-h2-fontSize); font-weight: var(--salt-text-h2-fontWeight); line-height: var(--salt-text-h2-lineHeight); }
+.salt-theme h3.saltText, .saltText-h3.saltText { font-family: var(--salt-text-h3-fontFamily); font-size: var(--salt-text-h3-fontSize); font-weight: var(--salt-text-h3-fontWeight); line-height: var(--salt-text-h3-lineHeight); }
+.salt-theme h4.saltText, .saltText-h4.saltText { font-family: var(--salt-text-h4-fontFamily); font-size: var(--salt-text-h4-fontSize); font-weight: var(--salt-text-h4-fontWeight); line-height: var(--salt-text-h4-lineHeight); }
+.salt-theme label.saltText, .saltText-label.saltText { font-family: var(--salt-text-label-fontFamily); font-size: var(--salt-text-label-fontSize); line-height: var(--salt-text-label-lineHeight); font-weight: var(--salt-text-fontWeight); }
+
+/* ===== salt-link ===== */
+.saltLink{
+  --link-color: inherit; --link-color-hover: inherit; --link-color-active: inherit;
+  --link-color-visited: var(--salt-content-foreground-visited); --link-color-focus: inherit;
+  --link-focus-outlineColor: currentColor; --link-fontFamily: var(--salt-text-fontFamily);
+}
+.saltLink-underlineDefault{
+  --link-textDecoration: var(--salt-typography-textDecoration-underline);
+  --link-textDecoration-hover: var(--salt-typography-textDecoration-none);
+  --link-textDecoration-active: var(--link-textDecoration);
+  --link-textDecoration-focus: var(--link-textDecoration-hover);
+  --link-textDecoration-visited: var(--link-textDecoration);
+}
+.saltLink-underlineNever { --link-textDecoration: var(--salt-typography-textDecoration-none); --link-textDecoration-hover: var(--salt-typography-textDecoration-none); }
+.saltLink.saltText { color: var(--link-color); letter-spacing: var(--salt-text-letterSpacing); text-decoration: var(--link-textDecoration); font-family: var(--link-fontFamily); }
+.saltLink-primary { --link-color: var(--salt-content-primary-foreground); --link-color-hover: var(--salt-content-primary-foreground); --link-color-active: var(--salt-content-primary-foreground); --link-color-focus: var(--salt-content-primary-foreground); --link-focus-outlineColor: var(--salt-focused-outlineColor); --link-color-visited: var(--salt-content-foreground-visited); }
+.saltLink-secondary { --link-color: var(--salt-content-secondary-foreground); --link-color-hover: var(--salt-content-secondary-foreground); --link-color-active: var(--salt-content-secondary-foreground); --link-color-focus: var(--salt-content-secondary-foreground); --link-focus-outlineColor: var(--salt-focused-outlineColor); --link-color-visited: var(--salt-content-foreground-visited); }
+.saltLink-accent { --link-color: var(--salt-content-accent-foreground); --link-color-hover: var(--salt-content-accent-foreground); --link-color-active: var(--salt-content-accent-foreground); --link-color-focus: var(--salt-content-accent-foreground); --link-focus-outlineColor: var(--salt-focused-outlineColor); --link-color-visited: var(--salt-content-foreground-visited); }
+.saltLink:visited { color: var(--saltLink-color-visited, var(--link-color-visited)); text-decoration: var(--link-textDecoration-visited); }
+.saltLink:hover { color: var(--saltLink-color-hover, var(--link-color-hover)); text-decoration: var(--link-textDecoration-hover); }
+.saltLink:active { color: var(--saltLink-color-active, var(--link-color-active)); text-decoration: var(--link-textDecoration-active); }
+.saltLink:focus { color: var(--saltLink-color-focus, var(--link-color-focus)); outline: var(--salt-focused-outline); outline-color: var(--link-focus-outlineColor); text-decoration: var(--link-textDecoration-focus); }
+
+/* ===== salt-button ===== */
+.saltButton{
+  --button-borderWidth: var(--salt-size-fixed-100);
+  align-items: center; appearance: none;
+  background: var(--saltButton-background, var(--button-background));
+  border-color: var(--saltButton-borderColor, var(--button-borderColor, transparent));
+  border-style: solid; border-width: var(--saltButton-borderWidth, var(--button-borderWidth));
+  border-radius: var(--saltButton-borderRadius, var(--salt-palette-corner-strongest, 0));
+  color: var(--saltButton-text-color, var(--button-text-color));
+  display: inline-flex; gap: var(--salt-spacing-50); justify-content: center;
+  font-size: var(--saltButton-fontSize, var(--salt-text-fontSize));
+  font-family: var(--saltButton-fontFamily, var(--salt-text-action-fontFamily));
+  line-height: var(--saltButton-lineHeight, var(--salt-text-lineHeight));
+  letter-spacing: var(--saltButton-letterSpacing, var(--salt-text-action-letterSpacing));
+  text-transform: var(--saltButton-textTransform, var(--salt-text-action-textTransform));
+  padding: 0 var(--saltButton-padding, calc(var(--salt-spacing-100) - var(--saltButton-borderWidth, var(--button-borderWidth))));
+  margin: var(--saltButton-margin, 0); height: var(--saltButton-height, var(--salt-size-base));
+  min-width: var(--saltButton-minWidth, unset); position: relative;
+  text-align: var(--saltButton-textAlign, var(--salt-text-action-textAlign));
+  text-decoration: none; width: var(--saltButton-width, auto);
+  -webkit-tap-highlight-color: transparent;
+  font-weight: var(--saltButton-fontWeight, var(--salt-text-action-fontWeight));
+  cursor: var(--salt-cursor-hover);
+}
+.saltButton:focus-visible{
+  outline: var(--salt-focused-outline); outline-offset: var(--salt-focused-outlineOffset);
+  background: var(--saltButton-background-hover, var(--button-background-hover));
+  color: var(--saltButton-text-color-hover, var(--button-text-color-hover));
+  border-color: var(--saltButton-borderColor-hover, var(--button-borderColor-hover));
+}
+@media (hover: hover) {
+  .saltButton:hover{
+    background: var(--saltButton-background-hover, var(--button-background-hover));
+    color: var(--saltButton-text-color-hover, var(--button-text-color-hover));
+    border-color: var(--saltButton-borderColor-hover, var(--button-borderColor-hover));
+  }
+}
+.saltButton:active{
+  background: var(--saltButton-background-active, var(--button-background-active));
+  color: var(--saltButton-text-color-active, var(--button-text-color-active));
+  border-color: var(--saltButton-borderColor-active, var(--button-borderColor-active));
+  cursor: var(--salt-cursor-active);
+}
+.saltButton:disabled, .saltButton-disabled{
+  background: var(--saltButton-background-disabled, var(--button-background));
+  color: var(--saltButton-text-color-disabled, var(--button-text-color));
+  cursor: var(--salt-cursor-disabled);
+  border-color: var(--saltButton-borderColor-disabled, var(--button-borderColor));
+  opacity: 0.4;
+}
+.saltButton-accented.saltButton-solid { --button-text-color: var(--salt-actionable-accented-bold-foreground); --button-text-color-hover: var(--salt-actionable-accented-bold-foreground-hover); --button-text-color-active: var(--salt-actionable-accented-bold-foreground-active); --button-background: var(--salt-actionable-accented-bold-background); --button-background-hover: var(--salt-actionable-accented-bold-background-hover); --button-background-active: var(--salt-actionable-accented-bold-background-active); --button-borderColor: var(--salt-actionable-accented-bold-borderColor); --button-borderColor-hover: var(--salt-actionable-accented-bold-borderColor-hover); --button-borderColor-active: var(--salt-actionable-accented-bold-borderColor-active); }
+.saltButton-accented.saltButton-bordered { --button-text-color: var(--salt-actionable-accented-foreground); --button-text-color-hover: var(--salt-actionable-accented-foreground-hover); --button-text-color-active: var(--salt-actionable-accented-foreground-active); --button-background: var(--salt-actionable-accented-background); --button-background-hover: var(--salt-actionable-accented-background-hover); --button-background-active: var(--salt-actionable-accented-background-active); --button-borderColor: var(--salt-actionable-accented-borderColor); --button-borderColor-hover: var(--salt-actionable-accented-borderColor-hover); --button-borderColor-active: var(--salt-actionable-accented-borderColor-active); }
+.saltButton-accented.saltButton-transparent { --button-text-color: var(--salt-actionable-accented-subtle-foreground); --button-text-color-hover: var(--salt-actionable-accented-subtle-foreground-hover); --button-text-color-active: var(--salt-actionable-accented-subtle-foreground-active); --button-background: var(--salt-actionable-accented-subtle-background); --button-background-hover: var(--salt-actionable-accented-subtle-background-hover); --button-background-active: var(--salt-actionable-accented-subtle-background-active); --button-borderColor: var(--salt-actionable-accented-subtle-borderColor); --button-borderColor-hover: var(--salt-actionable-accented-subtle-borderColor-hover); --button-borderColor-active: var(--salt-actionable-accented-subtle-borderColor-active); }
+.saltButton-neutral.saltButton-solid { --button-text-color: var(--salt-actionable-bold-foreground); --button-text-color-hover: var(--salt-actionable-bold-foreground-hover); --button-text-color-active: var(--salt-actionable-bold-foreground-active); --button-background: var(--salt-actionable-bold-background); --button-background-hover: var(--salt-actionable-bold-background-hover); --button-background-active: var(--salt-actionable-bold-background-active); --button-borderColor: var(--salt-actionable-bold-borderColor); --button-borderColor-hover: var(--salt-actionable-bold-borderColor-hover); --button-borderColor-active: var(--salt-actionable-bold-borderColor-active); }
+.saltButton-neutral.saltButton-bordered { --button-text-color: var(--salt-actionable-foreground); --button-text-color-hover: var(--salt-actionable-foreground-hover); --button-text-color-active: var(--salt-actionable-foreground-active); --button-background: var(--salt-actionable-background); --button-background-hover: var(--salt-actionable-background-hover); --button-background-active: var(--salt-actionable-background-active); --button-borderColor: var(--salt-actionable-borderColor); --button-borderColor-hover: var(--salt-actionable-borderColor-hover); --button-borderColor-active: var(--salt-actionable-borderColor-active); }
+.saltButton-neutral.saltButton-transparent { --button-text-color: var(--salt-actionable-subtle-foreground); --button-text-color-hover: var(--salt-actionable-subtle-foreground-hover); --button-text-color-active: var(--salt-actionable-subtle-foreground-active); --button-background: var(--salt-actionable-subtle-background); --button-background-hover: var(--salt-actionable-subtle-background-hover); --button-background-active: var(--salt-actionable-subtle-background-active); --button-borderColor: var(--salt-actionable-subtle-borderColor); --button-borderColor-hover: var(--salt-actionable-subtle-borderColor-hover); --button-borderColor-active: var(--salt-actionable-subtle-borderColor-active); }
+.saltButton-negative.saltButton-solid { --button-text-color: var(--salt-actionable-negative-bold-foreground); --button-text-color-hover: var(--salt-actionable-negative-bold-foreground-hover); --button-text-color-active: var(--salt-actionable-negative-bold-foreground-active); --button-background: var(--salt-actionable-negative-bold-background); --button-background-hover: var(--salt-actionable-negative-bold-background-hover); --button-background-active: var(--salt-actionable-negative-bold-background-active); --button-borderColor: var(--salt-actionable-negative-bold-borderColor); --button-borderColor-hover: var(--salt-actionable-negative-bold-borderColor-hover); --button-borderColor-active: var(--salt-actionable-negative-bold-borderColor-active); }
+.saltButton-negative.saltButton-bordered { --button-text-color: var(--salt-actionable-negative-foreground); --button-text-color-hover: var(--salt-actionable-negative-foreground-hover); --button-text-color-active: var(--salt-actionable-negative-foreground-active); --button-background: var(--salt-actionable-negative-background); --button-background-hover: var(--salt-actionable-negative-background-hover); --button-background-active: var(--salt-actionable-negative-background-active); --button-borderColor: var(--salt-actionable-negative-borderColor); --button-borderColor-hover: var(--salt-actionable-negative-borderColor-hover); --button-borderColor-active: var(--salt-actionable-negative-borderColor-active); }
+.saltButton-negative.saltButton-transparent { --button-text-color: var(--salt-actionable-negative-subtle-foreground); --button-text-color-hover: var(--salt-actionable-negative-subtle-foreground-hover); --button-text-color-active: var(--salt-actionable-negative-subtle-foreground-active); --button-background: var(--salt-actionable-negative-subtle-background); --button-background-hover: var(--salt-actionable-negative-subtle-background-hover); --button-background-active: var(--salt-actionable-negative-subtle-background-active); --button-borderColor: var(--salt-actionable-negative-subtle-borderColor); --button-borderColor-hover: var(--salt-actionable-negative-subtle-borderColor-hover); --button-borderColor-active: var(--salt-actionable-negative-subtle-borderColor-active); }
+.saltButton-positive.saltButton-solid { --button-text-color: var(--salt-actionable-positive-bold-foreground); --button-text-color-hover: var(--salt-actionable-positive-bold-foreground-hover); --button-text-color-active: var(--salt-actionable-positive-bold-foreground-active); --button-background: var(--salt-actionable-positive-bold-background); --button-background-hover: var(--salt-actionable-positive-bold-background-hover); --button-background-active: var(--salt-actionable-positive-bold-background-active); --button-borderColor: var(--salt-actionable-positive-bold-borderColor); --button-borderColor-hover: var(--salt-actionable-positive-bold-borderColor-hover); --button-borderColor-active: var(--salt-actionable-positive-bold-borderColor-active); }
+.saltButton-positive.saltButton-bordered { --button-text-color: var(--salt-actionable-positive-foreground); --button-text-color-hover: var(--salt-actionable-positive-foreground-hover); --button-text-color-active: var(--salt-actionable-positive-foreground-active); --button-background: var(--salt-actionable-positive-background); --button-background-hover: var(--salt-actionable-positive-background-hover); --button-background-active: var(--salt-actionable-positive-background-active); --button-borderColor: var(--salt-actionable-positive-borderColor); --button-borderColor-hover: var(--salt-actionable-positive-borderColor-hover); --button-borderColor-active: var(--salt-actionable-positive-borderColor-active); }
+.saltButton-positive.saltButton-transparent { --button-text-color: var(--salt-actionable-positive-subtle-foreground); --button-text-color-hover: var(--salt-actionable-positive-subtle-foreground-hover); --button-text-color-active: var(--salt-actionable-positive-subtle-foreground-active); --button-background: var(--salt-actionable-positive-subtle-background); --button-background-hover: var(--salt-actionable-positive-subtle-background-hover); --button-background-active: var(--salt-actionable-positive-subtle-background-active); --button-borderColor: var(--salt-actionable-positive-subtle-borderColor); --button-borderColor-hover: var(--salt-actionable-positive-subtle-borderColor-hover); --button-borderColor-active: var(--salt-actionable-positive-subtle-borderColor-active); }
+.saltButton-caution.saltButton-solid { --button-text-color: var(--salt-actionable-caution-bold-foreground); --button-text-color-hover: var(--salt-actionable-caution-bold-foreground-hover); --button-text-color-active: var(--salt-actionable-caution-bold-foreground-active); --button-background: var(--salt-actionable-caution-bold-background); --button-background-hover: var(--salt-actionable-caution-bold-background-hover); --button-background-active: var(--salt-actionable-caution-bold-background-active); --button-borderColor: var(--salt-actionable-caution-bold-borderColor); --button-borderColor-hover: var(--salt-actionable-caution-bold-borderColor-hover); --button-borderColor-active: var(--salt-actionable-caution-bold-borderColor-active); }
+.saltButton-caution.saltButton-bordered { --button-text-color: var(--salt-actionable-caution-foreground); --button-text-color-hover: var(--salt-actionable-caution-foreground-hover); --button-text-color-active: var(--salt-actionable-caution-foreground-active); --button-background: var(--salt-actionable-caution-background); --button-background-hover: var(--salt-actionable-caution-background-hover); --button-background-active: var(--salt-actionable-caution-background-active); --button-borderColor: var(--salt-actionable-caution-borderColor); --button-borderColor-hover: var(--salt-actionable-caution-borderColor-hover); --button-borderColor-active: var(--salt-actionable-caution-borderColor-active); }
+.saltButton-caution.saltButton-transparent { --button-text-color: var(--salt-actionable-caution-subtle-foreground); --button-text-color-hover: var(--salt-actionable-caution-subtle-foreground-hover); --button-text-color-active: var(--salt-actionable-caution-subtle-foreground-active); --button-background: var(--salt-actionable-caution-subtle-background); --button-background-hover: var(--salt-actionable-caution-subtle-background-hover); --button-background-active: var(--salt-actionable-caution-subtle-background-active); --button-borderColor: var(--salt-actionable-caution-subtle-borderColor); --button-borderColor-hover: var(--salt-actionable-caution-subtle-borderColor-hover); --button-borderColor-active: var(--salt-actionable-caution-subtle-borderColor-active); }
+.saltButton-loading { cursor: var(--salt-cursor-pending); }
+
+/* ===== salt-pill ===== */
+.saltPill{
+  --pill-borderWidth: var(--salt-size-fixed-100);
+  appearance: none; display: inline-flex; align-items: center;
+  background: var(--saltPill-background, var(--pill-background));
+  border-radius: var(--salt-palette-corner-weaker, 0);
+  border-style: solid; border-width: var(--pill-borderWidth); border-color: var(--pill-borderColor);
+  height: calc(var(--salt-size-base) - var(--salt-spacing-100));
+  min-height: var(--salt-text-minHeight); position: relative; gap: var(--salt-spacing-50);
+  padding: 0 calc(var(--salt-spacing-50) - var(--pill-borderWidth));
+  color: var(--saltPill-color, var(--pill-color));
+  font-family: var(--salt-text-fontFamily); font-size: var(--salt-text-fontSize);
+  font-weight: var(--salt-text-fontWeight); line-height: var(--salt-text-lineHeight);
+  letter-spacing: var(--salt-text-letterSpacing); overflow: hidden; white-space: nowrap;
+}
+.saltPill-clickable { --pill-background: var(--salt-actionable-bold-background); --pill-color: var(--salt-actionable-bold-foreground); --pill-borderColor: var(--salt-actionable-bold-borderColor); cursor: var(--salt-cursor-hover); }
+.saltPill-clickable:hover, .saltPill-clickable:focus-visible { --pill-color: var(--salt-actionable-bold-foreground-hover); --pill-background: var(--salt-actionable-bold-background-hover); --pill-borderColor: var(--salt-actionable-bold-borderColor-hover); }
+.saltPill-clickable.saltPill-active, .saltPill-clickable:active { --pill-color: var(--salt-actionable-bold-foreground-active); --pill-background: var(--salt-actionable-bold-background-active); --pill-borderColor: var(--salt-actionable-bold-borderColor-active); }
+.saltPill:focus-visible { outline: var(--salt-focused-outline); }
+.saltPill:disabled, .saltPill:disabled:hover { --pill-color: var(--salt-actionable-bold-foreground); --pill-background: var(--salt-actionable-bold-background); --pill-borderColor: var(--salt-actionable-bold-borderColor); cursor: var(--salt-cursor-disabled); opacity: 0.4; }
+
+/* ===== salt-card / salt-interactable-card ===== */
+.saltCard, .saltInteractableCard{
+  border-width: var(--saltCard-borderWidth, var(--salt-size-fixed-100));
+  border-style: var(--salt-borderStyle-solid);
+  padding: var(--saltCard-padding, var(--salt-spacing-200));
+  position: relative; box-shadow: var(--salt-overlayable-shadow);
+  transition: box-shadow var(--salt-duration-instant) ease-in-out;
+  box-sizing: border-box; border-radius: var(--saltCard-borderRadius, var(--salt-palette-corner, 0));
+  overflow: hidden; --card-accent-color: var(--salt-accent-background);
+}
+.saltCard-primary, .saltInteractableCard-primary { background: var(--saltCard-background, var(--salt-container-primary-background)); border-color: var(--salt-container-primary-borderColor); }
+.saltCard-secondary, .saltInteractableCard-secondary { background: var(--saltCard-background, var(--salt-container-secondary-background)); border-color: var(--salt-container-secondary-borderColor); }
+.saltCard-tertiary, .saltInteractableCard-tertiary { background: var(--saltCard-background, var(--salt-container-tertiary-background)); border-color: var(--salt-container-tertiary-borderColor); }
+.saltCard-ghost { background: var(--saltCard-background, var(--salt-container-ghost-background)); border-color: var(--salt-container-ghost-borderColor); }
+.saltCard-accent::after, .saltInteractableCard-accent::after { content: ""; position: absolute; background-color: var(--saltCard-accent-color, var(--card-accent-color)); }
+.saltCard-accentBottom::after, .saltInteractableCard-accentBottom::after { left: calc(-1 * var(--salt-size-fixed-100)); bottom: calc(-1 * var(--salt-size-fixed-100)); height: var(--salt-size-bar); width: calc(100% + var(--salt-size-fixed-200)); }
+.saltCard-accentLeft::after, .saltInteractableCard-accentLeft::after { left: calc(-1 * var(--salt-size-fixed-100)); top: calc(-1 * var(--salt-size-fixed-100)); height: calc(100% + var(--salt-size-fixed-200)); width: var(--salt-size-bar); }
+.saltCard-accentTop::after, .saltInteractableCard-accentTop::after { left: calc(-1 * var(--salt-size-fixed-100)); top: calc(-1 * var(--salt-size-fixed-100)); height: var(--salt-size-bar); width: calc(100% + var(--salt-size-fixed-200)); }
+.saltCard-accentRight::after, .saltInteractableCard-accentRight::after { right: calc(-1 * var(--salt-size-fixed-100)); top: calc(-1 * var(--salt-size-fixed-100)); height: calc(100% + var(--salt-size-fixed-200)); width: var(--salt-size-bar); }
+@media (hover: hover) {
+.saltCard-hoverable:hover, .saltInteractableCard:hover { box-shadow: var(--saltCard-boxShadow-hover, var(--salt-overlayable-shadow-hover)); border-color: var(--salt-actionable-accented-borderColor-hover); }
+}
+.saltInteractableCard:focus-visible { box-shadow: var(--salt-overlayable-shadow-hover); outline-color: var(--salt-focused-outlineColor); outline-style: var(--salt-focused-outlineStyle); outline-width: var(--salt-focused-outlineWidth); outline-offset: var(--salt-focused-outlineOffset); }
+.saltInteractableCard-selected, .saltInteractableCard:active, .saltInteractableCard-active { box-shadow: var(--salt-overlayable-shadow); border-color: var(--salt-actionable-accented-borderColor-active); }
+
+/* ===== salt-switch ===== */
+.saltSwitch { display: flex; width: fit-content; gap: var(--salt-spacing-100); position: relative; cursor: var(--salt-cursor-hover); color: var(--salt-content-primary-foreground); font-family: var(--salt-text-fontFamily); font-size: var(--salt-text-fontSize); font-weight: var(--salt-text-fontWeight); line-height: var(--salt-text-lineHeight); align-items: center; }
+.saltSwitch-disabled { color: var(--salt-content-primary-foreground-disabled); cursor: var(--salt-cursor-disabled); }
+.saltSwitch-track { border: var(--salt-size-fixed-100) var(--salt-borderStyle-solid) var(--salt-selectable-borderColor); border-radius: 999px; display: flex; flex-shrink: 0; height: calc(var(--salt-size-base) - var(--salt-spacing-100)); width: calc((var(--salt-size-selectable) + var(--salt-spacing-25) + var(--salt-size-fixed-100)) * 2); align-items: center; color: var(--salt-selectable-foreground); background: var(--salt-container-primary-background); box-sizing: border-box; }
+.saltSwitch:hover .saltSwitch-track { border-color: var(--salt-selectable-borderColor-hover); color: var(--salt-selectable-foreground-hover); }
+.saltSwitch-checked .saltSwitch-track, .saltSwitch-checked:hover .saltSwitch-track { border-color: var(--salt-selectable-borderColor-selected); color: var(--salt-selectable-foreground-selected); background: var(--salt-selectable-borderColor-selected); }
+.saltSwitch-disabled .saltSwitch-track, .saltSwitch-disabled:hover .saltSwitch-track { border-color: var(--salt-selectable-borderColor-disabled); color: var(--salt-selectable-foreground-disabled); background: var(--salt-container-primary-background-disabled); }
+.saltSwitch-thumb { display: flex; aspect-ratio: 1; height: var(--salt-size-selectable); background: currentColor; margin: var(--salt-spacing-25); border: var(--salt-size-fixed-100) var(--salt-borderStyle-solid) var(--salt-selectable-borderColor); box-sizing: border-box; border-radius: 50%; }
+.saltSwitch:hover .saltSwitch-thumb { border-color: var(--salt-selectable-borderColor-hover); transition: transform var(--salt-duration-perceptible) ease-in-out; }
+.saltSwitch-checked .saltSwitch-thumb, .saltSwitch-checked:hover .saltSwitch-thumb { background: var(--salt-color-white); border-color: var(--salt-color-white); transform: translateX(100%); }
+.saltSwitch-input { cursor: inherit; position: absolute; inset: 0; margin: 0; opacity: 0; padding: 0; z-index: var(--salt-zIndex-default); height: calc(var(--salt-size-base) - var(--salt-spacing-100)); width: calc((var(--salt-size-selectable) + var(--salt-spacing-25) + var(--salt-size-fixed-100)) * 2); }
+.saltSwitch-input:focus-visible + .saltSwitch-track { outline-offset: var(--salt-focused-outlineOffset); outline: var(--salt-focused-outline); border-color: var(--salt-selectable-borderColor-hover); color: var(--salt-selectable-foreground-hover); }
+
+/* ===== salt-checkbox ===== */
+.saltCheckbox { display: inline-flex; width: fit-content; gap: var(--salt-spacing-100); position: relative; cursor: var(--salt-cursor-hover); font-size: var(--salt-text-fontSize); line-height: var(--salt-text-lineHeight); font-family: var(--salt-text-fontFamily); font-weight: var(--salt-text-fontWeight); align-items: center; }
+.saltCheckbox-disabled { color: var(--salt-content-primary-foreground-disabled); cursor: var(--salt-cursor-disabled); }
+.saltCheckbox-input, .saltCheckboxIcon { margin: calc((var(--salt-text-lineHeight) - var(--salt-size-selectable)) / 2) 0; box-sizing: border-box; }
+.saltCheckbox-input:focus-visible + .saltCheckboxIcon { outline-offset: var(--salt-spacing-fixed-100); outline: var(--saltCheckbox-outline, var(--salt-focused-outline)); border-color: var(--salt-selectable-borderColor-hover); color: var(--salt-selectable-foreground-hover); }
+.saltCheckbox-input:focus-visible + .saltCheckboxIcon-checked { border-color: var(--salt-selectable-borderColor-selected); color: var(--salt-selectable-foreground-selected); }
+.saltCheckbox-input { cursor: inherit; opacity: 0; padding: 0; position: absolute; z-index: var(--salt-zIndex-default); }
+.saltCheckboxIcon { --checkbox-size: var(--salt-size-selectable); width: var(--checkbox-size); min-width: var(--checkbox-size); height: var(--checkbox-size); min-height: var(--checkbox-size); border: var(--salt-size-fixed-100) var(--salt-borderStyle-solid) var(--salt-selectable-borderColor); border-radius: var(--salt-palette-corner-weaker, 0); color: var(--salt-selectable-foreground); background: var(--salt-container-primary-background); position: relative; display: flex; box-sizing: border-box; }
+.saltCheckboxIcon-checked, .saltCheckbox:hover .saltCheckboxIcon-checked { border-color: var(--salt-selectable-borderColor-selected); color: var(--salt-color-white); background: var(--salt-selectable-borderColor-selected); }
+.saltCheckbox:hover .saltCheckboxIcon { border-color: var(--salt-selectable-borderColor-hover); color: var(--salt-selectable-foreground-hover); }
+.saltCheckboxIcon-disabled, .saltCheckbox:hover .saltCheckboxIcon-disabled { border-color: var(--salt-selectable-borderColor-disabled); background: var(--salt-container-primary-background-disabled); color: var(--salt-selectable-foreground-disabled); }
+.saltCheckboxIcon > svg { position: absolute; }
+
+/* ===== salt-radio-button ===== */
+.saltRadioButtonGroup { border: none; margin: 0; padding: 0; }
+.saltRadioButtonGroup-vertical { display: flex; gap: var(--salt-spacing-100); flex-direction: column; }
+.saltRadioButtonGroup-horizontal { display: flex; gap: var(--salt-spacing-200); flex-direction: row; flex-wrap: wrap; }
+.saltRadioButton { display: inline-flex; width: fit-content; gap: var(--salt-spacing-100); cursor: var(--salt-cursor-hover); position: relative; font-size: var(--salt-text-fontSize); line-height: var(--salt-text-lineHeight); font-family: var(--salt-text-fontFamily); font-weight: var(--salt-text-fontWeight); align-items: center; }
+.saltRadioButton-disabled { color: var(--salt-content-primary-foreground-disabled); cursor: var(--salt-cursor-disabled); }
+.saltRadioButton-input { cursor: inherit; position: absolute; height: var(--salt-size-selectable); opacity: 0; padding: 0; width: var(--salt-size-selectable); z-index: var(--salt-zIndex-default); inset: 0; }
+.saltRadioButton-input:focus-visible + .saltRadioButtonIcon { outline: var(--saltRadioButton-outline, var(--salt-focused-outline)); outline-offset: var(--salt-spacing-fixed-100); border-color: var(--salt-selectable-borderColor-hover); color: var(--salt-selectable-foreground-hover); }
+.saltRadioButton-input:focus-visible + .saltRadioButtonIcon-checked { border-color: var(--salt-selectable-borderColor-selected); color: var(--salt-selectable-foreground-selected); }
+.saltRadioButtonIcon { --radioButton-size: var(--salt-size-selectable); width: var(--radioButton-size); height: var(--radioButton-size); min-width: var(--radioButton-size); min-height: var(--radioButton-size); border-radius: 50%; position: relative; border: var(--salt-size-fixed-100) var(--salt-borderStyle-solid) var(--salt-selectable-borderColor); color: var(--salt-selectable-foreground); background: var(--salt-container-primary-background); display: flex; box-sizing: border-box; }
+.saltRadioButton:hover .saltRadioButtonIcon { border-color: var(--salt-selectable-borderColor-hover); color: var(--salt-selectable-foreground-hover); }
+.saltRadioButtonIcon-checked, .saltRadioButton:hover .saltRadioButtonIcon-checked { border-color: var(--salt-selectable-borderColor-selected); color: var(--salt-selectable-foreground-selected); }
+.saltRadioButtonIcon-checked::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--salt-selectable-borderColor-selected); }
+.saltRadioButtonIcon-disabled, .saltRadioButton:hover .saltRadioButtonIcon-disabled { border-color: var(--salt-selectable-borderColor-disabled); background: var(--salt-container-primary-background-disabled); color: var(--salt-selectable-foreground-disabled); }
+
+/* ===== salt-toggle-button(-group) ===== */
+.saltToggleButtonGroup { --toggleButtonGroup-borderWidth: var(--salt-size-fixed-100); display: flex; background: var(--salt-container-primary-background); border: var(--toggleButtonGroup-borderWidth) var(--salt-borderStyle-solid) var(--salt-container-primary-borderColor); border-radius: var(--salt-palette-corner-weak, 0); width: fit-content; gap: var(--salt-spacing-50); padding: calc(var(--salt-spacing-50) - var(--toggleButtonGroup-borderWidth)); flex-direction: row; }
+.saltToggleButtonGroup .saltToggleButton { border-radius: var(--salt-palette-corner-weaker, 0); }
+.saltToggleButtonGroup-horizontal .saltToggleButton { height: calc(var(--salt-size-base) - var(--salt-spacing-100)); }
+.saltToggleButton { --toggleButton-borderWidth: var(--salt-size-fixed-100); align-items: center; appearance: none; background: var(--toggleButton-background); border-color: var(--toggleButton-borderColor, transparent); border-style: solid; border-width: var(--toggleButton-borderWidth); border-radius: var(--salt-palette-corner-weak, 0); box-sizing: border-box; color: var(--toggleButton-text-color); cursor: var(--salt-cursor-hover); display: inline-flex; gap: var(--salt-spacing-50); height: var(--salt-size-base); justify-content: center; line-height: var(--salt-text-lineHeight); font-size: var(--salt-text-fontSize); font-weight: var(--salt-text-action-fontWeight); font-family: var(--salt-text-action-fontFamily); padding: 0 calc(var(--salt-spacing-100) - var(--toggleButton-borderWidth)); }
+@media (hover: hover) { .saltToggleButton:hover { background: var(--toggleButton-background-hover); color: var(--toggleButton-text-color-hover); border-color: var(--toggleButton-borderColor-hover); } }
+.saltToggleButton[aria-pressed="true"], .saltToggleButton[aria-checked="true"] { background: var(--toggleButton-background-selected); color: var(--toggleButton-text-color-selected); border-color: var(--toggleButton-borderColor-selected); }
+.saltToggleButton-neutral { --toggleButton-text-color: var(--salt-actionable-foreground); --toggleButton-text-color-hover: var(--salt-actionable-foreground-hover); --toggleButton-text-color-selected: var(--salt-actionable-bold-foreground); --toggleButton-background: transparent; --toggleButton-background-hover: var(--salt-actionable-background-hover); --toggleButton-background-selected: var(--salt-actionable-bold-background); --toggleButton-borderColor: transparent; --toggleButton-borderColor-hover: transparent; --toggleButton-borderColor-selected: transparent; }
+
+/* ===== salt-tag ===== */
+.saltTag { height: calc(var(--salt-size-base) - var(--salt-spacing-100)); min-height: var(--salt-text-minHeight); display: flex; column-gap: var(--salt-spacing-50); align-items: center; padding: var(--salt-spacing-25) var(--salt-spacing-100); font-family: var(--salt-text-fontFamily); font-size: var(--salt-text-fontSize); font-weight: var(--salt-text-fontWeight); line-height: var(--salt-text-lineHeight); overflow: hidden; border-radius: var(--saltTag-borderRadius, var(--salt-palette-corner-strongest, 9999px)); width: fit-content; min-width: max-content; box-sizing: border-box; }
+.saltTag-primary { background: var(--tag-primary-background, var(--salt-category-1-background)); color: var(--tag-primary-foreground, var(--salt-category-1-foreground)); border: var(--salt-size-fixed-100) var(--salt-borderStyle-solid) transparent; }
+.saltTag-bordered { border: var(--salt-size-fixed-100) var(--salt-borderStyle-solid) var(--tag-primary-borderColor, var(--salt-category-1-borderColor)); }
+.saltTag-secondary { background: var(--tag-secondary-background, var(--salt-category-1-bold-background)); color: var(--salt-content-bold-foreground); border: var(--salt-size-fixed-100) var(--salt-borderStyle-solid) transparent; }
+.saltTag-category-1 { --tag-primary-background: var(--salt-category-1-background); --tag-primary-foreground: var(--salt-category-1-foreground); --tag-primary-borderColor: var(--salt-category-1-borderColor); --tag-secondary-background: var(--salt-category-1-bold-background); }
+.saltTag-category-2 { --tag-primary-background: var(--salt-category-2-background); --tag-primary-foreground: var(--salt-category-2-foreground); --tag-primary-borderColor: var(--salt-category-2-borderColor); --tag-secondary-background: var(--salt-category-2-bold-background); }
+.saltTag-category-3 { --tag-primary-background: var(--salt-category-3-background); --tag-primary-foreground: var(--salt-category-3-foreground); --tag-primary-borderColor: var(--salt-category-3-borderColor); --tag-secondary-background: var(--salt-category-3-bold-background); }
+.saltTag-category-4 { --tag-primary-background: var(--salt-category-4-background); --tag-primary-foreground: var(--salt-category-4-foreground); --tag-primary-borderColor: var(--salt-category-4-borderColor); --tag-secondary-background: var(--salt-category-4-bold-background); }
+
+/* ===== salt-banner ===== */
+.saltBanner { --banner-background: var(--salt-container-primary-background); background: var(--saltBanner-background, var(--banner-background)); border-color: var(--saltBanner-borderColor, var(--banner-borderColor)); border-width: var(--saltBanner-borderWidth, var(--salt-size-fixed-100)); border-style: var(--saltBanner-borderStyle, var(--salt-borderStyle-solid)); border-radius: var(--saltBanner-borderRadius, var(--salt-palette-corner, 0)); box-sizing: border-box; display: inline-flex; gap: var(--salt-spacing-75); padding: var(--saltBanner-padding, var(--salt-spacing-50) var(--salt-spacing-100)); width: 100%; min-height: calc(var(--salt-size-base) + var(--salt-spacing-100)); font-family: var(--salt-text-fontFamily); font-size: var(--salt-text-fontSize); font-weight: var(--salt-text-fontWeight); line-height: var(--salt-text-lineHeight); color: var(--salt-content-primary-foreground); align-items: center; }
+.saltBanner-icon.saltIcon { min-height: var(--salt-size-base); }
+.saltBanner-info { --banner-borderColor: var(--salt-status-info-borderColor); }
+.saltBanner-error { --banner-borderColor: var(--salt-status-error-borderColor); }
+.saltBanner-warning { --banner-borderColor: var(--salt-status-warning-borderColor); }
+.saltBanner-success { --banner-borderColor: var(--salt-status-success-borderColor); }
+.saltBanner-secondary.saltBanner-info { --banner-background: var(--salt-status-info-background, var(--salt-palette-info-weakest)); }
+.saltBanner-secondary.saltBanner-error { --banner-background: var(--salt-status-error-background); }
+.saltBanner-secondary.saltBanner-warning { --banner-background: var(--salt-status-warning-background); }
+.saltBanner-secondary.saltBanner-success { --banner-background: var(--salt-status-success-background); }
+.saltBannerContent { flex: 1 0; margin: var(--salt-spacing-75) 0; }
+
+/* ===== salt-status-indicator ===== */
+.saltStatusIndicator { --statusIndicator-warning-color: var(--salt-status-warning-foreground-decorative); --statusIndicator-info-color: var(--salt-status-info-foreground-decorative); --statusIndicator-success-color: var(--salt-status-success-foreground-decorative); --statusIndicator-error-color: var(--salt-status-error-foreground-decorative); color: var(--saltStatusIndicator-color, var(--statusIndicator-Color)); }
+.saltStatusIndicator-error { --statusIndicator-Color: var(--statusIndicator-error-color); }
+.saltStatusIndicator-warning { --statusIndicator-Color: var(--statusIndicator-warning-color); }
+.saltStatusIndicator-success { --statusIndicator-Color: var(--statusIndicator-success-color); }
+.saltStatusIndicator-info { --statusIndicator-Color: var(--statusIndicator-info-color); }
+
+/* ===== salt-divider ===== */
+.saltDivider-primary { --divider-background: var(--salt-separable-primary-borderColor); }
+.saltDivider-secondary { --divider-background: var(--salt-separable-secondary-borderColor); }
+.saltDivider-tertiary { --divider-background: var(--salt-separable-tertiary-borderColor); }
+.saltDivider { background: var(--divider-background); align-self: stretch; margin: 0; border: none; }
+.saltDivider-horizontal { height: var(--salt-size-fixed-100); }
+.saltDivider-vertical { width: var(--salt-size-fixed-100); height: auto; }
+
+/* ===== salt-overlay-panel ===== */
+.saltOverlayPanel { --overlay-borderColor: var(--saltOverlay-borderColor, var(--salt-container-primary-borderColor)); --overlay-background: var(--saltOverlay-background, var(--salt-container-primary-background)); font-family: var(--salt-text-fontFamily); font-size: var(--saltOverlay-fontSize, var(--salt-text-fontSize)); font-weight: var(--saltOverlay-fontWeight, var(--salt-text-fontWeight)); line-height: var(--saltOverlay-lineHeight, var(--salt-text-lineHeight)); border-color: var(--overlay-borderColor); border-style: var(--saltOverlay-borderStyle, var(--salt-borderStyle-solid)); border-width: var(--saltOverlay-borderWidth, var(--salt-size-fixed-100)); border-radius: var(--saltOverlay-borderRadius, var(--salt-palette-corner, 0)); background: var(--overlay-background); box-shadow: var(--saltOverlay-boxShadow, var(--salt-overlayable-shadow-popout)); color: var(--saltOverlay-text-color, var(--salt-content-primary-foreground)); z-index: var(--saltOverlay-zIndex, var(--salt-zIndex-flyover)); width: max-content; }
+
+/* Badge, Input, Panel (hand-authored) */
+.saltBadge { display: inline-flex; position: relative; flex-shrink: 0; vertical-align: middle; }
+.saltBadge-badge{ padding: 0 var(--salt-spacing-50); height: var(--salt-text-notation-lineHeight); min-width: var(--salt-text-notation-lineHeight); border-radius: var(--salt-palette-corner-strongest); white-space: nowrap; box-sizing: border-box; align-items: center; justify-content: center; display: inline-flex; font-size: var(--salt-text-notation-fontSize); font-weight: var(--salt-text-notation-fontWeight); font-family: var(--salt-text-fontFamily); line-height: var(--salt-text-notation-lineHeight); background: var(--salt-palette-accent); color: #fff; }
+.saltBadge-topRight { position: absolute; top: 0; right: 0; transform: translate(40%, -40%); }
+.saltBadge-dotBadge { height: var(--salt-size-adornment); min-width: var(--salt-size-adornment); padding: 0; }
+.saltInput{ align-items: center; background: var(--salt-color-white); border-radius: var(--salt-palette-corner-weak); color: var(--salt-content-primary-foreground); display: inline-flex; font-family: var(--salt-text-fontFamily); font-size: var(--salt-text-fontSize); line-height: var(--salt-text-lineHeight); height: var(--salt-size-base); min-width: 4em; padding: 0 var(--salt-spacing-100); position: relative; width: 100%; box-sizing: border-box; }
+.saltInput-bordered { border: var(--salt-size-fixed-100) solid var(--salt-color-gray-400); }
+.saltInput-bordered:hover { border-color: var(--salt-color-gray-600); }
+.saltInput-bordered.saltInput-focused { border-color: var(--salt-palette-accent); outline: var(--salt-focused-outline); outline-offset: 1px; }
+.saltInput-error.saltInput-bordered { border-color: var(--salt-palette-negative); background: var(--salt-palette-negative-weakest); }
+.saltInput-warning.saltInput-bordered { border-color: var(--salt-palette-warning); background: var(--salt-palette-warning-weakest); }
+.saltInput-success.saltInput-bordered { border-color: var(--salt-palette-positive); background: var(--salt-palette-positive-weakest); }
+.saltInput-disabled { opacity: 0.4; cursor: not-allowed; }
+.saltInput-startAdornmentContainer, .saltInput-endAdornmentContainer { display: inline-flex; align-items: center; color: var(--salt-content-secondary-foreground); }
+.saltInput-startAdornmentContainer { padding-right: var(--salt-spacing-50); }
+.saltInput-endAdornmentContainer { padding-left: var(--salt-spacing-50); }
+.saltInput-input { background: none; border: none; color: inherit; font: inherit; flex: 1; min-width: 0; width: 100%; padding: 0; }
+.saltInput-input:focus { outline: none; }
+.saltInput-input::placeholder { color: var(--salt-content-secondary-foreground); }
+.saltInput-activationIndicator { display: none; }
+.saltPanel { padding: var(--salt-spacing-300); box-sizing: border-box; border-radius: var(--salt-palette-corner); }
+.saltPanel-primary { background: var(--salt-container-primary-background); }
+.saltPanel-secondary { background: var(--salt-container-secondary-background); }
+.saltPanel-tertiary { background: var(--salt-container-tertiary-background); }
