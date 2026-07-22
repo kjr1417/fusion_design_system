@@ -1,0 +1,55 @@
+<!-- @dsCard group="Colors" viewport="700x360" name="Domain categorical colors" subtitle="Data · AI/ML · Governance · Technical · Documentation" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;padding:20px;font-family:var(--salt-text-fontFamily);background:var(--salt-palette-background-primary)}
+  .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+  .dom{display:flex;flex-direction:column;gap:8px}
+  .name{font-size:12px;font-weight:600;color:var(--salt-content-primary-foreground)}
+  .swatches{display:flex;flex-direction:column;border-radius:var(--salt-palette-corner-weak);overflow:hidden;border:1px solid var(--salt-color-gray-200)}
+  .sw{height:34px;display:flex;align-items:center;padding:0 10px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+  .usage{margin-top:20px;padding-top:16px;border-top:1px solid var(--salt-color-gray-200)}
+  .usage h4{margin:0 0 8px;font-size:12px;font-weight:600;color:var(--salt-content-primary-foreground)}
+  .usage p{margin:0 0 10px;font-size:12px;line-height:1.5;color:var(--salt-content-secondary-foreground)}
+  .pills{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{display:inline-flex;align-items:center;height:22px;padding:0 12px;border-radius:999px;font-size:11px;font-weight:600}
+</style></head>
+<body class="salt-theme">
+<div class="grid">
+  <div class="dom"><span class="name">Data</span><div class="swatches">
+    <span class="sw" style="background:var(--domain-data-bold)"></span>
+    <span class="sw" style="background:var(--domain-data-fill)"></span>
+    <span class="sw" style="background:var(--domain-data-text)"></span>
+  </div></div>
+  <div class="dom"><span class="name">AI / ML</span><div class="swatches">
+    <span class="sw" style="background:var(--domain-ai-bold)"></span>
+    <span class="sw" style="background:var(--domain-ai-fill)"></span>
+    <span class="sw" style="background:var(--domain-ai-text)"></span>
+  </div></div>
+  <div class="dom"><span class="name">Governance</span><div class="swatches">
+    <span class="sw" style="background:var(--domain-governance-bold)"></span>
+    <span class="sw" style="background:var(--domain-governance-fill)"></span>
+    <span class="sw" style="background:var(--domain-governance-text)"></span>
+  </div></div>
+  <div class="dom"><span class="name">Technical Assets</span><div class="swatches">
+    <span class="sw" style="background:var(--domain-technical-bold)"></span>
+    <span class="sw" style="background:var(--domain-technical-fill)"></span>
+    <span class="sw" style="background:var(--domain-technical-text)"></span>
+  </div></div>
+  <div class="dom"><span class="name">Documentation</span><div class="swatches">
+    <span class="sw" style="background:var(--domain-documentation-bold)"></span>
+    <span class="sw" style="background:var(--domain-documentation-fill)"></span>
+    <span class="sw" style="background:var(--domain-documentation-text)"></span>
+  </div></div>
+</div>
+<div class="usage">
+  <h4>Usage</h4>
+  <p>Use each domain's three tokens as a set to build a categorical pill: <code>fill</code> as the pill background, <code>text</code> as its label color, and <code>bold</code> for the accompanying icon or dot. Reserve <code>bold</code> for solid emphasis (badges, active chips) and keep one domain color per entity so category is legible at a glance.</p>
+  <div class="pills">
+    <span class="pill" style="background:var(--domain-data-fill);color:var(--domain-data-text)">Data</span>
+    <span class="pill" style="background:var(--domain-ai-fill);color:var(--domain-ai-text)">AI / ML</span>
+    <span class="pill" style="background:var(--domain-governance-fill);color:var(--domain-governance-text)">Governance</span>
+    <span class="pill" style="background:var(--domain-technical-fill);color:var(--domain-technical-text)">Technical</span>
+    <span class="pill" style="background:var(--domain-documentation-fill);color:var(--domain-documentation-text)">Documentation</span>
+  </div>
+</div>
+</body></html>

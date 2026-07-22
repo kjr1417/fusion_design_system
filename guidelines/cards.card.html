@@ -1,0 +1,39 @@
+<!-- @dsCard group="Components" viewport="700x360" name="Cards — Static, Interactable" subtitle="Bordered content card and clickable card with hover states" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body { margin: 0; padding: 24px; }
+  .stack { display: flex; flex-direction: column; gap: 16px; }
+  .ct { font-family: var(--salt-text-fontFamily); font-weight: 600; font-size: 15px; color: var(--salt-content-primary-foreground); margin: 0 0 12px 0; }
+  .cb { font-family: var(--salt-text-fontFamily); font-size: 14px; color: var(--salt-content-secondary-foreground); margin: 0; }
+</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { Card } = window.FusionDesignSystem_5ec875;
+function App() {
+  return (
+    <div className="stack">
+      <Card variant="primary" style={{ padding: 24 }}>
+        <p className="ct">Static Card</p>
+        <p className="cb">Non-interactive content card.</p>
+      </Card>
+      <Card variant="primary" hoverable style={{ padding: 24, cursor: "pointer", border: "none" }}>
+        <p className="ct">Interactable Card</p>
+        <p className="cb">Clickable with hover states.</p>
+      </Card>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!-- @dsCard group="Components" viewport="700x220" name="Feedback — Spinner, Progress, Status" subtitle="Loading and system-state indicators" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:16px;display:flex;flex-direction:column;gap:20px}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { Spinner, ProgressBar, StatusIndicator } = window.FusionDesignSystem_5ec875;
+function App() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+      <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
+        <Spinner label="Deploying agent..." />
+        <StatusIndicator status="success" label="All systems operational" />
+        <StatusIndicator status="warning" label="Degraded performance" />
+      </div>
+      <ProgressBar value={72} label="Evaluating agent" style={{ maxWidth: 320 }} />
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!-- @dsCard group="Components" viewport="700x320" name="Overlays — Dialog, Drawer, Tooltip" subtitle="Modal, side-panel and hover-triggered surfaces" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:40px 16px}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { Dialog, Drawer, Tooltip, Button, IconButton } = window.FusionDesignSystem_5ec875;
+function InfoIcon() { return <svg className="saltIcon" viewBox="0 0 12 12" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M6 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2m1 3v5H5V5z"/><path fillRule="evenodd" clipRule="evenodd" d="M0 0v12h12V0zm11 1H1v10h10z"/></svg>; }
+function App() {
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  return (
+    <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+      <Button appearance="bordered" sentiment="neutral" onClick={() => setDialogOpen(true)}>Open dialog</Button>
+      <Button appearance="bordered" sentiment="neutral" onClick={() => setDrawerOpen(true)}>Open drawer</Button>
+      <Tooltip content="Deploy to staging" placement="bottom"><IconButton appearance="transparent" aria-label="Deploy"><InfoIcon /></IconButton></Tooltip>
+
+      <Dialog open={dialogOpen} title="Publish agent?" onClose={() => setDialogOpen(false)} actions={<>
+        <Button appearance="bordered" sentiment="neutral" onClick={() => setDialogOpen(false)}>Cancel</Button>
+        <Button appearance="solid" sentiment="accented" onClick={() => setDialogOpen(false)}>Publish</Button>
+      </>}>This will make the agent available in staging.</Dialog>
+
+      <Drawer open={drawerOpen} title="AI Research Adoption" onClose={() => setDrawerOpen(false)}>
+        <p style={{ color: "var(--salt-content-secondary-foreground)" }}>A stream of projects to speed the adoption of Infinite AI by AI Research.</p>
+      </Drawer>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

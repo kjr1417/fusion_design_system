@@ -1,0 +1,156 @@
+<!-- @dsCard group="Components" viewport="1100x760" name="ContentCard — the unified card skeleton" subtitle="One anatomy on saltCard · category = color · one icon per asset · one action style" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  html,body{width:100%;box-sizing:border-box}
+  body{margin:0;padding:32px;background:var(--salt-palette-background-secondary);font-family:var(--salt-text-fontFamily)}
+  .sect{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--salt-content-secondary-foreground);margin:0 0 12px}
+  .sect:not(:first-child){margin-top:36px}
+  .grid{display:grid;gap:20px;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .metaRow{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--salt-content-primary-foreground)}
+  .stats{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  .statGroup{display:flex;align-items:center;gap:11px;color:var(--salt-content-secondary-foreground);min-width:0;flex-wrap:wrap}
+  .stat{display:inline-flex;align-items:center;gap:4px;font-size:12px}
+  .viewLink{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;cursor:pointer;flex-shrink:0;margin-left:auto;color:var(--domain-ai-text)}
+</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { ContentCard } = window.FusionDesignSystem_5ec875;
+const svg = (s, children) => <svg viewBox="0 0 24 24" width={s} height={s} fill="none" stroke="currentColor" strokeWidth={s>28?1.6:1.8} strokeLinecap="round" strokeLinejoin="round">{children}</svg>;
+
+// One icon per ASSET type (category sets color; icon distinguishes the asset)
+const ICON = {
+  aiStudio: (s) => svg(s, <><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9Z"/><path d="M18 15l.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6L15.8 17.2 17.4 16.6Z"/></>),
+  dataMesh: (s) => svg(s, <><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7.4 7.5 10.6 16.5M16.6 7.5 13.4 16.5M8 6h8"/></>),
+  control: (s) => svg(s, <><path d="M4 8h9M17 8h3M4 16h3M11 16h9"/><circle cx="15" cy="8" r="2"/><circle cx="9" cy="16" r="2"/></>),
+  model: (s) => svg(s, <><path d="M9 4a2.5 2.5 0 0 0-2.5 2.5A2.5 2.5 0 0 0 5 11a2.5 2.5 0 0 0 1.5 4.5A2.5 2.5 0 0 0 9 20V4Z"/><path d="M15 4a2.5 2.5 0 0 1 2.5 2.5A2.5 2.5 0 0 1 19 11a2.5 2.5 0 0 1-1.5 4.5A2.5 2.5 0 0 1 15 20V4Z"/></>),
+  mcp: (s) => svg(s, <><rect x="4" y="4" width="16" height="6" rx="1"/><rect x="4" y="14" width="16" height="6" rx="1"/><path d="M7.5 7h.01M7.5 17h.01"/></>),
+  glossary: (s) => svg(s, <><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H19v16H5.5A1.5 1.5 0 0 1 4 18.5Z"/><path d="M4 17.5A1.5 1.5 0 0 1 5.5 16H19"/></>),
+  dataset: (s) => svg(s, <><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></>),
+  eval: (s) => svg(s, <><path d="M4 16a8 8 0 0 1 16 0"/><path d="M12 16l4-3.5"/><circle cx="12" cy="16" r="1"/></>),
+  useCase: (s) => svg(s, <><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></>),
+  skill: (s) => svg(s, <><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.5.4.5 1.1.5 1.6h6c0-.5 0-1.2.5-1.6A6 6 0 0 0 12 3Z"/></>),
+};
+
+const arrow = <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>;
+const heart = <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 20s-7-4.5-7-9.5A3.5 3.5 0 0 1 12 8a3.5 3.5 0 0 1 7 2.5C19 15.5 12 20 12 20Z"/></svg>;
+const eye = <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="2.5"/></svg>;
+const star = <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"><path d="m12 4 2.4 5 5.6.6-4.2 3.8 1.2 5.6L12 16.6 6.9 19.6 8.1 14 4 10.2l5.6-.6Z"/></svg>;
+const share = <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="6" cy="12" r="2.2"/><circle cx="18" cy="6" r="2.2"/><circle cx="18" cy="18" r="2.2"/><path d="m8 11 8-4M8 13l8 4"/></svg>;
+const dl = <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 4v11M8 11l4 4 4-4M5 20h14"/></svg>;
+const model16 = <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h11M4 12h16M4 17h9"/><path d="m17 6 3 2-3 2"/></svg>;
+const ViewLink = ({color}) => <a href="#" className="viewLink" style={{color}} onClick={(e)=>e.stopPropagation()}>View {arrow}</a>;
+
+function App() {
+  return (
+    <div>
+      <p className="sect">1 · Feature promo — media banner</p>
+      <div className="grid">
+        <ContentCard variant="media" mediaHeight={150} category="ai" icon={ICON.aiStudio(40)} title="AI Studio"
+          description="Build, evaluate and deploy governed AI agents with a redesigned visual editor and an expanded skills registry." />
+        <ContentCard variant="media" mediaHeight={150} category="data" icon={ICON.dataMesh(40)} title="Data Mesh"
+          description="Register, discover, access, and integrate data products across the firm from one governed surface." />
+        <ContentCard variant="media" mediaHeight={150} category="governance" icon={ICON.control(40)} title="Control Panel"
+          description="Monitor policy, access, and lineage across every workload in the Fusion Platform." />
+      </div>
+
+      <p className="sect">2 · Product tiles — icon tile + action</p>
+      <div className="grid">
+        <ContentCard interactive category="ai" icon={ICON.model(22)} eyebrow="Model" title="Opus 4.8 now available"
+          description="The latest Claude Opus model is now approved for governed evaluation and deployment via AI Studio."
+          cta={{ label: "Try", href: "#" }} />
+        <ContentCard interactive category="ai" icon={ICON.mcp(22)} eyebrow="MCP Server" title="Fusion Search MCP Server"
+          description="Search for products, datasets, and attributes in the Fusion catalog. Supports keyword, prefix, and semantic (vector) queries."
+          cta={{ label: "Try", href: "#" }} />
+        <ContentCard interactive category="data" icon={ICON.glossary(22)} eyebrow="Glossary" title="Fusion Glossary"
+          description="Governed terminology and definitions shared across the Fusion Platform."
+          cta={{ label: "Open", href: "#" }} />
+      </div>
+
+      <p className="sect">3 · Navigation tiles</p>
+      <div className="grid">
+        <ContentCard interactive category="data" icon={ICON.dataset(22)} eyebrow="Dataset" title="Guided Data Journey"
+          description="Transform data into a dashboard or artifact with auto-generated insights and visuals."
+          cta={{ label: "Open", href: "#" }} />
+        <ContentCard interactive category="ai" icon={ICON.eval(22)} eyebrow="Eval" title="Evals Platform"
+          description="Run and manage evaluations for models. View results, traces, and scores across projects."
+          cta={{ label: "Open", href: "#" }} />
+        <ContentCard interactive category="governance" icon={ICON.useCase(22)} eyebrow="Use Case" title="AML Screening"
+          description="Governed use case bundling data, models, and controls for anti-money-laundering screening."
+          cta={{ label: "Open", href: "#" }} />
+      </div>
+
+      <p className="sect">4 · Catalog results — inline icon + meta footer</p>
+      <div className="grid">
+        <ContentCard interactive category="ai" icon={ICON.model(18)} iconPlacement="inline" eyebrow="Model" title="bert-base-uncased"
+          description="BERT Base is a transformer model pretrained on a large corpus of English raw text data. It learns a bidirectional representation."
+          footer={<div className="metaRow"><span style={{color:'var(--domain-ai-bold)'}}>{model16}</span><strong>Google-Bert</strong></div>} />
+        <ContentCard interactive category="ai" icon={ICON.model(18)} iconPlacement="inline" eyebrow="Model" title="gpt-5.5-2026-04-23"
+          description="GPT-5.5 is a new model designed for complex, real-world work, including writing code and researching online."
+          footer={<div className="metaRow"><span style={{color:'var(--domain-ai-bold)'}}>{model16}</span><strong>OpenAI</strong><span style={{color:'var(--salt-content-secondary-foreground)'}}>· Multimodal</span></div>} />
+        <ContentCard interactive category="ai" icon={ICON.model(18)} iconPlacement="inline" eyebrow="Model" title="gemma-4-31B-it"
+          description="Instruction-tuned Gemma 4 model for image-text-to-text generation."
+          footer={<div className="metaRow"><span style={{color:'var(--domain-ai-bold)'}}>{model16}</span><strong>Google</strong><span style={{color:'var(--salt-content-secondary-foreground)'}}>· image-text-to-text</span></div>} />
+      </div>
+
+      <p className="sect">5 · Registry entries — inline icon + stats & action</p>
+      <div className="grid">
+        <ContentCard category="ai" icon={ICON.skill(18)} iconPlacement="inline" eyebrow="Skill" title="docx"
+          description="Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx files)."
+          footer={
+            <div className="stats">
+              <div className="statGroup">
+                <span className="stat" style={{color:'var(--salt-palette-negative)'}}>{heart}1</span>
+                <span className="stat">{eye}11841</span>
+                <span className="stat" style={{color:'var(--domain-ai-bold)'}}>{star}</span>
+                <span className="stat">{share}</span>
+                <span className="stat">{dl}</span>
+              </div>
+              <ViewLink color="var(--domain-ai-text)" />
+            </div>
+          } />
+        <ContentCard category="ai" icon={ICON.skill(18)} iconPlacement="inline" eyebrow="Skill" title="risk-data-model-validator"
+          description="Validate a database schema (DDL, CSV, or file) against data modeling best practices. Checks keys, types, and normalization."
+          footer={
+            <div className="stats">
+              <div className="statGroup">
+                <span className="stat">{heart}</span>
+                <span className="stat">{eye}6</span>
+                <span className="stat">{star}</span>
+                <span className="stat">{share}</span>
+                <span className="stat">{dl}</span>
+              </div>
+              <ViewLink color="var(--domain-ai-text)" />
+            </div>
+          } />
+        <ContentCard category="data" icon={ICON.dataset(18)} iconPlacement="inline" eyebrow="Dataset" title="counterparty-risk-daily"
+          description="Curated daily snapshot of counterparty exposures with lineage and governed access controls."
+          footer={
+            <div className="stats">
+              <div className="statGroup">
+                <span className="stat">{heart}4</span>
+                <span className="stat">{eye}982</span>
+                <span className="stat">{star}</span>
+                <span className="stat">{share}</span>
+                <span className="stat">{dl}</span>
+              </div>
+              <ViewLink color="var(--domain-data-text)" />
+            </div>
+          } />
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

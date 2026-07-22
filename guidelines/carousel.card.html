@@ -1,0 +1,39 @@
+<!-- @dsCard group="Components" viewport="1200x620" name="Carousel — paged card shelf" subtitle="Horizontal scroll-snapping row · min item width 348px · paged prev/next controls" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  html,body{width:100%;box-sizing:border-box}
+  body{margin:0;padding:32px;background:var(--salt-palette-background-secondary);font-family:var(--salt-text-fontFamily)}
+</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { Carousel, ContentCard } = window.FusionDesignSystem_5ec875;
+const book = (s) => <svg viewBox="0 0 24 24" width={s} height={s} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H19v16H5.5A1.5 1.5 0 0 1 4 18.5Z"/><path d="M4 17.5A1.5 1.5 0 0 1 5.5 16H19"/><path d="M12 4v16"/></svg>;
+
+function App() {
+  return (
+    <Carousel title="Get started in Fusion" subtitle="Things you can do across the platform">
+      <ContentCard interactive category="ai" icon={book(18)} iconPlacement="inline" eyebrow="Guide" title="Build an Agent"
+        description="Build AI agents and workflows using a drag-and-drop visual editor." cta={{ label: "Learn more", href: "#" }} />
+      <ContentCard interactive category="data" icon={book(18)} iconPlacement="inline" eyebrow="Guide" title="Manage Data"
+        description="Register, discover, access and integrate data across the firm." cta={{ label: "Learn more", href: "#" }} />
+      <ContentCard interactive category="governance" icon={book(18)} iconPlacement="inline" eyebrow="Guide" title="Set Controls"
+        description="Monitor policy, access, and lineage across every workload." cta={{ label: "Learn more", href: "#" }} />
+      <ContentCard interactive category="technical" icon={book(18)} iconPlacement="inline" eyebrow="Guide" title="Connect an MCP Server"
+        description="Register tools and servers so agents can call governed capabilities." cta={{ label: "Learn more", href: "#" }} />
+    </Carousel>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

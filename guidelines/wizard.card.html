@@ -1,0 +1,66 @@
+<!-- @dsCard group="Components" viewport="820x520" name="Forms — Checkbox, Radio, Switch, Accordion, ProgressTracker" subtitle="Selection controls plus collapsible sections beside a vertical step tracker" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:24px}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { Accordion, ProgressTracker, FormField, Input, Textarea, Switch, Dropdown, Checkbox, RadioButton } = window.FusionDesignSystem_5ec875;
+function App() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+      <div style={{ display: "flex", gap: 40, alignItems: "flex-start", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
+          <Checkbox label="Checked" defaultChecked />
+          <Checkbox label="Unchecked" />
+          <Checkbox label="Disabled" disabled />
+        </div>
+        <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
+          <RadioButton label="Option 1" name="opt" defaultChecked />
+          <RadioButton label="Option 2" name="opt" />
+        </div>
+        <Switch label="Toggle on" defaultChecked />
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 240px", gap: 40, alignItems: "start" }}>
+      <Accordion
+        variant="inline"
+        allowMultiple
+        items={[
+          { title: "Metadata", content: (
+            <div style={{ display: "flex", flexDirection: "column", gap: 16, paddingTop: 8 }}>
+              <FormField label="Name"><Input defaultValue="Customer Support FAQ" /></FormField>
+              <FormField label="Description"><Textarea placeholder="Describe the content, audience, and scope of this knowledge base" /></FormField>
+              <div>
+                <div style={{ fontSize: "var(--salt-text-fontSize)", fontWeight: "var(--salt-text-fontWeight-strong)", marginBottom: 8 }}>Restricted</div>
+                <Switch label="Enable restricted access" />
+              </div>
+            </div>
+          ) },
+          { title: "Ownership", content: (
+            <div style={{ paddingTop: 8 }}>
+              <FormField label="Data Publisher"><Dropdown options={["CDAO Data Engineering", "Markets Tech", "Risk Analytics"]} defaultValue="CDAO Data Engineering" /></FormField>
+            </div>
+          ) },
+        ]}
+      />
+      <ProgressTracker
+        title="Create Knowledge Base"
+        steps={["Metadata", "Ownership", "Connect Data"]}
+        activeStep={0}
+      />
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

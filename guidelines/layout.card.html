@@ -1,0 +1,41 @@
+<!-- @dsCard group="Layouts" viewport="700x260" name="Layout primitives — Stack, Flex, Flow, Grid" subtitle="StackLayout, FlexLayout, FlowLayout, GridLayout token-gap wrappers" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body { margin: 0; padding: 24px; font-family: var(--salt-text-fontFamily); }
+  .lbl { font-size: 12px; font-weight: 600; color: var(--salt-content-secondary-foreground); margin-bottom: 8px; }
+  .box { background: var(--salt-color-blue-100); border: 1px solid var(--salt-color-blue-300); border-radius: 4px; padding: 12px 16px; font-size: 13px; color: var(--salt-content-primary-foreground); text-align: center; }
+  .sec { margin-bottom: 20px; }
+</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { StackLayout, FlexLayout, FlowLayout, GridLayout } = window.FusionDesignSystem_5ec875;
+const Box = ({ children }) => <div className="box">{children}</div>;
+function App() {
+  return (
+    <div>
+      <div className="sec"><div className="lbl">FlexLayout (row, gap 2)</div>
+        <FlexLayout gap={2}><Box>1</Box><Box>2</Box><Box>3</Box></FlexLayout>
+      </div>
+      <div className="sec"><div className="lbl">StackLayout (column, gap 2)</div>
+        <StackLayout gap={2}><Box>Top</Box><Box>Bottom</Box></StackLayout>
+      </div>
+      <div className="sec"><div className="lbl">GridLayout (4 columns)</div>
+        <GridLayout columns={4} gap={2}><Box>A</Box><Box>B</Box><Box>C</Box><Box>D</Box></GridLayout>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
