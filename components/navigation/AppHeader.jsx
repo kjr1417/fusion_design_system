@@ -46,10 +46,10 @@ const DownloadIcon = () => (
 );
 
 const iconBtnStyle = {
-  all: "unset", boxSizing: "border-box", cursor: "pointer",
-  width: 28, height: 28, minWidth: 28, flexShrink: 0,
+  boxSizing: "border-box", cursor: "pointer", font: "inherit",
+  width: 28, height: 28, minWidth: 28, flexShrink: 0, padding: 0,
   display: "inline-flex", alignItems: "center", justifyContent: "center",
-  background: "transparent", border: "none", borderRadius: "var(--salt-curve-50)",
+  border: "none", borderRadius: "var(--salt-curve-50)",
   color: "var(--salt-content-primary-foreground)",
 };
 
@@ -186,13 +186,13 @@ export function AppHeader({
         )}
 
         {showCopyValue && (
-          <div style={{ display: "flex", alignItems: "center", gap: 4, fontFamily: "var(--salt-typography-fontFamily-mono)", fontSize: 12, color: "var(--salt-content-secondary-foreground)", lineHeight: "16px", whiteSpace: "nowrap", minWidth: 48, flexShrink: 1, marginRight: 4 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 4, fontFamily: "var(--salt-typography-fontFamily-mono)", fontSize: 12, color: "var(--salt-content-secondary-foreground)", lineHeight: "16px", whiteSpace: "nowrap", minWidth: 0, flexShrink: 1, marginRight: 4, overflow: "hidden" }}>
             <span style={{ overflow: "hidden", textOverflow: "ellipsis", minWidth: 40 }}>{copyValue}</span>
             <button
               onClick={handleCopy}
               aria-label="Copy value"
               title={copied ? "Copied" : "Copy value"}
-              style={{ all: "unset", cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", width: 18, height: 18, borderRadius: "var(--salt-curve-50)", color: "var(--salt-content-secondary-foreground)" }}
+              style={{ boxSizing: "border-box", border: "none", font: "inherit", padding: 0, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", width: 18, height: 18, borderRadius: "var(--salt-curve-50)", color: "var(--salt-content-secondary-foreground)" }}
               className="ah-copy-btn"
             >
               {copied ? <CheckIcon /> : <CopyIcon />}
@@ -205,7 +205,7 @@ export function AppHeader({
         <div className="ah-actions" style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-100)" }}>
           {showViewToggle && <ToggleButtonGroup options={viewToggleOptions} defaultValue={viewToggleOptions[0]?.value} onChange={onViewToggleChange} />}
           {actions.map((action, i) => (
-            <Button key={i} appearance="bordered" sentiment="neutral" onClick={action.onClick}>
+            <Button key={i} appearance="bordered" sentiment="neutral" onClick={action.onClick} style={{ height: 28 }}>
               {action.icon && <span style={{ display: "inline-flex", marginRight: 6, flexShrink: 0 }}>{action.icon}</span>}
               {action.label}
             </Button>

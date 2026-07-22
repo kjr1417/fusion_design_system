@@ -1,0 +1,6 @@
+.ah-icon-btn,.ah-copy-btn{background:transparent}
+.ah-icon-btn:hover,.ah-copy-btn:hover{background:var(--salt-actionable-subtle-background-hover)}
+.ah-actions .saltToggleButtonGroup-horizontal{height:28px;padding:2px;box-sizing:border-box}
+.ah-actions .saltToggleButtonGroup-horizontal .saltToggleButton{height:100%}
+.ah-ellipsis-trigger,.ah-version-trigger{all:unset;cursor:pointer;display:inline-flex;align-items:center;padding:2px 6px;border-radius:var(--salt-curve-50);color:var(--salt-content-secondary-foreground)}
+.ah-ellipsis-trigger:hover,.ah-version-trigger:hover{background:var(--salt-actionable-subtle-background-hover)}
