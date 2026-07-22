@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="../../styles.css">
 <link rel="stylesheet" href="../../salt-components.css">
 <link rel="stylesheet" href="AppHeader.css">
+<link rel="stylesheet" href="Breadcrumbs.css">
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
@@ -38,7 +39,7 @@ function App() {
         <NavigationItem label="Catalog" />
         <NavigationItem label="Settings" />
       </div>
-      <Breadcrumbs items={[{ label: "Catalog", href: "#" }, { label: "AI Research Adoption" }]} />
+      <Breadcrumbs items={[{ label: "Catalog", href: "#" }, { label: "Datasets", href: "#" }, { label: "AI Research Adoption" }]} />
       <Stepper steps={["Connect data", "Configure agent", "Review", "Publish"]} activeStep={1} />
     </div>
   );
