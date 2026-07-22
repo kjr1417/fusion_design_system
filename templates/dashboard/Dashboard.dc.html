@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Dashboard" description="Fusion overview surface (no chrome): a status/search toolbar, a success banner, a smaller OmniInput action panel beside a Guided-next-steps guide list, and a row of ContentCard-style metric cards — all composed from Fusion components." -->
+<helmet>
+<script src="./ds-base.js"></script>
+<style>
+  *{box-sizing:border-box}
+  .dash-banner-wrap .saltBanner-icon{color:var(--salt-color-green-600)}
+  .dash-banner-wrap .saltBanner>span{flex:1;display:block}
+  .dash-guide-title{display:inline-flex;align-items:center;gap:6px;font-size:18px;font-weight:800;text-decoration:none;color:var(--salt-content-accent-foreground)}
+  .dash-guide-title:hover{text-decoration:underline}
+  .dash-nav a{width:100%;box-sizing:border-box;border-radius:10px;font-size:17px!important;font-weight:700!important;padding:15px 16px!important;gap:14px!important;color:var(--salt-content-primary-foreground)!important}
+  .dash-nav a:hover{background:var(--salt-actionable-subtle-background-hover)}
+  .dash-nav a[aria-current="page"]{background:color-mix(in srgb, var(--salt-palette-accent) 12%, transparent);border-left:none!important;position:relative}
+  .dash-nav a[aria-current="page"]::before{content:"";position:absolute;left:4px;top:9px;bottom:9px;width:5px;border-radius:3px;background:var(--salt-palette-accent)}
+  .dash-toolbar .saltInput{width:100%}
+  .dash-omni-card .fusionOmni{align-items:stretch!important;margin-left:0!important;margin-right:0!important}
+  .dash-omni-card .fusionOmni>div:last-child{justify-content:flex-start!important}
+  .saltInteractableCard:hover{border-color:var(--salt-container-primary-borderColor)!important}
+  a{color:var(--salt-content-accent-foreground)}
+  .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch}
+  .dash-grid>*{min-width:0}
+  .dash-grid>div{display:flex}
+  .dash-grid .saltCard{flex:1;width:100%}
+  .dash-prompts{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:4px;scrollbar-width:thin}
+  .dash-prompts .saltPill{flex-shrink:0;scroll-snap-align:start;height:40px;padding:0 14px;border-radius:999px!important;font-weight:700;background:var(--salt-container-primary-background)!important;color:var(--salt-content-primary-foreground)!important;border:1px solid var(--salt-color-gray-300)!important}
+  .dash-prompts .saltPill:hover{background:var(--salt-actionable-subtle-background-hover)!important}
+  .dash-omni-card{min-width:0}
+  a:hover{color:var(--salt-color-blue-700)}
+</style>
+</helmet>
+<div class="salt-theme salt-density-low" style="min-height:100vh;background:var(--salt-palette-background-secondary);font-family:var(--salt-text-fontFamily);color:var(--salt-content-primary-foreground);display:flex;flex-direction:column">
+
+  <x-import component-from-global-scope="FusionDesignSystem_5ec875.GlobalNav" hint-size="100%,68px" style="position:sticky;top:0;z-index:1"></x-import>
+
+  <div style="display:flex;flex:1;min-height:0">
+
+  <aside class="dash-nav" style="width:248px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;padding:24px 20px">
+    <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="11">
+      <x-import component-from-global-scope="FusionDesignSystem_5ec875.NavigationItem" orientation="vertical" label="{{ n.label }}" icon="{{ n.icon }}" active="{{ n.active }}" hint-size="100%,40px"></x-import>
+    </sc-for>
+    <div style="flex:1"></div>
+    <x-import component-from-global-scope="FusionDesignSystem_5ec875.IconButton" appearance="transparent" sentiment="neutral" aria-label="Collapse sidebar" hint-size="40px,40px">{{ collapseIcon }}</x-import>
+  </aside>
+
+  <main style="flex:1;min-width:0;padding:40px;overflow:auto;background:var(--salt-container-primary-background);border-top-left-radius:24px;box-shadow:0 0 24px rgba(16,24,32,.13);position:relative;z-index:2">
+  <div style="width:100%;display:flex;flex-direction:column;gap:24px">
+
+    <div class="dash-toolbar" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--salt-separable-secondary-borderColor)">
+      <span style="display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 16px;border-radius:999px;background:var(--salt-color-green-100);color:var(--salt-color-green-800);font-size:16px;font-weight:700;white-space:nowrap;flex-shrink:0">{{ checkIcon }}All systems operational</span>
+      <div style="flex:1"></div>
+      <div style="width:170px;flex-shrink:0">
+        <x-import component-from-global-scope="FusionDesignSystem_5ec875.Dropdown" options="{{ periodOptions }}" default-value="month" hint-size="170px,40px"></x-import>
+      </div>
+    </div>
+
+      <sc-if value="{{ showBanner }}" hint-placeholder-val="{{ true }}">
+      <div class="dash-banner-wrap">
+        <x-import component-from-global-scope="FusionDesignSystem_5ec875.Banner" status="success" hint-size="100%,56px">
+          <span style="display:flex;align-items:center;justify-content:space-between;gap:24px">
+            <span style="font-size:17px;line-height:1.4"><strong>You're all set!</strong> 4 tools provisioned for your <strong>AI Builder</strong> role. Your first agent is evaluating — follow the guided steps to go live.</span>
+            <a href="#" style="font-size:17px;font-weight:800;white-space:nowrap;color:var(--salt-content-primary-foreground)">Dismiss</a>
+          </span>
+        </x-import>
+      </div>
+      </sc-if>
+
+      <div class="dash-grid">
+
+        <div class="dash-omni-card">
+        <x-import component-from-global-scope="FusionDesignSystem_5ec875.Card" variant="secondary" hint-size="100%,520px" style="border-radius:16px;padding:40px 36px;display:flex;flex-direction:column;align-items:stretch">
+          <h2 style="margin:0 0 8px;font-size:28px;font-weight:800;letter-spacing:-.01em">What would you like to do next?</h2>
+          <p style="margin:0 0 28px;max-width:440px;font-size:17px;line-height:1.5;color:var(--salt-content-secondary-foreground)">Build a new agent, improve your eval scores, deploy to staging, or add tools.</p>
+          <x-import component-from-global-scope="FusionDesignSystem_5ec875.OmniInput" placeholders="{{ omniPlaceholders }}" modes="{{ omniModes }}" suggestions="{{ omniSuggestions }}" onSend="{{ noop }}" hint-size="100%,300px" style="width:100%"></x-import>
+          <div class="dash-prompts" style="margin-top:20px;width:100%">
+            <sc-for list="{{ promptChips }}" as="p" hint-placeholder-count="5">
+              <x-import component-from-global-scope="FusionDesignSystem_5ec875.Pill" clickable="{{ true }}" hint-size="160px,40px"><span style="display:inline-flex;align-items:center;gap:8px;white-space:nowrap">{{ p.icon }}{{ p.label }}</span></x-import>
+            </sc-for>
+          </div>
+        </x-import>
+        </div>
+
+        <div>
+        <x-import component-from-global-scope="FusionDesignSystem_5ec875.Card" variant="primary" hint-size="100%,520px" style="border-radius:16px;padding:36px 40px">
+          <h2 style="margin:0 0 8px;font-size:28px;font-weight:800;letter-spacing:-.01em">Guided next steps</h2>
+          <p style="margin:0 0 32px;font-size:17px;line-height:1.5;color:var(--salt-content-secondary-foreground)">Follow these steps to get your first agent live.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px 32px">
+            <sc-for list="{{ guides }}" as="g" hint-placeholder-count="4">
+              <div style="display:flex;gap:14px">
+                <span style="flex-shrink:0;color:var(--salt-content-secondary-foreground);margin-top:2px">{{ g.icon }}</span>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <a class="dash-guide-title" href="#">{{ g.title }}</a>
+                  <span style="font-size:15px;line-height:1.5;color:var(--salt-content-secondary-foreground)">{{ g.desc }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </x-import>
+        </div>
+
+      </div>
+
+      <sc-if value="{{ showStats }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px">
+        <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+          <x-import component-from-global-scope="FusionDesignSystem_5ec875.Card" variant="primary" hint-size="100%,150px" style="border-radius:14px;padding:24px 26px">
+            <div style="font-size:17px;font-weight:800;margin-bottom:12px">{{ s.label }}</div>
+            <div style="display:flex;align-items:flex-end;gap:6px;margin-bottom:10px">
+              <span style="font-size:52px;line-height:.9;font-weight:400;letter-spacing:-.02em">{{ s.value }}</span>
+              <sc-if value="{{ s.up }}" hint-placeholder-val="{{ true }}"><span style="color:var(--salt-color-green-600);margin-bottom:6px">{{ upArrow }}</span></sc-if>
+            </div>
+            <div style="font-size:15px;color:var(--salt-color-green-600);font-weight:700">{{ s.delta }}</div>
+          </x-import>
+        </sc-for>
+      </div>
+      </sc-if>
+
+  </div>
+  </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:1180},&quot;showBanner&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sections&quot;},&quot;showStats&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sections&quot;}}">
+class Component extends DCLogic {
+  dsIcon(name, size = 20) {
+    const url = `url(../../assets/icons/${name}.svg)`;
+    return React.createElement('span', { style: { display: 'inline-block', width: size, height: size, flexShrink: 0, background: 'currentColor', WebkitMask: `${url} center/contain no-repeat`, mask: `${url} center/contain no-repeat` } });
+  }
+  iconComp(name, size = 16) { return () => this.dsIcon(name, size); }
+
+  renderVals() {
+    const icon = (n, s) => this.dsIcon(n, s);
+    return {
+      showBanner: this.props.showBanner !== false,
+      showStats: this.props.showStats !== false,
+      noop: () => {},
+      checkIcon: icon('check', 18),
+      searchIcon: icon('search', 18),
+      cmdkHint: React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 2, padding: '3px 8px', border: '1px solid var(--salt-color-gray-300)', borderRadius: 6, fontSize: 13, fontWeight: 700, lineHeight: 1, color: 'var(--salt-content-secondary-foreground)', whiteSpace: 'nowrap' } }, '\u2318K'),
+      upArrow: icon('arrow-up', 18),
+      collapseIcon: icon('chevron-left', 18),
+      bellIcon: icon('notification', 20),
+      chevronIcon: icon('chevron-down', 16),
+      navItems: [
+        { label: 'Overview', icon: icon('home', 20), active: true },
+        { label: 'Agents', icon: icon('users', 20) },
+        { label: 'Prompts', icon: icon('edit', 20) },
+        { label: 'Prompt Lab', icon: icon('document', 20) },
+        { label: 'Templates', icon: icon('copy', 20) },
+        { label: 'Integrations', icon: icon('share', 20) },
+        { label: 'Monitoring', icon: icon('chart-line', 20) },
+        { label: 'Logs', icon: icon('list', 20) },
+        { label: 'Traces', icon: icon('tree', 20) },
+        { label: 'Debug', icon: icon('info', 20) },
+        { label: 'Cost', icon: icon('bank', 20) },
+      ],
+      periodOptions: [
+        { label: 'This week', value: 'week' },
+        { label: 'This month', value: 'month' },
+        { label: 'This quarter', value: 'quarter' },
+        { label: 'This year', value: 'year' },
+      ],
+      omniPlaceholders: [
+        "improve my agent's factuality score, or add a compliance tool…",
+        'build a new agent from a natural-language description',
+        'deploy my evaluated agent to the staging environment',
+        'add a retrieval tool grounded in our internal policy docs',
+      ],
+      omniModes: ['Build with AI', 'Improve', 'Deploy'],
+      omniSuggestions: [],
+      promptChips: [
+        { label: 'Review my agent', icon: icon('search', 16) },
+        { label: 'Improve factuality', icon: icon('chart-line', 16) },
+        { label: 'Deploy to staging', icon: icon('upload', 16) },
+        { label: 'Add a tool', icon: icon('add', 16) },
+        { label: 'Compare models', icon: icon('tree', 16) },
+      ],
+      guides: [
+        { icon: icon('search', 26), title: 'Review your agent', desc: 'Open the builder to inspect nodes, tools, and logic. Verify connections and parameters are correct.' },
+        { icon: icon('bar-chart', 26), title: 'Check eval results', desc: 'Your first eval scored 94.2%. Review traces, identify weak spots, and iterate on prompts.' },
+        { icon: icon('upload', 26), title: 'Deploy to staging', desc: "Push your agent to a staging environment when you're satisfied with eval scores and traces." },
+        { icon: icon('bookmark', 26), title: 'Add to prompt library', desc: 'Save your best-performing prompts for reuse across agents, teams, and future projects.' },
+      ],
+      stats: [
+        { label: 'Agents', value: '1', up: true, delta: '+1 this week' },
+        { label: 'Avg eval score', value: '94.2%', up: true, delta: '+2.1% from last run' },
+        { label: 'Deployments', value: '2', up: false, delta: 'running now' },
+        { label: 'Prompts', value: '0', up: false, delta: 'in library' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
