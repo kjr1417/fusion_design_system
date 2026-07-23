@@ -1,0 +1,8 @@
+.frg-grid{width:100%}
+.frg-grid .saltTable-container{width:100%}
+.frg-grid table{width:100%;border-collapse:collapse;table-layout:fixed}
+.frg-grid th,.frg-grid td{padding:var(--salt-spacing-75) var(--salt-spacing-100);font-family:var(--salt-text-fontFamily);font-size:var(--salt-text-fontSize);color:var(--salt-content-primary-foreground)}
+.frg-grid th{border-right:1px solid var(--salt-container-primary-borderColor);font-weight:600;color:var(--salt-content-secondary-foreground);font-family:var(--salt-text-label-fontFamily);font-size:var(--salt-text-label-fontSize);text-align:left}
+.frg-grid th:last-child{border-right:none}
+.frg-grid .saltTable-th-align-left,.frg-grid .saltTable-td-align-left{text-align:left}
+.frg-grid .saltTable-td-align-right{text-align:right}
