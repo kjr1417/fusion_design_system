@@ -15,12 +15,12 @@ const GLYPH = {
   success: "M6 0a6 6 0 1 0 0 12A6 6 0 0 0 6 0m2.7 4.3-3.2 3.9-2-2 .8-.9 1.1 1.1 2.4-2.9z",
 };
 
-export function Tooltip({ content, placement = "top", status = "info", children }) {
+export function Tooltip({ content, placement = "top", status = "info", style, className, children }) {
   const [open, setOpen] = useState(false);
   const s = STATUS[status] || STATUS.info;
   const top = placement === "bottom";
   return (
-    <span style={{ position: "relative", display: "inline-flex" }} onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+    <span className={className} style={{ position: "relative", display: "inline-flex", ...style }} onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
       {children}
       {open && (
         <span role="tooltip" style={{
