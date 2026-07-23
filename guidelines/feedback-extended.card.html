@@ -1,4 +1,4 @@
-<!-- @dsCard group="Components" viewport="700x220" name="Feedback — Spinner, Progress, Status" subtitle="Loading and system-state indicators" -->
+<!-- @dsCard group="Components" viewport="700x340" name="Feedback — Spinner, Progress, Status, BannerStack" subtitle="Loading, system-state, and dismissible status banners" -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +13,7 @@
 <body class="salt-theme">
 <div id="root"></div>
 <script type="text/babel">
-const { Spinner, ProgressBar, StatusIndicator } = window.FusionDesignSystem_5ec875;
+const { Spinner, ProgressBar, StatusIndicator, BannerStack } = window.FusionDesignSystem_6db751;
 function App() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -23,6 +23,14 @@ function App() {
         <StatusIndicator status="warning" label="Degraded performance" />
       </div>
       <ProgressBar value={72} label="Evaluating agent" style={{ maxWidth: 320 }} />
+      <BannerStack
+        banners={[
+          { status: "success", message: "3 files uploaded successfully." },
+          { status: "error", message: "onboarding-form.pdf exceeds the 10MB limit." },
+          { status: "warning", message: "2 rows were skipped due to missing account IDs." },
+        ]}
+        style={{ maxWidth: 420 }}
+      />
     </div>
   );
 }

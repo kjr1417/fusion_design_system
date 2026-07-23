@@ -1,0 +1,80 @@
+<!-- @dsCard group="Components" viewport="1200x760" name="FileUpload — Dropzone, Button trigger" subtitle="Drag-and-drop or button-only file intake with banners and a results grid" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<link rel="stylesheet" href="FileUpload.css">
+<link rel="stylesheet" href="../data/FileResultsGrid.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body{margin:0;padding:24px;background:var(--salt-color-background-marble)}
+  .cols{display:flex;gap:24px;align-items:flex-start}
+  .col{flex:1;min-width:0;background:var(--salt-color-white);border:1px solid var(--salt-container-primary-borderColor);border-radius:var(--salt-palette-corner);padding:24px;box-shadow:var(--salt-shadow-lowest)}
+  .glabel{font-family:var(--salt-text-fontFamily);font-size:12px;font-weight:600;color:var(--salt-content-secondary-foreground);margin-bottom:12px;text-transform:uppercase;letter-spacing:.02em}
+</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { FileUpload } = window.FusionDesignSystem_6db751;
+
+function App() {
+  const [files, setFiles] = React.useState([
+    { id: 1, name: "accounts-q3.xlsx", size: 48200 },
+    { id: 2, name: "accounts-q4.xlsx", size: 51840 },
+  ]);
+  const [uploading, setUploading] = React.useState(false);
+
+  const handleSelect = (picked) => {
+    setUploading(true);
+    setTimeout(() => {
+      setUploading(false);
+      setFiles((f) => [...f, ...picked.map((p, i) => ({ id: Date.now() + i, name: p.name, size: p.size }))]);
+    }, 1200);
+  };
+  const handleDelete = (file) => setFiles((f) => f.filter((x) => x.id !== file.id));
+
+  return (
+    <div className="cols">
+      <div className="col">
+        <div className="glabel">Dropzone variant</div>
+        <FileUpload
+          variant="dropzone"
+          title="Upload a document"
+          templateLabel="Download Template (.xlsx)"
+          templateHref="#"
+          description="Upload a spreadsheet of accounts to bulk-import. Files must match the provided template's column headers exactly, or the import will fail."
+          secondaryDescription="Accepts .xlsx, .csv up to 25MB"
+          uploading={uploading}
+          banners={[{ status: "success", message: "2 files uploaded successfully." }]}
+          files={files}
+          onFilesSelected={handleSelect}
+          onDownload={() => {}}
+          onDelete={handleDelete}
+        />
+      </div>
+      <div className="col">
+        <div className="glabel">Button-only variant</div>
+        <FileUpload
+          variant="button"
+          title="Upload supporting evidence"
+          description="Attach any files that support this request, such as signed forms or statements."
+          uploading={uploading}
+          banners={[{ status: "error", message: "onboarding-form.pdf exceeds the 10MB limit." }]}
+          files={files.slice(0, 1)}
+          onFilesSelected={handleSelect}
+          onDownload={() => {}}
+          onDelete={handleDelete}
+        />
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
