@@ -1,0 +1,7 @@
+.fu-description{margin:0;color:var(--salt-content-secondary-foreground);font-family:var(--salt-text-fontFamily);font-size:var(--salt-text-fontSize);line-height:var(--salt-text-lineHeight);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fu-dropzone{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--salt-spacing-75);text-align:center;padding:var(--salt-spacing-200) var(--salt-spacing-150);border:1px dashed var(--salt-color-gray-300);border-radius:var(--salt-palette-corner);background:var(--salt-color-background-marble);transition:border-color var(--salt-duration-perceptible) ease-in-out,background var(--salt-duration-perceptible) ease-in-out}
+.fu-dropzone-active{border-color:var(--salt-palette-accent);background:var(--salt-palette-accent-weakest)}
+.fu-dropzone-icon{color:var(--salt-color-gray-500);display:inline-flex}
+.fu-dropzone-label{font-family:var(--salt-text-fontFamily);font-size:var(--salt-text-fontSize);color:var(--salt-content-primary-foreground)}
+.fu-secondary{font-family:var(--salt-text-label-fontFamily);font-size:var(--salt-text-label-fontSize);color:var(--salt-content-secondary-foreground)}
+.fu-hidden-input{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
