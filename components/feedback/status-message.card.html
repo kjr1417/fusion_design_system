@@ -1,0 +1,45 @@
+<!-- @dsCard group="Components" viewport="640x420" name="StatusMessage" subtitle="Icon, optional title, one-line body with truncation tooltip, Learn more link" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:16px;background:var(--salt-color-background-snow)}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { StatusMessage } = window.FusionDesignSystem_6db751;
+function App() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 4, maxWidth: 420 }}>
+      <StatusMessage title="Data refresh scheduled" href="#">
+        Your dataset refreshes nightly at 2:00 AM ET.
+      </StatusMessage>
+      <div style={{ borderTop: "1px solid var(--salt-color-gray-200)" }} />
+      <StatusMessage href="#">
+        Changes are saved automatically as you edit this workspace.
+      </StatusMessage>
+      <div style={{ borderTop: "1px solid var(--salt-color-gray-200)" }} />
+      <StatusMessage status="warning" title="Approaching usage limit" href="#">
+        This connector has used 92% of its monthly query allowance and performance may degrade once the quota is reached this billing cycle.
+      </StatusMessage>
+      <div style={{ borderTop: "1px solid var(--salt-color-gray-200)" }} />
+      <StatusMessage showLink={false}>
+        No link needed here — just an icon and a status line.
+      </StatusMessage>
+      <div style={{ borderTop: "1px solid var(--salt-color-gray-200)" }} />
+      <StatusMessage status="error" title="Connection failed" href="#">
+        Could not reach the data source. Check credentials and try again.
+      </StatusMessage>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
