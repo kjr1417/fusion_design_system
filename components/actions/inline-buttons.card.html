@@ -1,0 +1,48 @@
+<!-- @dsCard group="Components" viewport="640x260" name="InlineButtons" subtitle="Bare action-button row from ButtonBar, no container/collapse — for embedding in other patterns" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body{margin:0;padding:24px;background:var(--salt-palette-background-secondary)}
+  .glabel{font-family:var(--salt-text-fontFamily);font-size:13px;font-weight:600;color:var(--salt-content-primary-foreground);margin-bottom:10px}
+  .group{margin-bottom:24px}
+</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { InlineButtons } = window.FusionDesignSystem_6db751;
+function App() {
+  const noop = () => {};
+  return (
+    <div>
+      <div className="group">
+        <div className="glabel">Right-to-left (primary rightmost, default)</div>
+        <InlineButtons
+          primaryAction={{ label: "Save", onClick: noop }}
+          secondaryActions={[{ label: "Save as draft", onClick: noop }]}
+          tertiaryActions={[{ label: "Reset", onClick: noop }]}
+        />
+      </div>
+      <div className="group">
+        <div className="glabel">Left-to-right (primary leftmost)</div>
+        <InlineButtons
+          direction="left-to-right"
+          primaryAction={{ label: "Save", onClick: noop }}
+          secondaryActions={[{ label: "Save as draft", onClick: noop }]}
+          tertiaryActions={[{ label: "Reset", onClick: noop }]}
+        />
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

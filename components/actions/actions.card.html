@@ -1,0 +1,82 @@
+<!-- @dsCard group="Components" viewport="700x300" name="Actions — Button, IconButton, Toggle, Copy Value" subtitle="Solid/bordered/transparent buttons, icon buttons, toggle button groups, and copy-value" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<link rel="stylesheet" href="CopyValue.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body { margin: 0; padding: 24px; }
+  .group { margin-bottom: 20px; }
+  .glabel { font-family: var(--salt-text-fontFamily); font-size: 13px; font-weight: 600; color: var(--salt-content-primary-foreground); margin-bottom: 10px; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { Button, IconButton, ToggleButtonGroup, CopyValue } = window.FusionDesignSystem_6db751;
+function AddIcon() { return <svg className="saltIcon" viewBox="0 0 12 12" fill="currentColor" width="12" height="12" aria-hidden="true"><path d="M6.5 5.5H11v1H6.5V11h-1V6.5H1v-1h4.5V1h1z"/></svg>; }
+function SearchIcon() { return <svg className="saltIcon" viewBox="0 0 12 12" fill="currentColor" width="12" height="12" aria-hidden="true"><path fillRule="evenodd" clipRule="evenodd" d="M8 9a5 5 0 1 1 1-1l3 3-1 1zm1-4a4 4 0 1 1-8 0 4 4 0 0 1 8 0"/></svg>; }
+function App() {
+  return (
+    <div>
+      <div className="group">
+        <div className="glabel">Solid</div>
+        <div className="row">
+          <Button appearance="solid" sentiment="accented">Accented</Button>
+          <Button appearance="solid" sentiment="neutral">Neutral</Button>
+          <Button appearance="solid" sentiment="positive">Positive</Button>
+          <Button appearance="solid" sentiment="negative">Negative</Button>
+        </div>
+      </div>
+      <div className="group">
+        <div className="glabel">Bordered</div>
+        <div className="row">
+          <Button appearance="bordered" sentiment="accented">Accented</Button>
+          <Button appearance="bordered" sentiment="neutral">Neutral</Button>
+          <Button appearance="bordered" sentiment="positive">Positive</Button>
+          <Button appearance="bordered" sentiment="negative">Negative</Button>
+        </div>
+      </div>
+      <div className="group">
+        <div className="glabel">Transparent</div>
+        <div className="row">
+          <Button appearance="transparent" sentiment="accented">Accented</Button>
+          <Button appearance="transparent" sentiment="neutral">Neutral</Button>
+        </div>
+      </div>
+      <div className="group">
+        <div className="glabel">With icons</div>
+        <div className="row">
+          <Button appearance="solid" sentiment="accented"><AddIcon />Create</Button>
+          <Button appearance="bordered" sentiment="neutral"><SearchIcon />Search</Button>
+          <Button appearance="solid" sentiment="accented" disabled>Disabled</Button>
+          <IconButton appearance="bordered" sentiment="neutral" aria-label="Add"><AddIcon /></IconButton>
+        </div>
+      </div>
+      <div className="group">
+        <div className="glabel">Toggle</div>
+        <div className="row">
+          <ToggleButtonGroup options={[{ label: "List", value: "list" }, { label: "Grid", value: "grid" }]} defaultValue="list" />
+          <ToggleButtonGroup options={[{ label: "Visualizer", value: "Visualizer" }, { label: "Code", value: "Code" }]} defaultValue="Visualizer" />
+        </div>
+      </div>
+      <div className="group">
+        <div className="glabel">Copy value</div>
+        <div className="row">
+          <CopyValue value="ds-88213" />
+          <CopyValue value="acct-4471-9902-1183" />
+        </div>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
