@@ -62,7 +62,7 @@ const iconBtnStyle = {
  * secondary (bordered, never primary) action buttons, and a StatusBadge.
  *
  * Requires FusionDesignSystem_6db751 (Button, Divider, Tag, Menu,
- * ToggleButtonGroup) to be loaded on the page, plus ./AppHeader.css
+ * ToggleButtonGroup, CopyValue) to be loaded on the page, plus ./AppHeader.css
  * (hover states + Menu dropdown theming not covered by salt-components.css).
  */
 export function AppHeader({
@@ -87,8 +87,7 @@ export function AppHeader({
   statusType = "info",
   statusLabel = "Draft",
 }) {
-  const { Button, Divider, Tag, Menu, ToggleButtonGroup } = window.FusionDesignSystem_6db751;
-  const [copied, setCopied] = useState(false);
+  const { Button, Divider, Tag, Menu, ToggleButtonGroup, CopyValue } = window.FusionDesignSystem_6db751;
   const [currentVersion, setCurrentVersion] = useState(version);
 
   const parts = breadcrumbItems.length ? breadcrumbItems : [];
@@ -102,13 +101,6 @@ export function AppHeader({
   } else {
     crumbs = parts.map((p, i) => ({ ...p, isFirst: i === 0, isLast: i === parts.length - 1 }));
   }
-
-  const handleCopy = () => {
-    if (navigator.clipboard) navigator.clipboard.writeText(copyValue).catch(() => {});
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-    onCopy && onCopy(copyValue);
-  };
 
   const handleVersionSelect = (v) => {
     setCurrentVersion(v);
@@ -185,20 +177,7 @@ export function AppHeader({
           </div>
         )}
 
-        {showCopyValue && (
-          <div style={{ display: "flex", alignItems: "center", gap: 4, fontFamily: "var(--salt-typography-fontFamily-mono)", fontSize: 12, color: "var(--salt-content-secondary-foreground)", lineHeight: "16px", whiteSpace: "nowrap", minWidth: 0, flexShrink: 1, marginRight: 4, overflow: "hidden" }}>
-            <span style={{ overflow: "hidden", textOverflow: "ellipsis", minWidth: 40 }}>{copyValue}</span>
-            <button
-              onClick={handleCopy}
-              aria-label="Copy value"
-              title={copied ? "Copied" : "Copy value"}
-              style={{ boxSizing: "border-box", border: "none", font: "inherit", padding: 0, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", width: 18, height: 18, borderRadius: "var(--salt-curve-50)", color: "var(--salt-content-secondary-foreground)" }}
-              className="ah-copy-btn"
-            >
-              {copied ? <CheckIcon /> : <CopyIcon />}
-            </button>
-          </div>
-        )}
+        {showCopyValue && <CopyValue value={copyValue} onCopy={onCopy} style={{ flexShrink: 1, marginRight: 4 }} />}
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: 0, flexShrink: 0 }}>
