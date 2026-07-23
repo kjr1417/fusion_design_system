@@ -73,10 +73,11 @@ Location: `components/<group>/<Name>.jsx` + `.d.ts` + `.prompt.md`. 61 component
 
 - **Actions** — `Button`, `IconButton`, `Link`, `Pill`, `CopyValue`
 - **Layout** — `FlexLayout`, `FlowLayout`, `StackLayout`, `GridLayout`, `SaltProviderNext`
-- **Feedback** — `Badge`, `Banner`, `Spinner`, `ProgressBar`, `StatusIndicator`, `StatusMessage`, `Toast`, `LoadingState`, `EmptyState`
-- **Forms** — `Input`, `MultilineInput`, `Checkbox`, `FormField`, `RadioButton`, `Switch`, `Textarea`, `Dropdown`, `Slider`, `ToggleButtonGroup`, `SegmentedButtonGroup`, `OmniInput`
+- **Feedback** — `Badge`, `Banner`, `BannerStack`, `Spinner`, `ProgressBar`, `StatusIndicator`, `StatusMessage`, `Toast`, `LoadingState`, `EmptyState`
+- **Forms** — `Input`, `MultilineInput`, `Checkbox`, `FormField`, `RadioButton`, `Switch`, `Textarea`, `Dropdown`, `Slider`, `ToggleButtonGroup`, `SegmentedButtonGroup`, `OmniInput`, `FileUpload`
 - **Display** — `Card`, `InteractableCard`, `ContentCard`, `Carousel`, `Panel`, `Text` (`H1`–`H4`), `Avatar`, `Divider`, `Tabs`, `Accordion`, `List`, `Tag`, `LinkCard`, `Table`/`TableHead`/`TableBody`/`TableRow`/`TableCell`, `Menu`
-- **Navigation** — `Breadcrumbs`, `Stepper`, `NavigationItem`, `ProgressTracker`, `GlobalNav`, `AppHeader`
+- **Data** — `FileResultsGrid`
+- **Navigation** — `Breadcrumbs`, `Stepper`, `NavigationItem`, `ProgressTracker`, `GlobalNav`, `AppHeader`, `PageHeader`, `SubHeader`
 - **Overlays** — `Dialog`, `Drawer`, `Tooltip`
 
 `Button`, `IconButton`, `Link`, `Pill`, `Card`, `Divider`, `Tabs`, `Switch`, `Checkbox`, `RadioButton`, `ToggleButtonGroup`, `Tag`, `Banner`, `StatusIndicator`, `Table`, `Menu` render using CSS classes copied **verbatim** from a real salt-ds CSS extraction (`salt-components.css`) — not approximated. The rest (`Input`, `Badge`, `Panel`, `FormField`, `Avatar`, `Accordion`, `List`, `LinkCard`, `Dropdown`, `Slider`, `Textarea`, `Spinner`, `ProgressBar`, `Breadcrumbs`, `Stepper`, `Dialog`, `Drawer`, `Tooltip`, `OmniInput`, `ContentCard`, `Carousel`) are hand-authored the same token-driven way, since no verbatim source was available for them. A few Salt families with no counterpart yet (ComboBox, Popover, DatePicker, FileDropZone, Tree, Toolbar) can be added on request.
