@@ -71,9 +71,9 @@ No emoji, no unicode-as-icon, no photographic icons. `ContentCard` icons in the 
 
 Location: `components/<group>/<Name>.jsx` + `.d.ts` + `.prompt.md`. 61 components across 7 groups, covering the major Salt DS families used across the Fusion surfaces:
 
-- **Actions** — `Button`, `IconButton`, `Link`, `Pill`
+- **Actions** — `Button`, `IconButton`, `Link`, `Pill`, `CopyValue`
 - **Layout** — `FlexLayout`, `FlowLayout`, `StackLayout`, `GridLayout`, `SaltProviderNext`
-- **Feedback** — `Badge`, `Banner`, `Spinner`, `ProgressBar`, `StatusIndicator`, `Toast`, `LoadingState`, `EmptyState`
+- **Feedback** — `Badge`, `Banner`, `Spinner`, `ProgressBar`, `StatusIndicator`, `StatusMessage`, `Toast`, `LoadingState`, `EmptyState`
 - **Forms** — `Input`, `MultilineInput`, `Checkbox`, `FormField`, `RadioButton`, `Switch`, `Textarea`, `Dropdown`, `Slider`, `ToggleButtonGroup`, `SegmentedButtonGroup`, `OmniInput`
 - **Display** — `Card`, `InteractableCard`, `ContentCard`, `Carousel`, `Panel`, `Text` (`H1`–`H4`), `Avatar`, `Divider`, `Tabs`, `Accordion`, `List`, `Tag`, `LinkCard`, `Table`/`TableHead`/`TableBody`/`TableRow`/`TableCell`, `Menu`
 - **Navigation** — `Breadcrumbs`, `Stepper`, `NavigationItem`, `ProgressTracker`, `GlobalNav`, `AppHeader`
