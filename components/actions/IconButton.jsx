@@ -8,7 +8,7 @@ export function IconButton({ children, "aria-label": ariaLabel, style, ...rest }
       style={{ width: "var(--salt-size-base)", padding: 0, ...style }}
       {...rest}
     >
-      <span style={{ width: 16, height: 16, display: "inline-flex" }}>{children}</span>
+      <span style={{ width: 16, height: 16, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{children}</span>
     </Button>
   );
 }
