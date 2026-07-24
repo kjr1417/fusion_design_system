@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const ICONS = {
   info: (<path d="M6 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2m1 3v5H5V5z" />),
-  warning: (<path d="M5 8V5h2v3zm2 1.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />),
+  warning: (<path fillRule="evenodd" clipRule="evenodd" d="m6 0 6 12H0zM5 5h2v3H5zm2 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />),
   success: (<path fillRule="evenodd" clipRule="evenodd" d="M6 12C9.31371 12 12 9.31371 12 6C12 2.68629 9.31371 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12ZM3.20711 5.62132L2.5 6.32843L4.97487 8.8033L9.57107 4.20711L8.86396 3.5L4.97487 7.38909L3.20711 5.62132Z" />),
   error: (<path fillRule="evenodd" clipRule="evenodd" d="M9 0H3L0 3v6l3 3h6l3-3V3zM7 2H5v5h2zm-1 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />),
 };
@@ -25,8 +25,8 @@ const BannerGlyph = ({ status = "info" }) => (
 
 /**
  * Fusion BannerStack — a vertical list of dismissible status banners.
- * Success uses the `progress-complete` glyph, error uses `error-solid`
- * (info/warning reuse Banner's own glyphs); every row gets a trailing
+ * Success uses the `progress-complete` glyph, error uses `error-solid`,
+ * warning uses `warning-solid` (info reuses Banner's own glyph); every row gets a trailing
  * transparent close IconButton. Dismissal is tracked internally by index
  * and also reported via `onDismiss` so a parent can sync its own list.
  * Requires FusionDesignSystem_6db751 (IconButton). Uses the verbatim
