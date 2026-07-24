@@ -19,7 +19,7 @@ const KebabIcon = () => (
 /**
  * Fusion PageHeader — full page-level header pattern (distinct from the
  * compact 44px AppHeader nested-page bar).
- * Requires FusionDesignSystem_6db751 (Button, Menu, Tag, StatusIndicator,
+ * Requires FusionDesignSystem_6db751 (Button, Menu, Tag, StatusBadge,
  * CopyValue, Tabs, Divider, Text/H1) plus ./PageHeader.css.
  */
 export function PageHeader({
@@ -45,7 +45,7 @@ export function PageHeader({
   onTabChange,
   style,
 }) {
-  const { Button, Menu, Tag, StatusIndicator, CopyValue, Tabs, Divider, H1, Text } = window.FusionDesignSystem_6db751;
+  const { Button, Menu, Tag, StatusBadge, CopyValue, Tabs, Divider, H1, Text } = window.FusionDesignSystem_6db751;
   const [expanded, setExpanded] = useState(false);
   const [truncated, setTruncated] = useState(false);
   const textRef = useRef(null);
@@ -66,7 +66,7 @@ export function PageHeader({
   const metaItems = [];
   if (primaryTag) metaItems.push({ key: "primaryTag", node: <Tag color="accent">{primaryTag}</Tag>, gapAfter: secondaryTag ? "100" : "200" });
   if (secondaryTag) metaItems.push({ key: "secondaryTag", node: <Tag color="positive">{secondaryTag}</Tag>, gapAfter: "200" });
-  if (status) metaItems.push({ key: "status", node: <StatusIndicator status={status.type || "info"} label={status.label} />, gapAfter: "200" });
+  if (status) metaItems.push({ key: "status", node: <StatusBadge status={status.label} />, gapAfter: "200" });
   if (copyValue) metaItems.push({ key: "copyValue", node: <CopyValue value={copyValue} onCopy={onCopy} />, gapAfter: "200" });
   dataLabels.forEach((label, i) => metaItems.push({ key: `label-${i}`, node: <Text variant="label" color="secondary">{label}</Text>, gapAfter: "200" }));
 
