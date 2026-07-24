@@ -1,0 +1,97 @@
+<!-- @dsCard group="Components" viewport="1000x560" name="Vertical Navigation" subtitle="Left nav rail — always-open, collapsible, and expand-on-hover variants" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:16px;background:var(--salt-palette-background-secondary)}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { VerticalNavigation } = window.FusionDesignSystem_6db751;
+
+const items = [
+  { id: "home", label: "Home", icon: "home" },
+  { id: "analytics", label: "Analytics", icon: "chart-pie", items: [
+    { id: "reports", label: "Reports" },
+    { id: "dashboards", label: "Dashboards" },
+  ] },
+  { id: "datasets", label: "Datasets", icon: "database", items: [
+    { id: "governed", label: "Governed" },
+    { id: "shared", label: "Shared with me" },
+  ] },
+  { id: "team", label: "Team", icon: "users" },
+  { id: "settings", label: "Settings", icon: "settings" },
+];
+
+function Frame({ label, children }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      <div style={{ fontFamily: "var(--salt-text-fontFamily)", fontSize: 13, fontWeight: "var(--salt-text-fontWeight-strong)", color: "var(--salt-content-secondary-foreground)" }}>{label}</div>
+      <div style={{ display: "flex", height: 460, border: "1px solid var(--salt-color-gray-200)", borderRadius: "var(--salt-palette-corner)", overflow: "hidden", background: "var(--salt-palette-background-primary)" }}>
+        {children}
+        <div style={{ flex: 1, background: "var(--salt-palette-background-secondary)" }} />
+      </div>
+    </div>
+  );
+}
+
+function HamburgerIcon() {
+  return <svg viewBox="0 0 12 12" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M0 1h12v2H0zm0 4h12v2H0zm12 4H0v2h12z" /></svg>;
+}
+
+function HeaderTriggeredFrame({ items, active, setActive }) {
+  const [collapsed, setCollapsed] = React.useState(true);
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      <div style={{ fontFamily: "var(--salt-text-fontFamily)", fontSize: 13, fontWeight: "var(--salt-text-fontWeight-strong)", color: "var(--salt-content-secondary-foreground)" }}>Header-triggered, no panel iconography</div>
+      <div style={{ display: "flex", flexDirection: "column", height: 460, width: 460, border: "1px solid var(--salt-color-gray-200)", borderRadius: "var(--salt-palette-corner)", overflow: "hidden", background: "var(--salt-palette-background-primary)" }}>
+        <div style={{ height: 44, flexShrink: 0, display: "flex", alignItems: "center", gap: 12, padding: "0 12px", borderBottom: "1px solid var(--salt-color-gray-200)" }}>
+          <button
+            onClick={() => setCollapsed((c) => !c)}
+            aria-label={collapsed ? "Open navigation" : "Close navigation"}
+            title={collapsed ? "Open navigation" : "Close navigation"}
+            style={{ all: "unset", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", width: 28, height: 28, borderRadius: "var(--salt-palette-corner-weaker)", color: "var(--salt-content-primary-foreground)" }}
+          >
+            <HamburgerIcon />
+          </button>
+          <span style={{ fontFamily: "var(--salt-text-fontFamily)", fontSize: "var(--salt-text-h4-fontSize)", fontWeight: "var(--salt-text-fontWeight-strong)" }}>Fusion Studio</span>
+        </div>
+        <div style={{ flex: 1, minHeight: 0, display: "flex" }}>
+          <VerticalNavigation
+            items={items} activeId={active} onNavigate={(i) => setActive(i.id)} defaultOpenIds={["analytics"]}
+            showIcons={false} showFooterToggle={false} collapsed={collapsed} onCollapsedChange={setCollapsed}
+          />
+          <div style={{ flex: 1, background: "var(--salt-palette-background-secondary)" }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [active, setActive] = React.useState("home");
+  return (
+    <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
+      <Frame label="Always open (default)">
+        <VerticalNavigation items={items} activeId={active} onNavigate={(i) => setActive(i.id)} defaultOpenIds={["analytics"]} />
+      </Frame>
+      <Frame label="Collapsible (starts collapsed, 45px → 230px)">
+        <VerticalNavigation items={items} activeId={active} onNavigate={(i) => setActive(i.id)} collapsible defaultCollapsed defaultOpenIds={["analytics"]} />
+      </Frame>
+      <Frame label="Expand on hover (hover the rail)">
+        <VerticalNavigation items={items} activeId={active} onNavigate={(i) => setActive(i.id)} collapsible expandOnHover defaultCollapsed defaultOpenIds={["analytics"]} />
+      </Frame>
+      <HeaderTriggeredFrame items={items} active={active} setActive={setActive} />
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

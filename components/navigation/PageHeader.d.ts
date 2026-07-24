@@ -5,8 +5,6 @@ export interface PageHeaderAction {
   onClick?: (e: any) => void;
 }
 
-export type PageHeaderStatusType = "info" | "success" | "warning" | "error";
-
 /**
  * Fusion PageHeader — the full page-level header pattern for top-of-page
  * chrome (distinct from AppHeader, the compact 44px nested-page bar).
@@ -23,7 +21,7 @@ export type PageHeaderStatusType = "info" | "success" | "warning" | "error";
  * overflows the line, and expands it to wrap in place.
  *
  * Line 3 (optional metadata row): category-1 primary Tag, category-2
- * secondary Tag, a StatusIndicator badge, a CopyValue affordance, and any
+ * secondary Tag, a StatusBadge, a CopyValue affordance, and any
  * number of plain secondary data labels.
  *
  * Line 4 (optional): page Tabs with a Divider directly beneath.
@@ -52,7 +50,8 @@ export interface PageHeaderProps {
   primaryTag?: string;
   /** Secondary category tag, rendered with category-2 (positive) coloring. */
   secondaryTag?: string;
-  status?: { type?: PageHeaderStatusType; label: string };
+  /** Rendered as a StatusBadge; `label` is matched against its built-in status vocabulary (e.g. "Published", "Approved", "Pending") to resolve icon + color. */
+  status?: { label: string };
   /** A copyable value (id, key, code) shown with a copy-to-clipboard icon. */
   copyValue?: string;
   onCopy?: (value: string) => void;
