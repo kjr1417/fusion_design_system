@@ -1,0 +1,1596 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "components/actions/**",
+              "components/data/**",
+              "components/display/**",
+              "components/feedback/**",
+              "components/forms/**",
+              "components/layout/**",
+              "components/navigation/**",
+              "components/overlays/**",
+              "ui_kits/fusion-platform/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Open Sans|Public Sans|Source Serif 4|PT Mono))/i]",
+        "message": "Font not provided by the design system. Available: Open Sans, Public Sans, Source Serif 4, PT Mono."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Accordion'] > JSXAttribute > JSXIdentifier[name!=/^(?:items|defaultOpen|variant|allowMultiple|key|ref|className|style|children)$/]",
+        "message": "<Accordion> doesn't accept that prop. Declared props: items, defaultOpen, variant, allowMultiple."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Accordion'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:boxed|inline)$/]",
+        "message": "<Accordion> variant must be one of 'boxed' | 'inline'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='AppHeaderBreadcrumbItem'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|href|key|ref|className|style|children)$/]",
+        "message": "<AppHeaderBreadcrumbItem> doesn't accept that prop. Declared props: label, href."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Avatar'] > JSXAttribute > JSXIdentifier[name!=/^(?:name|src|size|key|ref|className|style|children)$/]",
+        "message": "<Avatar> doesn't accept that prop. Declared props: name, src, size."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute > JSXIdentifier[name!=/^(?:value|dot|topRight|key|ref|className|style|children)$/]",
+        "message": "<Badge> doesn't accept that prop. Declared props: value, dot, topRight."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Banner'] > JSXAttribute > JSXIdentifier[name!=/^(?:status|variant|children|key|ref|className|style|children)$/]",
+        "message": "<Banner> doesn't accept that prop. Declared props: status, variant, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Banner'] > JSXAttribute[name.name='status'] > Literal[value!=/^(?:info|success|warning|error)$/]",
+        "message": "<Banner> status must be one of 'info' | 'success' | 'warning' | 'error'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Banner'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:primary|secondary)$/]",
+        "message": "<Banner> variant must be one of 'primary' | 'secondary'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='BannerStackItem'] > JSXAttribute > JSXIdentifier[name!=/^(?:status|message|key|ref|className|style|children)$/]",
+        "message": "<BannerStackItem> doesn't accept that prop. Declared props: status, message."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='BannerStackItem'] > JSXAttribute[name.name='status'] > Literal[value!=/^(?:info|success|warning|error)$/]",
+        "message": "<BannerStackItem> status must be one of 'info' | 'success' | 'warning' | 'error'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Breadcrumbs'] > JSXAttribute > JSXIdentifier[name!=/^(?:items|key|ref|className|style|children)$/]",
+        "message": "<Breadcrumbs> doesn't accept that prop. Declared props: items."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute > JSXIdentifier[name!=/^(?:appearance|sentiment|disabled|loading|children|key|ref|className|style|children)$/]",
+        "message": "<Button> doesn't accept that prop. Declared props: appearance, sentiment, disabled, loading, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='appearance'] > Literal[value!=/^(?:solid|bordered|transparent)$/]",
+        "message": "<Button> appearance must be one of 'solid' | 'bordered' | 'transparent'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='sentiment'] > Literal[value!=/^(?:accented|neutral|negative|positive|caution)$/]",
+        "message": "<Button> sentiment must be one of 'accented' | 'neutral' | 'negative' | 'positive' | 'caution'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='ButtonBarAction'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|onClick|key|ref|className|style|children)$/]",
+        "message": "<ButtonBarAction> doesn't accept that prop. Declared props: label, onClick."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Card'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|accent|hoverable|children|key|ref|className|style|children)$/]",
+        "message": "<Card> doesn't accept that prop. Declared props: variant, accent, hoverable, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Card'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:primary|secondary|tertiary|ghost)$/]",
+        "message": "<Card> variant must be one of 'primary' | 'secondary' | 'tertiary' | 'ghost'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Card'] > JSXAttribute[name.name='accent'] > Literal[value!=/^(?:top|bottom|left|right)$/]",
+        "message": "<Card> accent must be one of 'top' | 'bottom' | 'left' | 'right'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Carousel'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|title|subtitle|minItemWidth|gap|controls|controlsPlacement|className|style|key|ref|className|style|children)$/]",
+        "message": "<Carousel> doesn't accept that prop. Declared props: children, title, subtitle, minItemWidth, gap, controls, controlsPlacement, className, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Carousel'] > JSXAttribute[name.name='controlsPlacement'] > Literal[value!=/^(?:bottom|top)$/]",
+        "message": "<Carousel> controlsPlacement must be one of 'bottom' | 'top'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Checkbox'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|disabled|key|ref|className|style|children)$/]",
+        "message": "<Checkbox> doesn't accept that prop. Declared props: label, disabled."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='ContentCardCta'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|href|onClick|key|ref|className|style|children)$/]",
+        "message": "<ContentCardCta> doesn't accept that prop. Declared props: label, href, onClick."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='CopyValue'] > JSXAttribute > JSXIdentifier[name!=/^(?:value|onCopy|style|key|ref|className|style|children)$/]",
+        "message": "<CopyValue> doesn't accept that prop. Declared props: value, onCopy, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Dialog'] > JSXAttribute > JSXIdentifier[name!=/^(?:open|title|onClose|children|actions|key|ref|className|style|children)$/]",
+        "message": "<Dialog> doesn't accept that prop. Declared props: open, title, onClose, children, actions."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Divider'] > JSXAttribute > JSXIdentifier[name!=/^(?:orientation|key|ref|className|style|children)$/]",
+        "message": "<Divider> doesn't accept that prop. Declared props: orientation."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Divider'] > JSXAttribute[name.name='orientation'] > Literal[value!=/^(?:horizontal|vertical)$/]",
+        "message": "<Divider> orientation must be one of 'horizontal' | 'vertical'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Drawer'] > JSXAttribute > JSXIdentifier[name!=/^(?:open|title|side|onClose|children|key|ref|className|style|children)$/]",
+        "message": "<Drawer> doesn't accept that prop. Declared props: open, title, side, onClose, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Drawer'] > JSXAttribute[name.name='side'] > Literal[value!=/^(?:left|right)$/]",
+        "message": "<Drawer> side must be one of 'left' | 'right'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Dropdown'] > JSXAttribute > JSXIdentifier[name!=/^(?:options|placeholder|key|ref|className|style|children)$/]",
+        "message": "<Dropdown> doesn't accept that prop. Declared props: options, placeholder."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='EmptyState'] > JSXAttribute > JSXIdentifier[name!=/^(?:title|description|action|key|ref|className|style|children)$/]",
+        "message": "<EmptyState> doesn't accept that prop. Declared props: title, description, action."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='FileResultsGridFile'] > JSXAttribute > JSXIdentifier[name!=/^(?:id|name|size|key|ref|className|style|children)$/]",
+        "message": "<FileResultsGridFile> doesn't accept that prop. Declared props: id, name, size."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='FileUploadBanner'] > JSXAttribute > JSXIdentifier[name!=/^(?:status|message|key|ref|className|style|children)$/]",
+        "message": "<FileUploadBanner> doesn't accept that prop. Declared props: status, message."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='FileUploadBanner'] > JSXAttribute[name.name='status'] > Literal[value!=/^(?:info|success|warning|error)$/]",
+        "message": "<FileUploadBanner> status must be one of 'info' | 'success' | 'warning' | 'error'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='FlexLayout'] > JSXAttribute > JSXIdentifier[name!=/^(?:direction|gap|align|justify|wrap|key|ref|className|style|children)$/]",
+        "message": "<FlexLayout> doesn't accept that prop. Declared props: direction, gap, align, justify, wrap."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='FlexLayout'] > JSXAttribute[name.name='direction'] > Literal[value!=/^(?:row|column)$/]",
+        "message": "<FlexLayout> direction must be one of 'row' | 'column'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='FlowLayout'] > JSXAttribute > JSXIdentifier[name!=/^(?:gap|align|justify|key|ref|className|style|children)$/]",
+        "message": "<FlowLayout> doesn't accept that prop. Declared props: gap, align, justify."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='FormField'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|helperText|necessity|children|key|ref|className|style|children)$/]",
+        "message": "<FormField> doesn't accept that prop. Declared props: label, helperText, necessity, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='FormField'] > JSXAttribute[name.name='necessity'] > Literal[value!=/^(?:required|optional)$/]",
+        "message": "<FormField> necessity must be one of 'required' | 'optional'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='GlobalNav'] > JSXAttribute > JSXIdentifier[name!=/^(?:logoSrc|logoAlt|searchPlaceholder|searchValue|showSearch|userName|notificationCount|onSearch|key|ref|className|style|children)$/]",
+        "message": "<GlobalNav> doesn't accept that prop. Declared props: logoSrc, logoAlt, searchPlaceholder, searchValue, showSearch, userName, notificationCount, onSearch."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='GridLayout'] > JSXAttribute > JSXIdentifier[name!=/^(?:columns|gap|rowGap|key|ref|className|style|children)$/]",
+        "message": "<GridLayout> doesn't accept that prop. Declared props: columns, gap, rowGap."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='IconButton'] > JSXAttribute > JSXIdentifier[name!=/^(?:appearance|sentiment|children|key|ref|className|style|children)$/]",
+        "message": "<IconButton> doesn't accept that prop. Declared props: appearance, sentiment, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='IconButton'] > JSXAttribute[name.name='appearance'] > Literal[value!=/^(?:solid|bordered|transparent)$/]",
+        "message": "<IconButton> appearance must be one of 'solid' | 'bordered' | 'transparent'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='IconButton'] > JSXAttribute[name.name='sentiment'] > Literal[value!=/^(?:accented|neutral|negative|positive|caution)$/]",
+        "message": "<IconButton> sentiment must be one of 'accented' | 'neutral' | 'negative' | 'positive' | 'caution'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='InlineButtons'] > JSXAttribute > JSXIdentifier[name!=/^(?:direction|primaryAction|secondaryActions|tertiaryActions|key|ref|className|style|children)$/]",
+        "message": "<InlineButtons> doesn't accept that prop. Declared props: direction, primaryAction, secondaryActions, tertiaryActions."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='InlineButtons'] > JSXAttribute[name.name='direction'] > Literal[value!=/^(?:left-to-right|right-to-left)$/]",
+        "message": "<InlineButtons> direction must be one of 'left-to-right' | 'right-to-left'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Input'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|validationState|readOnly|startAdornment|endAdornment|key|ref|className|style|children)$/]",
+        "message": "<Input> doesn't accept that prop. Declared props: variant, validationState, readOnly, startAdornment, endAdornment."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Input'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:primary|secondary|tertiary)$/]",
+        "message": "<Input> variant must be one of 'primary' | 'secondary' | 'tertiary'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Input'] > JSXAttribute[name.name='validationState'] > Literal[value!=/^(?:error|warning|success)$/]",
+        "message": "<Input> validationState must be one of 'error' | 'warning' | 'success'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='InteractableCard'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|accent|disabled|selected|key|ref|className|style|children)$/]",
+        "message": "<InteractableCard> doesn't accept that prop. Declared props: variant, accent, disabled, selected."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='InteractableCard'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:primary|secondary|tertiary)$/]",
+        "message": "<InteractableCard> variant must be one of 'primary' | 'secondary' | 'tertiary'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='InteractableCard'] > JSXAttribute[name.name='accent'] > Literal[value!=/^(?:top|bottom|left|right)$/]",
+        "message": "<InteractableCard> accent must be one of 'top' | 'bottom' | 'left' | 'right'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Link'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|underline|children|key|ref|className|style|children)$/]",
+        "message": "<Link> doesn't accept that prop. Declared props: variant, underline, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Link'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:primary|secondary|accent)$/]",
+        "message": "<Link> variant must be one of 'primary' | 'secondary' | 'accent'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Link'] > JSXAttribute[name.name='underline'] > Literal[value!=/^(?:default|never)$/]",
+        "message": "<Link> underline must be one of 'default' | 'never'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='LinkCard'] > JSXAttribute > JSXIdentifier[name!=/^(?:eyebrow|title|body|href|key|ref|className|style|children)$/]",
+        "message": "<LinkCard> doesn't accept that prop. Declared props: eyebrow, title, body, href."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='List'] > JSXAttribute > JSXIdentifier[name!=/^(?:items|renderItem|dividers|key|ref|className|style|children)$/]",
+        "message": "<List> doesn't accept that prop. Declared props: items, renderItem, dividers."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='LoadingState'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|height|key|ref|className|style|children)$/]",
+        "message": "<LoadingState> doesn't accept that prop. Declared props: label, height."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Menu'] > JSXAttribute > JSXIdentifier[name!=/^(?:items|onSelect|trigger|triggerProps|key|ref|className|style|children)$/]",
+        "message": "<Menu> doesn't accept that prop. Declared props: items, onSelect, trigger, triggerProps."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='MultilineInput'] > JSXAttribute > JSXIdentifier[name!=/^(?:rows|disabled|validationState|bordered|key|ref|className|style|children)$/]",
+        "message": "<MultilineInput> doesn't accept that prop. Declared props: rows, disabled, validationState, bordered."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='MultilineInput'] > JSXAttribute[name.name='validationState'] > Literal[value!=/^(?:error|warning|success)$/]",
+        "message": "<MultilineInput> validationState must be one of 'error' | 'warning' | 'success'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='NavigationItem'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|href|active|icon|orientation|key|ref|className|style|children)$/]",
+        "message": "<NavigationItem> doesn't accept that prop. Declared props: label, href, active, icon, orientation."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='NavigationItem'] > JSXAttribute[name.name='orientation'] > Literal[value!=/^(?:horizontal|vertical)$/]",
+        "message": "<NavigationItem> orientation must be one of 'horizontal' | 'vertical'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='OmniSuggestion'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|icon|key|ref|className|style|children)$/]",
+        "message": "<OmniSuggestion> doesn't accept that prop. Declared props: label, icon."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='PageHeaderAction'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|onClick|key|ref|className|style|children)$/]",
+        "message": "<PageHeaderAction> doesn't accept that prop. Declared props: label, onClick."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Panel'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|key|ref|className|style|children)$/]",
+        "message": "<Panel> doesn't accept that prop. Declared props: variant."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Panel'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:primary|secondary|tertiary)$/]",
+        "message": "<Panel> variant must be one of 'primary' | 'secondary' | 'tertiary'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Pill'] > JSXAttribute > JSXIdentifier[name!=/^(?:clickable|active|onClose|children|key|ref|className|style|children)$/]",
+        "message": "<Pill> doesn't accept that prop. Declared props: clickable, active, onClose, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='ProgressBar'] > JSXAttribute > JSXIdentifier[name!=/^(?:value|max|label|key|ref|className|style|children)$/]",
+        "message": "<ProgressBar> doesn't accept that prop. Declared props: value, max, label."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='ProgressTrackerStep'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|status|key|ref|className|style|children)$/]",
+        "message": "<ProgressTrackerStep> doesn't accept that prop. Declared props: label, status."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='ProgressTrackerStep'] > JSXAttribute[name.name='status'] > Literal[value!=/^(?:complete|active|upcoming)$/]",
+        "message": "<ProgressTrackerStep> status must be one of 'complete' | 'active' | 'upcoming'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='RadioButton'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|disabled|key|ref|className|style|children)$/]",
+        "message": "<RadioButton> doesn't accept that prop. Declared props: label, disabled."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='SaltProviderNext'] > JSXAttribute > JSXIdentifier[name!=/^(?:mode|density|key|ref|className|style|children)$/]",
+        "message": "<SaltProviderNext> doesn't accept that prop. Declared props: mode, density."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='SaltProviderNext'] > JSXAttribute[name.name='mode'] > Literal[value!=/^(?:light|dark)$/]",
+        "message": "<SaltProviderNext> mode must be one of 'light' | 'dark'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='SaltProviderNext'] > JSXAttribute[name.name='density'] > Literal[value!=/^(?:low)$/]",
+        "message": "<SaltProviderNext> density must be one of 'low'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='SegmentedOption'] > JSXAttribute > JSXIdentifier[name!=/^(?:value|label|key|ref|className|style|children)$/]",
+        "message": "<SegmentedOption> doesn't accept that prop. Declared props: value, label."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Slider'] > JSXAttribute > JSXIdentifier[name!=/^(?:min|max|step|defaultValue|disabled|onChange|key|ref|className|style|children)$/]",
+        "message": "<Slider> doesn't accept that prop. Declared props: min, max, step, defaultValue, disabled, onChange."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Spinner'] > JSXAttribute > JSXIdentifier[name!=/^(?:size|label|key|ref|className|style|children)$/]",
+        "message": "<Spinner> doesn't accept that prop. Declared props: size, label."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='StackLayout'] > JSXAttribute > JSXIdentifier[name!=/^(?:gap|align|key|ref|className|style|children)$/]",
+        "message": "<StackLayout> doesn't accept that prop. Declared props: gap, align."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='StaticList'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|value|labelPosition|labelWidth|fixedWidth|style|key|ref|className|style|children)$/]",
+        "message": "<StaticList> doesn't accept that prop. Declared props: label, value, labelPosition, labelWidth, fixedWidth, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='StaticListGroupItem'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|value|key|ref|className|style|children)$/]",
+        "message": "<StaticListGroupItem> doesn't accept that prop. Declared props: label, value."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='StatusIndicator'] > JSXAttribute > JSXIdentifier[name!=/^(?:status|label|key|ref|className|style|children)$/]",
+        "message": "<StatusIndicator> doesn't accept that prop. Declared props: status, label."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='StatusIndicator'] > JSXAttribute[name.name='status'] > Literal[value!=/^(?:info|success|warning|error)$/]",
+        "message": "<StatusIndicator> status must be one of 'info' | 'success' | 'warning' | 'error'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='StatusMessage'] > JSXAttribute > JSXIdentifier[name!=/^(?:status|title|children|showLink|linkText|href|onLinkClick|className|key|ref|className|style|children)$/]",
+        "message": "<StatusMessage> doesn't accept that prop. Declared props: status, title, children, showLink, linkText, href, onLinkClick, className."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='StatusMessage'] > JSXAttribute[name.name='status'] > Literal[value!=/^(?:info|success|warning|error)$/]",
+        "message": "<StatusMessage> status must be one of 'info' | 'success' | 'warning' | 'error'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Stepper'] > JSXAttribute > JSXIdentifier[name!=/^(?:steps|activeStep|key|ref|className|style|children)$/]",
+        "message": "<Stepper> doesn't accept that prop. Declared props: steps, activeStep."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='SubHeaderAction'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|onClick|key|ref|className|style|children)$/]",
+        "message": "<SubHeaderAction> doesn't accept that prop. Declared props: label, onClick."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Switch'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|disabled|onChange|key|ref|className|style|children)$/]",
+        "message": "<Switch> doesn't accept that prop. Declared props: label, disabled, onChange."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Table'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|zebra|divider|className|style|children|key|ref|className|style|children)$/]",
+        "message": "<Table> doesn't accept that prop. Declared props: variant, zebra, divider, className, style, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Table'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:primary|secondary|tertiary)$/]",
+        "message": "<Table> variant must be one of 'primary' | 'secondary' | 'tertiary'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Table'] > JSXAttribute[name.name='divider'] > Literal[value!=/^(?:primary|secondary|tertiary|none)$/]",
+        "message": "<Table> divider must be one of 'primary' | 'secondary' | 'tertiary' | 'none'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Tabs'] > JSXAttribute > JSXIdentifier[name!=/^(?:items|defaultActive|onChange|key|ref|className|style|children)$/]",
+        "message": "<Tabs> doesn't accept that prop. Declared props: items, defaultActive, onChange."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Tag'] > JSXAttribute > JSXIdentifier[name!=/^(?:color|children|key|ref|className|style|children)$/]",
+        "message": "<Tag> doesn't accept that prop. Declared props: color, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Tag'] > JSXAttribute[name.name='color'] > Literal[value!=/^(?:neutral|accent|positive|negative)$/]",
+        "message": "<Tag> color must be one of 'neutral' | 'accent' | 'positive' | 'negative'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Text'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|color|as|key|ref|className|style|children)$/]",
+        "message": "<Text> doesn't accept that prop. Declared props: variant, color, as."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Text'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:h1|h2|h3|h4|body|label)$/]",
+        "message": "<Text> variant must be one of 'h1' | 'h2' | 'h3' | 'h4' | 'body' | 'label'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Text'] > JSXAttribute[name.name='color'] > Literal[value!=/^(?:primary|secondary|disabled)$/]",
+        "message": "<Text> color must be one of 'primary' | 'secondary' | 'disabled'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Textarea'] > JSXAttribute > JSXIdentifier[name!=/^(?:validationState|key|ref|className|style|children)$/]",
+        "message": "<Textarea> doesn't accept that prop. Declared props: validationState."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Textarea'] > JSXAttribute[name.name='validationState'] > Literal[value!=/^(?:error|warning|success)$/]",
+        "message": "<Textarea> validationState must be one of 'error' | 'warning' | 'success'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Toast'] > JSXAttribute > JSXIdentifier[name!=/^(?:status|onClose|key|ref|className|style|children)$/]",
+        "message": "<Toast> doesn't accept that prop. Declared props: status, onClose."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Toast'] > JSXAttribute[name.name='status'] > Literal[value!=/^(?:info|success|warning|error)$/]",
+        "message": "<Toast> status must be one of 'info' | 'success' | 'warning' | 'error'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='ToggleButtonGroup'] > JSXAttribute > JSXIdentifier[name!=/^(?:options|defaultValue|onChange|key|ref|className|style|children)$/]",
+        "message": "<ToggleButtonGroup> doesn't accept that prop. Declared props: options, defaultValue, onChange."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Tooltip'] > JSXAttribute > JSXIdentifier[name!=/^(?:content|placement|status|style|className|children|key|ref|className|style|children)$/]",
+        "message": "<Tooltip> doesn't accept that prop. Declared props: content, placement, status, style, className, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Tooltip'] > JSXAttribute[name.name='placement'] > Literal[value!=/^(?:top|bottom)$/]",
+        "message": "<Tooltip> placement must be one of 'top' | 'bottom'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Tooltip'] > JSXAttribute[name.name='status'] > Literal[value!=/^(?:info|error|warning|success)$/]",
+        "message": "<Tooltip> status must be one of 'info' | 'error' | 'warning' | 'success'."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {
+      "Accordion": {
+        "replaces": []
+      },
+      "AppHeaderBreadcrumbItem": {
+        "replaces": []
+      },
+      "Avatar": {
+        "replaces": []
+      },
+      "Badge": {
+        "replaces": []
+      },
+      "Banner": {
+        "replaces": []
+      },
+      "BannerStackItem": {
+        "replaces": []
+      },
+      "Breadcrumbs": {
+        "replaces": []
+      },
+      "Button": {
+        "replaces": []
+      },
+      "ButtonBarAction": {
+        "replaces": []
+      },
+      "Card": {
+        "replaces": []
+      },
+      "Carousel": {
+        "replaces": []
+      },
+      "Checkbox": {
+        "replaces": []
+      },
+      "ContentCardCta": {
+        "replaces": []
+      },
+      "CopyValue": {
+        "replaces": []
+      },
+      "Dialog": {
+        "replaces": []
+      },
+      "Divider": {
+        "replaces": []
+      },
+      "Drawer": {
+        "replaces": []
+      },
+      "Dropdown": {
+        "replaces": []
+      },
+      "EmptyState": {
+        "replaces": []
+      },
+      "FileResultsGridFile": {
+        "replaces": []
+      },
+      "FileUploadBanner": {
+        "replaces": []
+      },
+      "FlexLayout": {
+        "replaces": []
+      },
+      "FlowLayout": {
+        "replaces": []
+      },
+      "FormField": {
+        "replaces": []
+      },
+      "GlobalNav": {
+        "replaces": []
+      },
+      "GridLayout": {
+        "replaces": []
+      },
+      "IconButton": {
+        "replaces": []
+      },
+      "InlineButtons": {
+        "replaces": []
+      },
+      "Input": {
+        "replaces": []
+      },
+      "InteractableCard": {
+        "replaces": []
+      },
+      "Link": {
+        "replaces": []
+      },
+      "LinkCard": {
+        "replaces": []
+      },
+      "List": {
+        "replaces": []
+      },
+      "LoadingState": {
+        "replaces": []
+      },
+      "Menu": {
+        "replaces": []
+      },
+      "MultilineInput": {
+        "replaces": []
+      },
+      "NavigationItem": {
+        "replaces": []
+      },
+      "OmniSuggestion": {
+        "replaces": []
+      },
+      "PageHeaderAction": {
+        "replaces": []
+      },
+      "Panel": {
+        "replaces": []
+      },
+      "Pill": {
+        "replaces": []
+      },
+      "ProgressBar": {
+        "replaces": []
+      },
+      "ProgressTrackerStep": {
+        "replaces": []
+      },
+      "RadioButton": {
+        "replaces": []
+      },
+      "SaltProviderNext": {
+        "replaces": []
+      },
+      "SegmentedOption": {
+        "replaces": []
+      },
+      "Slider": {
+        "replaces": []
+      },
+      "Spinner": {
+        "replaces": []
+      },
+      "StackLayout": {
+        "replaces": []
+      },
+      "StaticList": {
+        "replaces": []
+      },
+      "StaticListGroupItem": {
+        "replaces": []
+      },
+      "StatusIndicator": {
+        "replaces": []
+      },
+      "StatusMessage": {
+        "replaces": []
+      },
+      "Stepper": {
+        "replaces": []
+      },
+      "SubHeaderAction": {
+        "replaces": []
+      },
+      "Switch": {
+        "replaces": []
+      },
+      "Table": {
+        "replaces": []
+      },
+      "Tabs": {
+        "replaces": []
+      },
+      "Tag": {
+        "replaces": []
+      },
+      "Text": {
+        "replaces": []
+      },
+      "Textarea": {
+        "replaces": []
+      },
+      "Toast": {
+        "replaces": []
+      },
+      "ToggleButtonGroup": {
+        "replaces": []
+      },
+      "Tooltip": {
+        "replaces": []
+      }
+    },
+    "tokens": [
+      "--domain-ai-bold",
+      "--domain-ai-fill",
+      "--domain-ai-text",
+      "--domain-data-bold",
+      "--domain-data-fill",
+      "--domain-data-text",
+      "--domain-documentation-bold",
+      "--domain-documentation-fill",
+      "--domain-documentation-text",
+      "--domain-governance-bold",
+      "--domain-governance-fill",
+      "--domain-governance-text",
+      "--domain-technical-bold",
+      "--domain-technical-fill",
+      "--domain-technical-text",
+      "--salt-accent-background",
+      "--salt-accent-background-disabled",
+      "--salt-actionable-accented-background",
+      "--salt-actionable-accented-background-active",
+      "--salt-actionable-accented-background-hover",
+      "--salt-actionable-accented-bold-background",
+      "--salt-actionable-accented-bold-background-active",
+      "--salt-actionable-accented-bold-background-hover",
+      "--salt-actionable-accented-bold-borderColor",
+      "--salt-actionable-accented-bold-borderColor-active",
+      "--salt-actionable-accented-bold-borderColor-hover",
+      "--salt-actionable-accented-bold-foreground",
+      "--salt-actionable-accented-bold-foreground-active",
+      "--salt-actionable-accented-bold-foreground-hover",
+      "--salt-actionable-accented-borderColor",
+      "--salt-actionable-accented-borderColor-active",
+      "--salt-actionable-accented-borderColor-hover",
+      "--salt-actionable-accented-borderColor-selected",
+      "--salt-actionable-accented-foreground",
+      "--salt-actionable-accented-foreground-active",
+      "--salt-actionable-accented-foreground-hover",
+      "--salt-actionable-accented-subtle-background",
+      "--salt-actionable-accented-subtle-background-active",
+      "--salt-actionable-accented-subtle-background-hover",
+      "--salt-actionable-accented-subtle-borderColor",
+      "--salt-actionable-accented-subtle-borderColor-active",
+      "--salt-actionable-accented-subtle-borderColor-hover",
+      "--salt-actionable-accented-subtle-foreground",
+      "--salt-actionable-accented-subtle-foreground-active",
+      "--salt-actionable-accented-subtle-foreground-hover",
+      "--salt-actionable-background",
+      "--salt-actionable-background-active",
+      "--salt-actionable-background-hover",
+      "--salt-actionable-bold-background",
+      "--salt-actionable-bold-background-active",
+      "--salt-actionable-bold-background-hover",
+      "--salt-actionable-bold-borderColor",
+      "--salt-actionable-bold-borderColor-active",
+      "--salt-actionable-bold-borderColor-hover",
+      "--salt-actionable-bold-foreground",
+      "--salt-actionable-bold-foreground-active",
+      "--salt-actionable-bold-foreground-hover",
+      "--salt-actionable-borderColor",
+      "--salt-actionable-borderColor-active",
+      "--salt-actionable-borderColor-hover",
+      "--salt-actionable-caution-background",
+      "--salt-actionable-caution-background-active",
+      "--salt-actionable-caution-background-hover",
+      "--salt-actionable-caution-bold-background",
+      "--salt-actionable-caution-bold-background-active",
+      "--salt-actionable-caution-bold-background-hover",
+      "--salt-actionable-caution-bold-borderColor",
+      "--salt-actionable-caution-bold-borderColor-active",
+      "--salt-actionable-caution-bold-borderColor-hover",
+      "--salt-actionable-caution-bold-foreground",
+      "--salt-actionable-caution-bold-foreground-active",
+      "--salt-actionable-caution-bold-foreground-hover",
+      "--salt-actionable-caution-borderColor",
+      "--salt-actionable-caution-borderColor-active",
+      "--salt-actionable-caution-borderColor-hover",
+      "--salt-actionable-caution-borderColor-selected",
+      "--salt-actionable-caution-foreground",
+      "--salt-actionable-caution-foreground-active",
+      "--salt-actionable-caution-foreground-hover",
+      "--salt-actionable-caution-subtle-background",
+      "--salt-actionable-caution-subtle-background-active",
+      "--salt-actionable-caution-subtle-background-hover",
+      "--salt-actionable-caution-subtle-borderColor",
+      "--salt-actionable-caution-subtle-borderColor-active",
+      "--salt-actionable-caution-subtle-borderColor-hover",
+      "--salt-actionable-caution-subtle-foreground",
+      "--salt-actionable-caution-subtle-foreground-active",
+      "--salt-actionable-caution-subtle-foreground-hover",
+      "--salt-actionable-foreground",
+      "--salt-actionable-foreground-active",
+      "--salt-actionable-foreground-hover",
+      "--salt-actionable-negative-background",
+      "--salt-actionable-negative-background-active",
+      "--salt-actionable-negative-background-hover",
+      "--salt-actionable-negative-bold-background",
+      "--salt-actionable-negative-bold-background-active",
+      "--salt-actionable-negative-bold-background-hover",
+      "--salt-actionable-negative-bold-borderColor",
+      "--salt-actionable-negative-bold-borderColor-active",
+      "--salt-actionable-negative-bold-borderColor-hover",
+      "--salt-actionable-negative-bold-foreground",
+      "--salt-actionable-negative-bold-foreground-active",
+      "--salt-actionable-negative-bold-foreground-hover",
+      "--salt-actionable-negative-borderColor",
+      "--salt-actionable-negative-borderColor-active",
+      "--salt-actionable-negative-borderColor-hover",
+      "--salt-actionable-negative-borderColor-selected",
+      "--salt-actionable-negative-foreground",
+      "--salt-actionable-negative-foreground-active",
+      "--salt-actionable-negative-foreground-hover",
+      "--salt-actionable-negative-subtle-background",
+      "--salt-actionable-negative-subtle-background-active",
+      "--salt-actionable-negative-subtle-background-hover",
+      "--salt-actionable-negative-subtle-borderColor",
+      "--salt-actionable-negative-subtle-borderColor-active",
+      "--salt-actionable-negative-subtle-borderColor-hover",
+      "--salt-actionable-negative-subtle-foreground",
+      "--salt-actionable-negative-subtle-foreground-active",
+      "--salt-actionable-negative-subtle-foreground-hover",
+      "--salt-actionable-positive-background",
+      "--salt-actionable-positive-background-active",
+      "--salt-actionable-positive-background-hover",
+      "--salt-actionable-positive-bold-background",
+      "--salt-actionable-positive-bold-background-active",
+      "--salt-actionable-positive-bold-background-hover",
+      "--salt-actionable-positive-bold-borderColor",
+      "--salt-actionable-positive-bold-borderColor-active",
+      "--salt-actionable-positive-bold-borderColor-hover",
+      "--salt-actionable-positive-bold-foreground",
+      "--salt-actionable-positive-bold-foreground-active",
+      "--salt-actionable-positive-bold-foreground-hover",
+      "--salt-actionable-positive-borderColor",
+      "--salt-actionable-positive-borderColor-active",
+      "--salt-actionable-positive-borderColor-hover",
+      "--salt-actionable-positive-borderColor-selected",
+      "--salt-actionable-positive-foreground",
+      "--salt-actionable-positive-foreground-active",
+      "--salt-actionable-positive-foreground-hover",
+      "--salt-actionable-positive-subtle-background",
+      "--salt-actionable-positive-subtle-background-active",
+      "--salt-actionable-positive-subtle-background-hover",
+      "--salt-actionable-positive-subtle-borderColor",
+      "--salt-actionable-positive-subtle-borderColor-active",
+      "--salt-actionable-positive-subtle-borderColor-hover",
+      "--salt-actionable-positive-subtle-foreground",
+      "--salt-actionable-positive-subtle-foreground-active",
+      "--salt-actionable-positive-subtle-foreground-hover",
+      "--salt-actionable-subtle-background",
+      "--salt-actionable-subtle-background-active",
+      "--salt-actionable-subtle-background-hover",
+      "--salt-actionable-subtle-borderColor",
+      "--salt-actionable-subtle-foreground",
+      "--salt-actionable-subtle-foreground-active",
+      "--salt-actionable-subtle-foreground-hover",
+      "--salt-borderStyle-dashed",
+      "--salt-borderStyle-solid",
+      "--salt-category-1-background",
+      "--salt-category-1-bold-background",
+      "--salt-category-1-borderColor",
+      "--salt-category-1-foreground",
+      "--salt-category-2-background",
+      "--salt-category-2-bold-background",
+      "--salt-category-2-borderColor",
+      "--salt-category-2-foreground",
+      "--salt-category-3-background",
+      "--salt-category-3-bold-background",
+      "--salt-category-3-borderColor",
+      "--salt-category-3-foreground",
+      "--salt-category-4-background",
+      "--salt-category-4-bold-background",
+      "--salt-category-4-borderColor",
+      "--salt-category-4-foreground",
+      "--salt-color-background-granite",
+      "--salt-color-background-jet",
+      "--salt-color-background-leather",
+      "--salt-color-background-limestone",
+      "--salt-color-background-marble",
+      "--salt-color-background-snow",
+      "--salt-color-background-titanium",
+      "--salt-color-black",
+      "--salt-color-black-rgb",
+      "--salt-color-blue-100",
+      "--salt-color-blue-200",
+      "--salt-color-blue-300",
+      "--salt-color-blue-400",
+      "--salt-color-blue-500",
+      "--salt-color-blue-600",
+      "--salt-color-blue-700",
+      "--salt-color-blue-800",
+      "--salt-color-blue-900",
+      "--salt-color-gray-100",
+      "--salt-color-gray-200",
+      "--salt-color-gray-300",
+      "--salt-color-gray-400",
+      "--salt-color-gray-500",
+      "--salt-color-gray-600",
+      "--salt-color-gray-700",
+      "--salt-color-gray-800",
+      "--salt-color-gray-900",
+      "--salt-color-green-100",
+      "--salt-color-green-200",
+      "--salt-color-green-300",
+      "--salt-color-green-400",
+      "--salt-color-green-500",
+      "--salt-color-green-600",
+      "--salt-color-green-700",
+      "--salt-color-green-800",
+      "--salt-color-green-900",
+      "--salt-color-indigo-100",
+      "--salt-color-indigo-500",
+      "--salt-color-indigo-700",
+      "--salt-color-orange-100",
+      "--salt-color-orange-200",
+      "--salt-color-orange-300",
+      "--salt-color-orange-400",
+      "--salt-color-orange-500",
+      "--salt-color-orange-600",
+      "--salt-color-orange-700",
+      "--salt-color-orange-800",
+      "--salt-color-orange-900",
+      "--salt-color-purple-100",
+      "--salt-color-purple-200",
+      "--salt-color-purple-500",
+      "--salt-color-purple-800",
+      "--salt-color-red-100",
+      "--salt-color-red-200",
+      "--salt-color-red-300",
+      "--salt-color-red-400",
+      "--salt-color-red-500",
+      "--salt-color-red-600",
+      "--salt-color-red-700",
+      "--salt-color-red-800",
+      "--salt-color-red-900",
+      "--salt-color-teal-100",
+      "--salt-color-teal-500",
+      "--salt-color-teal-700",
+      "--salt-color-white",
+      "--salt-color-white-rgb",
+      "--salt-container-ghost-background",
+      "--salt-container-ghost-borderColor",
+      "--salt-container-primary-background",
+      "--salt-container-primary-background-disabled",
+      "--salt-container-primary-borderColor",
+      "--salt-container-primary-borderColor-disabled",
+      "--salt-container-secondary-background",
+      "--salt-container-secondary-background-disabled",
+      "--salt-container-secondary-borderColor",
+      "--salt-container-secondary-borderColor-disabled",
+      "--salt-container-tertiary-background",
+      "--salt-container-tertiary-background-disabled",
+      "--salt-container-tertiary-borderColor",
+      "--salt-container-tertiary-borderColor-disabled",
+      "--salt-content-accent-foreground",
+      "--salt-content-bold-foreground",
+      "--salt-content-foreground-visited",
+      "--salt-content-primary-foreground",
+      "--salt-content-primary-foreground-disabled",
+      "--salt-content-secondary-foreground",
+      "--salt-content-secondary-foreground-disabled",
+      "--salt-cursor-active",
+      "--salt-cursor-disabled",
+      "--salt-cursor-hover",
+      "--salt-cursor-pending",
+      "--salt-cursor-readonly",
+      "--salt-cursor-text",
+      "--salt-curve-0",
+      "--salt-curve-100",
+      "--salt-curve-150",
+      "--salt-curve-200",
+      "--salt-curve-250",
+      "--salt-curve-300",
+      "--salt-curve-50",
+      "--salt-curve-999",
+      "--salt-duration-immediate",
+      "--salt-duration-instant",
+      "--salt-duration-perceptible",
+      "--salt-editable-borderColor",
+      "--salt-editable-borderColor-active",
+      "--salt-editable-borderColor-hover",
+      "--salt-editable-borderColor-readonly",
+      "--salt-editable-primary-background",
+      "--salt-editable-secondary-background",
+      "--salt-focused-outline",
+      "--salt-focused-outlineColor",
+      "--salt-focused-outlineInset",
+      "--salt-focused-outlineOffset",
+      "--salt-focused-outlineStyle",
+      "--salt-focused-outlineWidth",
+      "--salt-navigable-accent-indicator-active",
+      "--salt-navigable-indicator-hover",
+      "--salt-overlayable-backdrop",
+      "--salt-overlayable-shadow",
+      "--salt-overlayable-shadow-hover",
+      "--salt-overlayable-shadow-popout",
+      "--salt-palette-accent",
+      "--salt-palette-accent-strong",
+      "--salt-palette-accent-stronger",
+      "--salt-palette-accent-weak",
+      "--salt-palette-accent-weaker",
+      "--salt-palette-accent-weakest",
+      "--salt-palette-background-primary",
+      "--salt-palette-background-secondary",
+      "--salt-palette-background-tertiary",
+      "--salt-palette-corner",
+      "--salt-palette-corner-soft",
+      "--salt-palette-corner-strong",
+      "--salt-palette-corner-stronger",
+      "--salt-palette-corner-strongest",
+      "--salt-palette-corner-weak",
+      "--salt-palette-corner-weaker",
+      "--salt-palette-foreground-primary",
+      "--salt-palette-foreground-primary-alt",
+      "--salt-palette-foreground-secondary",
+      "--salt-palette-foreground-visited",
+      "--salt-palette-info",
+      "--salt-palette-info-strong",
+      "--salt-palette-info-weakest",
+      "--salt-palette-negative",
+      "--salt-palette-negative-strong",
+      "--salt-palette-negative-weaker",
+      "--salt-palette-negative-weakest",
+      "--salt-palette-neutral",
+      "--salt-palette-neutral-strong",
+      "--salt-palette-neutral-stronger",
+      "--salt-palette-neutral-weak",
+      "--salt-palette-neutral-weaker",
+      "--salt-palette-neutral-weakest",
+      "--salt-palette-positive",
+      "--salt-palette-positive-strong",
+      "--salt-palette-positive-weaker",
+      "--salt-palette-positive-weakest",
+      "--salt-palette-warning",
+      "--salt-palette-warning-strong",
+      "--salt-palette-warning-weaker",
+      "--salt-palette-warning-weakest",
+      "--salt-selectable-borderColor",
+      "--salt-selectable-borderColor-disabled",
+      "--salt-selectable-borderColor-hover",
+      "--salt-selectable-borderColor-readonly",
+      "--salt-selectable-borderColor-selected",
+      "--salt-selectable-borderColor-selectedDisabled",
+      "--salt-selectable-foreground",
+      "--salt-selectable-foreground-disabled",
+      "--salt-selectable-foreground-hover",
+      "--salt-selectable-foreground-selected",
+      "--salt-selectable-foreground-selectedDisabled",
+      "--salt-sentiment-accent-background",
+      "--salt-separable-primary-borderColor",
+      "--salt-separable-secondary-borderColor",
+      "--salt-separable-tertiary-borderColor",
+      "--salt-shadow-low",
+      "--salt-shadow-lower",
+      "--salt-shadow-lowest",
+      "--salt-shadow-medium",
+      "--salt-shadow-mediumLow",
+      "--salt-size-adornment",
+      "--salt-size-bar",
+      "--salt-size-base",
+      "--salt-size-fixed-100",
+      "--salt-size-fixed-200",
+      "--salt-size-icon",
+      "--salt-size-indicator",
+      "--salt-size-selectable",
+      "--salt-spacing-100",
+      "--salt-spacing-150",
+      "--salt-spacing-200",
+      "--salt-spacing-25",
+      "--salt-spacing-250",
+      "--salt-spacing-300",
+      "--salt-spacing-350",
+      "--salt-spacing-400",
+      "--salt-spacing-50",
+      "--salt-spacing-500",
+      "--salt-spacing-600",
+      "--salt-spacing-75",
+      "--salt-spacing-fixed-100",
+      "--salt-spacing-fixed-200",
+      "--salt-spacing-fixed-300",
+      "--salt-spacing-fixed-400",
+      "--salt-status-error-background",
+      "--salt-status-error-borderColor",
+      "--salt-status-error-foreground-decorative",
+      "--salt-status-error-foreground-informative",
+      "--salt-status-info-borderColor",
+      "--salt-status-info-foreground-decorative",
+      "--salt-status-info-foreground-informative",
+      "--salt-status-success-background",
+      "--salt-status-success-borderColor",
+      "--salt-status-success-foreground-decorative",
+      "--salt-status-success-foreground-informative",
+      "--salt-status-warning-background",
+      "--salt-status-warning-borderColor",
+      "--salt-status-warning-foreground-decorative",
+      "--salt-status-warning-foreground-informative",
+      "--salt-text-action-fontFamily",
+      "--salt-text-action-fontWeight",
+      "--salt-text-action-letterSpacing",
+      "--salt-text-action-textAlign",
+      "--salt-text-action-textTransform",
+      "--salt-text-code-fontFamily",
+      "--salt-text-display1-fontFamily",
+      "--salt-text-display1-fontSize",
+      "--salt-text-display1-fontWeight",
+      "--salt-text-display1-lineHeight",
+      "--salt-text-display2-fontFamily",
+      "--salt-text-display2-fontSize",
+      "--salt-text-display2-fontWeight",
+      "--salt-text-display2-lineHeight",
+      "--salt-text-fontFamily",
+      "--salt-text-fontSize",
+      "--salt-text-fontWeight",
+      "--salt-text-fontWeight-strong",
+      "--salt-text-h1-fontFamily",
+      "--salt-text-h1-fontSize",
+      "--salt-text-h1-fontWeight",
+      "--salt-text-h1-lineHeight",
+      "--salt-text-h2-fontFamily",
+      "--salt-text-h2-fontSize",
+      "--salt-text-h2-fontWeight",
+      "--salt-text-h2-lineHeight",
+      "--salt-text-h3-fontFamily",
+      "--salt-text-h3-fontSize",
+      "--salt-text-h3-fontWeight",
+      "--salt-text-h3-lineHeight",
+      "--salt-text-h4-fontFamily",
+      "--salt-text-h4-fontSize",
+      "--salt-text-h4-fontWeight",
+      "--salt-text-h4-lineHeight",
+      "--salt-text-hero-fontFamily",
+      "--salt-text-hero-fontSize",
+      "--salt-text-hero-fontWeight",
+      "--salt-text-hero-lineHeight",
+      "--salt-text-label-fontFamily",
+      "--salt-text-label-fontSize",
+      "--salt-text-label-fontWeight",
+      "--salt-text-label-lineHeight",
+      "--salt-text-letterSpacing",
+      "--salt-text-lineHeight",
+      "--salt-text-minHeight",
+      "--salt-text-notation-fontFamily",
+      "--salt-text-notation-fontSize",
+      "--salt-text-notation-fontWeight",
+      "--salt-text-notation-lineHeight",
+      "--salt-typography-fontFamily-display",
+      "--salt-typography-fontFamily-mono",
+      "--salt-typography-fontFamily-sans",
+      "--salt-typography-fontFamily-serif",
+      "--salt-typography-fontWeight-bold",
+      "--salt-typography-fontWeight-extraBold",
+      "--salt-typography-fontWeight-light",
+      "--salt-typography-fontWeight-medium",
+      "--salt-typography-fontWeight-regular",
+      "--salt-typography-fontWeight-semiBold",
+      "--salt-typography-textDecoration-none",
+      "--salt-typography-textDecoration-underline",
+      "--salt-zIndex-default",
+      "--salt-zIndex-flyover"
+    ],
+    "tokenKinds": {
+      "--salt-color-black-rgb": "color",
+      "--salt-color-white-rgb": "color",
+      "--salt-color-black": "color",
+      "--salt-color-white": "color",
+      "--salt-color-gray-100": "color",
+      "--salt-color-gray-200": "color",
+      "--salt-color-gray-300": "color",
+      "--salt-color-gray-400": "color",
+      "--salt-color-gray-500": "color",
+      "--salt-color-gray-600": "color",
+      "--salt-color-gray-700": "color",
+      "--salt-color-gray-800": "color",
+      "--salt-color-gray-900": "color",
+      "--salt-color-blue-100": "color",
+      "--salt-color-blue-200": "color",
+      "--salt-color-blue-300": "color",
+      "--salt-color-blue-400": "color",
+      "--salt-color-blue-500": "color",
+      "--salt-color-blue-600": "color",
+      "--salt-color-blue-700": "color",
+      "--salt-color-blue-800": "color",
+      "--salt-color-blue-900": "color",
+      "--salt-color-green-100": "color",
+      "--salt-color-green-200": "color",
+      "--salt-color-green-300": "color",
+      "--salt-color-green-400": "color",
+      "--salt-color-green-500": "color",
+      "--salt-color-green-600": "color",
+      "--salt-color-green-700": "color",
+      "--salt-color-green-800": "color",
+      "--salt-color-green-900": "color",
+      "--salt-color-red-100": "color",
+      "--salt-color-red-200": "color",
+      "--salt-color-red-300": "color",
+      "--salt-color-red-400": "color",
+      "--salt-color-red-500": "color",
+      "--salt-color-red-600": "color",
+      "--salt-color-red-700": "color",
+      "--salt-color-red-800": "color",
+      "--salt-color-red-900": "color",
+      "--salt-color-purple-100": "color",
+      "--salt-color-purple-200": "color",
+      "--salt-color-purple-500": "color",
+      "--salt-color-purple-800": "color",
+      "--salt-color-teal-100": "color",
+      "--salt-color-teal-500": "color",
+      "--salt-color-teal-700": "color",
+      "--salt-color-indigo-100": "color",
+      "--salt-color-indigo-500": "color",
+      "--salt-color-indigo-700": "color",
+      "--domain-data-fill": "color",
+      "--domain-data-bold": "color",
+      "--domain-data-text": "font",
+      "--domain-ai-fill": "color",
+      "--domain-ai-bold": "color",
+      "--domain-ai-text": "font",
+      "--domain-governance-fill": "color",
+      "--domain-governance-bold": "color",
+      "--domain-governance-text": "font",
+      "--domain-technical-fill": "color",
+      "--domain-technical-bold": "color",
+      "--domain-technical-text": "font",
+      "--domain-documentation-fill": "color",
+      "--domain-documentation-bold": "color",
+      "--domain-documentation-text": "font",
+      "--salt-color-orange-100": "color",
+      "--salt-color-orange-200": "color",
+      "--salt-color-orange-300": "color",
+      "--salt-color-orange-400": "color",
+      "--salt-color-orange-500": "color",
+      "--salt-color-orange-600": "color",
+      "--salt-color-orange-700": "color",
+      "--salt-color-orange-800": "color",
+      "--salt-color-orange-900": "color",
+      "--salt-color-background-snow": "color",
+      "--salt-color-background-marble": "color",
+      "--salt-color-background-limestone": "color",
+      "--salt-color-background-titanium": "color",
+      "--salt-color-background-jet": "color",
+      "--salt-color-background-granite": "color",
+      "--salt-color-background-leather": "color",
+      "--salt-palette-accent": "color",
+      "--salt-palette-accent-strong": "color",
+      "--salt-palette-accent-stronger": "color",
+      "--salt-palette-accent-weak": "color",
+      "--salt-palette-accent-weaker": "color",
+      "--salt-palette-accent-weakest": "color",
+      "--salt-palette-neutral": "color",
+      "--salt-palette-neutral-strong": "color",
+      "--salt-palette-neutral-stronger": "color",
+      "--salt-palette-neutral-weak": "color",
+      "--salt-palette-neutral-weaker": "color",
+      "--salt-palette-neutral-weakest": "color",
+      "--salt-palette-background-primary": "color",
+      "--salt-palette-background-secondary": "color",
+      "--salt-palette-background-tertiary": "color",
+      "--salt-palette-foreground-primary": "color",
+      "--salt-palette-foreground-primary-alt": "color",
+      "--salt-palette-foreground-secondary": "color",
+      "--salt-palette-foreground-visited": "color",
+      "--salt-palette-positive": "color",
+      "--salt-palette-positive-strong": "color",
+      "--salt-palette-positive-weaker": "color",
+      "--salt-palette-positive-weakest": "color",
+      "--salt-palette-negative": "color",
+      "--salt-palette-negative-strong": "color",
+      "--salt-palette-negative-weaker": "color",
+      "--salt-palette-negative-weakest": "color",
+      "--salt-palette-warning": "color",
+      "--salt-palette-warning-strong": "color",
+      "--salt-palette-warning-weaker": "color",
+      "--salt-palette-warning-weakest": "color",
+      "--salt-palette-info": "color",
+      "--salt-palette-info-strong": "color",
+      "--salt-palette-info-weakest": "color",
+      "--salt-content-primary-foreground": "color",
+      "--salt-content-secondary-foreground": "color",
+      "--salt-content-accent-foreground": "color",
+      "--salt-content-bold-foreground": "color",
+      "--salt-content-foreground-visited": "color",
+      "--salt-container-primary-background": "color",
+      "--salt-container-primary-borderColor": "color",
+      "--salt-container-secondary-background": "color",
+      "--salt-container-secondary-borderColor": "color",
+      "--salt-container-tertiary-background": "color",
+      "--salt-container-tertiary-borderColor": "color",
+      "--salt-actionable-accented-bold-foreground": "color",
+      "--salt-actionable-accented-bold-background": "color",
+      "--salt-actionable-accented-bold-background-hover": "color",
+      "--salt-actionable-accented-bold-background-active": "color",
+      "--salt-actionable-accented-bold-borderColor": "color",
+      "--salt-actionable-accented-foreground": "color",
+      "--salt-actionable-accented-background": "color",
+      "--salt-actionable-accented-background-hover": "color",
+      "--salt-actionable-accented-background-active": "color",
+      "--salt-actionable-accented-borderColor": "color",
+      "--salt-actionable-accented-borderColor-hover": "color",
+      "--salt-actionable-accented-subtle-foreground": "color",
+      "--salt-actionable-accented-subtle-background": "color",
+      "--salt-actionable-accented-subtle-background-hover": "color",
+      "--salt-actionable-accented-subtle-background-active": "color",
+      "--salt-actionable-accented-subtle-borderColor": "color",
+      "--salt-actionable-bold-foreground": "color",
+      "--salt-actionable-bold-background": "color",
+      "--salt-actionable-bold-background-hover": "color",
+      "--salt-actionable-bold-background-active": "color",
+      "--salt-actionable-bold-borderColor": "color",
+      "--salt-actionable-foreground": "color",
+      "--salt-actionable-background": "color",
+      "--salt-actionable-background-hover": "color",
+      "--salt-actionable-background-active": "color",
+      "--salt-actionable-borderColor": "color",
+      "--salt-actionable-borderColor-hover": "color",
+      "--salt-actionable-subtle-foreground": "color",
+      "--salt-actionable-subtle-background": "color",
+      "--salt-actionable-subtle-background-hover": "color",
+      "--salt-actionable-subtle-background-active": "color",
+      "--salt-actionable-subtle-borderColor": "color",
+      "--salt-actionable-negative-bold-foreground": "color",
+      "--salt-actionable-negative-bold-background": "color",
+      "--salt-actionable-negative-bold-background-hover": "color",
+      "--salt-actionable-negative-bold-borderColor": "color",
+      "--salt-actionable-negative-foreground": "color",
+      "--salt-actionable-negative-background": "color",
+      "--salt-actionable-negative-background-hover": "color",
+      "--salt-actionable-negative-borderColor": "color",
+      "--salt-actionable-negative-subtle-foreground": "color",
+      "--salt-actionable-negative-subtle-background": "color",
+      "--salt-actionable-negative-subtle-background-hover": "color",
+      "--salt-actionable-negative-subtle-borderColor": "color",
+      "--salt-editable-primary-background": "color",
+      "--salt-editable-secondary-background": "color",
+      "--salt-editable-borderColor": "color",
+      "--salt-editable-borderColor-hover": "color",
+      "--salt-editable-borderColor-active": "color",
+      "--salt-editable-borderColor-readonly": "color",
+      "--salt-selectable-borderColor": "color",
+      "--salt-selectable-foreground": "color",
+      "--salt-selectable-borderColor-hover": "color",
+      "--salt-selectable-foreground-hover": "color",
+      "--salt-selectable-borderColor-selected": "color",
+      "--salt-selectable-foreground-selected": "color",
+      "--salt-status-error-background": "color",
+      "--salt-status-error-borderColor": "color",
+      "--salt-status-error-foreground-decorative": "color",
+      "--salt-status-warning-background": "color",
+      "--salt-status-warning-borderColor": "color",
+      "--salt-status-warning-foreground-decorative": "color",
+      "--salt-status-success-background": "color",
+      "--salt-status-success-borderColor": "color",
+      "--salt-status-info-borderColor": "color",
+      "--salt-sentiment-accent-background": "color",
+      "--salt-focused-outlineColor": "color",
+      "--salt-focused-outlineWidth": "spacing",
+      "--salt-focused-outlineStyle": "other",
+      "--salt-focused-outlineOffset": "spacing",
+      "--salt-focused-outline": "color",
+      "--salt-focused-outlineInset": "other",
+      "--salt-cursor-hover": "other",
+      "--salt-cursor-active": "other",
+      "--salt-cursor-disabled": "other",
+      "--salt-cursor-readonly": "other",
+      "--salt-cursor-text": "other",
+      "--salt-cursor-pending": "other",
+      "--salt-typography-fontFamily-sans": "font",
+      "--salt-typography-fontFamily-display": "font",
+      "--salt-typography-fontFamily-mono": "font",
+      "--salt-typography-fontFamily-serif": "font",
+      "--salt-typography-fontWeight-light": "other",
+      "--salt-typography-fontWeight-regular": "other",
+      "--salt-typography-fontWeight-medium": "other",
+      "--salt-typography-fontWeight-semiBold": "other",
+      "--salt-typography-fontWeight-bold": "other",
+      "--salt-typography-fontWeight-extraBold": "other",
+      "--salt-text-fontFamily": "font",
+      "--salt-text-fontWeight": "font",
+      "--salt-text-fontWeight-strong": "font",
+      "--salt-text-fontSize": "font",
+      "--salt-text-lineHeight": "font",
+      "--salt-text-letterSpacing": "font",
+      "--salt-text-action-fontFamily": "font",
+      "--salt-text-action-fontWeight": "font",
+      "--salt-text-action-letterSpacing": "font",
+      "--salt-text-action-textTransform": "font",
+      "--salt-text-action-textAlign": "font",
+      "--salt-text-label-fontFamily": "font",
+      "--salt-text-label-fontWeight": "font",
+      "--salt-text-label-fontSize": "font",
+      "--salt-text-label-lineHeight": "font",
+      "--salt-text-notation-fontFamily": "font",
+      "--salt-text-notation-fontWeight": "font",
+      "--salt-text-notation-fontSize": "font",
+      "--salt-text-notation-lineHeight": "font",
+      "--salt-text-code-fontFamily": "font",
+      "--salt-text-h1-fontFamily": "font",
+      "--salt-text-h1-fontWeight": "font",
+      "--salt-text-h1-fontSize": "font",
+      "--salt-text-h1-lineHeight": "font",
+      "--salt-text-h2-fontFamily": "font",
+      "--salt-text-h2-fontWeight": "font",
+      "--salt-text-h2-fontSize": "font",
+      "--salt-text-h2-lineHeight": "font",
+      "--salt-text-h3-fontFamily": "font",
+      "--salt-text-h3-fontWeight": "font",
+      "--salt-text-h3-fontSize": "font",
+      "--salt-text-h3-lineHeight": "font",
+      "--salt-text-h4-fontFamily": "font",
+      "--salt-text-h4-fontWeight": "font",
+      "--salt-text-h4-fontSize": "font",
+      "--salt-text-h4-lineHeight": "font",
+      "--salt-text-display1-fontFamily": "font",
+      "--salt-text-display1-fontWeight": "font",
+      "--salt-text-display1-fontSize": "font",
+      "--salt-text-display1-lineHeight": "font",
+      "--salt-text-display2-fontFamily": "font",
+      "--salt-text-display2-fontWeight": "font",
+      "--salt-text-display2-fontSize": "font",
+      "--salt-text-display2-lineHeight": "font",
+      "--salt-text-hero-fontFamily": "font",
+      "--salt-text-hero-fontWeight": "font",
+      "--salt-text-hero-fontSize": "font",
+      "--salt-text-hero-lineHeight": "font",
+      "--salt-spacing-25": "spacing",
+      "--salt-spacing-50": "spacing",
+      "--salt-spacing-75": "spacing",
+      "--salt-spacing-100": "spacing",
+      "--salt-spacing-150": "spacing",
+      "--salt-spacing-200": "spacing",
+      "--salt-spacing-250": "spacing",
+      "--salt-spacing-300": "spacing",
+      "--salt-spacing-350": "spacing",
+      "--salt-spacing-400": "spacing",
+      "--salt-spacing-500": "spacing",
+      "--salt-spacing-600": "spacing",
+      "--salt-spacing-fixed-100": "spacing",
+      "--salt-spacing-fixed-200": "spacing",
+      "--salt-spacing-fixed-300": "spacing",
+      "--salt-spacing-fixed-400": "spacing",
+      "--salt-size-base": "spacing",
+      "--salt-size-icon": "spacing",
+      "--salt-size-adornment": "spacing",
+      "--salt-size-bar": "spacing",
+      "--salt-size-selectable": "spacing",
+      "--salt-size-fixed-100": "spacing",
+      "--salt-size-fixed-200": "spacing",
+      "--salt-curve-0": "radius",
+      "--salt-curve-50": "radius",
+      "--salt-curve-100": "radius",
+      "--salt-curve-150": "radius",
+      "--salt-curve-200": "radius",
+      "--salt-curve-250": "radius",
+      "--salt-curve-300": "radius",
+      "--salt-curve-999": "radius",
+      "--salt-palette-corner-weaker": "radius",
+      "--salt-palette-corner-weak": "radius",
+      "--salt-palette-corner": "radius",
+      "--salt-palette-corner-strong": "radius",
+      "--salt-palette-corner-stronger": "radius",
+      "--salt-palette-corner-soft": "radius",
+      "--salt-palette-corner-strongest": "radius",
+      "--salt-shadow-lowest": "shadow",
+      "--salt-shadow-lower": "shadow",
+      "--salt-shadow-low": "shadow",
+      "--salt-shadow-mediumLow": "shadow",
+      "--salt-shadow-medium": "shadow",
+      "--salt-overlayable-shadow": "shadow",
+      "--salt-overlayable-shadow-hover": "shadow",
+      "--salt-overlayable-backdrop": "color",
+      "--salt-duration-instant": "other",
+      "--salt-duration-perceptible": "other",
+      "--salt-duration-immediate": "other",
+      "--salt-zIndex-default": "other",
+      "--salt-borderStyle-solid": "other",
+      "--salt-borderStyle-dashed": "other",
+      "--salt-typography-textDecoration-underline": "other",
+      "--salt-typography-textDecoration-none": "other",
+      "--salt-separable-primary-borderColor": "color",
+      "--salt-separable-secondary-borderColor": "color",
+      "--salt-separable-tertiary-borderColor": "color",
+      "--salt-zIndex-flyover": "other",
+      "--salt-text-minHeight": "font",
+      "--salt-size-indicator": "spacing",
+      "--salt-navigable-indicator-hover": "color",
+      "--salt-navigable-accent-indicator-active": "color",
+      "--salt-overlayable-shadow-popout": "shadow",
+      "--salt-container-ghost-background": "color",
+      "--salt-container-ghost-borderColor": "color",
+      "--salt-status-info-foreground-decorative": "color",
+      "--salt-status-info-foreground-informative": "color",
+      "--salt-status-error-foreground-informative": "color",
+      "--salt-status-warning-foreground-informative": "color",
+      "--salt-status-success-foreground-decorative": "color",
+      "--salt-status-success-foreground-informative": "color",
+      "--salt-content-primary-foreground-disabled": "color",
+      "--salt-content-secondary-foreground-disabled": "color",
+      "--salt-container-primary-background-disabled": "color",
+      "--salt-container-primary-borderColor-disabled": "color",
+      "--salt-container-secondary-background-disabled": "color",
+      "--salt-container-secondary-borderColor-disabled": "color",
+      "--salt-container-tertiary-background-disabled": "color",
+      "--salt-container-tertiary-borderColor-disabled": "color",
+      "--salt-selectable-borderColor-disabled": "color",
+      "--salt-selectable-foreground-disabled": "color",
+      "--salt-selectable-borderColor-selectedDisabled": "color",
+      "--salt-selectable-foreground-selectedDisabled": "color",
+      "--salt-selectable-borderColor-readonly": "color",
+      "--salt-accent-background": "color",
+      "--salt-accent-background-disabled": "color",
+      "--salt-actionable-accented-bold-foreground-hover": "color",
+      "--salt-actionable-accented-bold-foreground-active": "color",
+      "--salt-actionable-accented-bold-borderColor-hover": "color",
+      "--salt-actionable-accented-bold-borderColor-active": "color",
+      "--salt-actionable-accented-foreground-hover": "color",
+      "--salt-actionable-accented-foreground-active": "color",
+      "--salt-actionable-accented-borderColor-active": "color",
+      "--salt-actionable-accented-borderColor-selected": "color",
+      "--salt-actionable-accented-subtle-foreground-hover": "color",
+      "--salt-actionable-accented-subtle-foreground-active": "color",
+      "--salt-actionable-accented-subtle-borderColor-hover": "color",
+      "--salt-actionable-accented-subtle-borderColor-active": "color",
+      "--salt-actionable-positive-bold-foreground": "color",
+      "--salt-actionable-positive-bold-foreground-hover": "color",
+      "--salt-actionable-positive-bold-foreground-active": "color",
+      "--salt-actionable-positive-bold-background": "color",
+      "--salt-actionable-positive-bold-background-hover": "color",
+      "--salt-actionable-positive-bold-background-active": "color",
+      "--salt-actionable-positive-bold-borderColor": "color",
+      "--salt-actionable-positive-bold-borderColor-hover": "color",
+      "--salt-actionable-positive-bold-borderColor-active": "color",
+      "--salt-actionable-positive-foreground": "color",
+      "--salt-actionable-positive-foreground-hover": "color",
+      "--salt-actionable-positive-foreground-active": "color",
+      "--salt-actionable-positive-background": "color",
+      "--salt-actionable-positive-background-hover": "color",
+      "--salt-actionable-positive-background-active": "color",
+      "--salt-actionable-positive-borderColor": "color",
+      "--salt-actionable-positive-borderColor-hover": "color",
+      "--salt-actionable-positive-borderColor-active": "color",
+      "--salt-actionable-positive-borderColor-selected": "color",
+      "--salt-actionable-positive-subtle-foreground": "color",
+      "--salt-actionable-positive-subtle-foreground-hover": "color",
+      "--salt-actionable-positive-subtle-foreground-active": "color",
+      "--salt-actionable-positive-subtle-background": "color",
+      "--salt-actionable-positive-subtle-background-hover": "color",
+      "--salt-actionable-positive-subtle-background-active": "color",
+      "--salt-actionable-positive-subtle-borderColor": "color",
+      "--salt-actionable-positive-subtle-borderColor-hover": "color",
+      "--salt-actionable-positive-subtle-borderColor-active": "color",
+      "--salt-actionable-negative-bold-foreground-hover": "color",
+      "--salt-actionable-negative-bold-foreground-active": "color",
+      "--salt-actionable-negative-bold-background-active": "color",
+      "--salt-actionable-negative-bold-borderColor-hover": "color",
+      "--salt-actionable-negative-bold-borderColor-active": "color",
+      "--salt-actionable-negative-foreground-hover": "color",
+      "--salt-actionable-negative-foreground-active": "color",
+      "--salt-actionable-negative-background-active": "color",
+      "--salt-actionable-negative-borderColor-hover": "color",
+      "--salt-actionable-negative-borderColor-active": "color",
+      "--salt-actionable-negative-borderColor-selected": "color",
+      "--salt-actionable-negative-subtle-foreground-hover": "color",
+      "--salt-actionable-negative-subtle-foreground-active": "color",
+      "--salt-actionable-negative-subtle-background-active": "color",
+      "--salt-actionable-negative-subtle-borderColor-hover": "color",
+      "--salt-actionable-negative-subtle-borderColor-active": "color",
+      "--salt-actionable-caution-bold-foreground": "color",
+      "--salt-actionable-caution-bold-foreground-hover": "color",
+      "--salt-actionable-caution-bold-foreground-active": "color",
+      "--salt-actionable-caution-bold-background": "color",
+      "--salt-actionable-caution-bold-background-hover": "color",
+      "--salt-actionable-caution-bold-background-active": "color",
+      "--salt-actionable-caution-bold-borderColor": "color",
+      "--salt-actionable-caution-bold-borderColor-hover": "color",
+      "--salt-actionable-caution-bold-borderColor-active": "color",
+      "--salt-actionable-caution-foreground": "color",
+      "--salt-actionable-caution-foreground-hover": "color",
+      "--salt-actionable-caution-foreground-active": "color",
+      "--salt-actionable-caution-background": "color",
+      "--salt-actionable-caution-background-hover": "color",
+      "--salt-actionable-caution-background-active": "color",
+      "--salt-actionable-caution-borderColor": "color",
+      "--salt-actionable-caution-borderColor-hover": "color",
+      "--salt-actionable-caution-borderColor-active": "color",
+      "--salt-actionable-caution-borderColor-selected": "color",
+      "--salt-actionable-caution-subtle-foreground": "color",
+      "--salt-actionable-caution-subtle-foreground-hover": "color",
+      "--salt-actionable-caution-subtle-foreground-active": "color",
+      "--salt-actionable-caution-subtle-background": "color",
+      "--salt-actionable-caution-subtle-background-hover": "color",
+      "--salt-actionable-caution-subtle-background-active": "color",
+      "--salt-actionable-caution-subtle-borderColor": "color",
+      "--salt-actionable-caution-subtle-borderColor-hover": "color",
+      "--salt-actionable-caution-subtle-borderColor-active": "color",
+      "--salt-actionable-bold-foreground-hover": "color",
+      "--salt-actionable-bold-foreground-active": "color",
+      "--salt-actionable-foreground-hover": "color",
+      "--salt-actionable-foreground-active": "color",
+      "--salt-actionable-subtle-foreground-hover": "color",
+      "--salt-actionable-subtle-foreground-active": "color",
+      "--salt-actionable-borderColor-active": "color",
+      "--salt-actionable-bold-borderColor-hover": "color",
+      "--salt-actionable-bold-borderColor-active": "color",
+      "--salt-category-1-background": "color",
+      "--salt-category-1-foreground": "color",
+      "--salt-category-1-borderColor": "color",
+      "--salt-category-1-bold-background": "color",
+      "--salt-category-2-background": "color",
+      "--salt-category-2-foreground": "color",
+      "--salt-category-2-borderColor": "color",
+      "--salt-category-2-bold-background": "color",
+      "--salt-category-3-background": "color",
+      "--salt-category-3-foreground": "color",
+      "--salt-category-3-borderColor": "color",
+      "--salt-category-3-bold-background": "color",
+      "--salt-category-4-background": "color",
+      "--salt-category-4-foreground": "color",
+      "--salt-category-4-borderColor": "color",
+      "--salt-category-4-bold-background": "color"
+    },
+    "fontFamilies": [
+      "Open Sans",
+      "PT Mono",
+      "Public Sans",
+      "Source Serif 4"
+    ]
+  }
+}
