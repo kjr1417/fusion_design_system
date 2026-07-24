@@ -6,7 +6,7 @@ export function FormField({ label, helperText, necessity, children, style, ...re
       {label && (
         <label style={{
           fontFamily: "var(--salt-text-label-fontFamily)",
-          fontWeight: "var(--salt-text-label-fontWeight)",
+          fontWeight: "var(--salt-text-fontWeight-strong)",
           fontSize: "var(--salt-text-label-fontSize)",
           lineHeight: "var(--salt-text-label-lineHeight)",
           color: "var(--salt-content-primary-foreground)",
