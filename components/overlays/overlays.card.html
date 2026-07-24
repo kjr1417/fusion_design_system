@@ -1,0 +1,58 @@
+<!-- @dsCard group="Components" viewport="820x420" name="Overlays — Dialog, Side Panel, Tooltip" subtitle="Modal, side-panel and hover-triggered surfaces" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<link rel="stylesheet" href="SidePanelHeader.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:40px 16px}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { Dialog, SidePanel, Tooltip, Button, IconButton } = window.FusionDesignSystem_6db751;
+function InfoIcon() { return <svg className="saltIcon" viewBox="0 0 12 12" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M6 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2m1 3v5H5V5z"/><path fillRule="evenodd" clipRule="evenodd" d="M0 0v12h12V0zm11 1H1v10h10z"/></svg>; }
+function SwapIcon() { return <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg>; }
+function App() {
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [panelOpen, setPanelOpen] = React.useState(false);
+  return (
+    <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+      <Button appearance="bordered" sentiment="neutral" style={{ whiteSpace: "nowrap" }} onClick={() => setDialogOpen(true)}>Open dialog</Button>
+      <Button appearance="bordered" sentiment="neutral" style={{ whiteSpace: "nowrap" }} onClick={() => setPanelOpen(true)}>Open side panel</Button>
+      <Tooltip content="Deploy to staging" placement="bottom"><IconButton appearance="transparent" aria-label="Deploy"><InfoIcon /></IconButton></Tooltip>
+
+      <Dialog open={dialogOpen} title="Publish agent?" onClose={() => setDialogOpen(false)} actions={<>
+        <Button appearance="bordered" sentiment="neutral" onClick={() => setDialogOpen(false)}>Cancel</Button>
+        <Button appearance="solid" sentiment="accented" onClick={() => setDialogOpen(false)}>Publish</Button>
+      </>}>This will make the agent available in staging.</Dialog>
+
+      <SidePanel
+        open={panelOpen}
+        onClose={() => setPanelOpen(false)}
+        title="AI Research Adoption"
+        secondaryInfo="Dataset · ds-88213"
+        actions={[{ label: "Edit" }]}
+        description="Tracks how research teams are adopting the platform's AI capabilities across the firm, covering model usage, prompt libraries, evaluation pipelines, and governance reviews for every active workstream."
+        primaryTag="Dataset"
+        status={{ label: "Published" }}
+        dataLabels={["Owner: J. Chen", "Updated 2h ago"]}
+        secondaryActions={[{ label: "Cancel", onClick: () => setPanelOpen(false) }]}
+        primaryAction={{ label: "Save", onClick: () => setPanelOpen(false) }}
+      >
+        <div style={{ height: "100%", minHeight: 220, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "var(--salt-spacing-150)", border: "1px dashed var(--salt-separable-tertiary-borderColor)", borderRadius: "var(--salt-palette-corner)", color: "var(--salt-content-secondary-foreground)", textAlign: "center", padding: "var(--salt-spacing-400)" }}>
+          <SwapIcon />
+          <span>Use as guide or swap for component in Swap Instance menu</span>
+        </div>
+      </SidePanel>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
