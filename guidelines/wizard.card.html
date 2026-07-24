@@ -13,7 +13,7 @@
 <body class="salt-theme">
 <div id="root"></div>
 <script type="text/babel">
-const { Accordion, ProgressTracker, FormField, Input, Textarea, Switch, Dropdown, Checkbox, RadioButton } = window.FusionDesignSystem_5ec875;
+const { Accordion, ProgressTracker, FormField, Input, Textarea, Switch, Dropdown, Checkbox, RadioButton } = window.FusionDesignSystem_6db751;
 function App() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
@@ -39,7 +39,7 @@ function App() {
               <FormField label="Name"><Input defaultValue="Customer Support FAQ" /></FormField>
               <FormField label="Description"><Textarea placeholder="Describe the content, audience, and scope of this knowledge base" /></FormField>
               <div>
-                <div style={{ fontSize: "var(--salt-text-fontSize)", fontWeight: "var(--salt-text-fontWeight-strong)", marginBottom: 8 }}>Restricted</div>
+                <div style={{ fontSize: "var(--salt-text-label-fontSize)", fontWeight: "var(--salt-text-fontWeight-strong)", color: "var(--salt-content-primary-foreground)", marginBottom: 8 }}>Restricted</div>
                 <Switch label="Enable restricted access" />
               </div>
             </div>
