@@ -45,7 +45,7 @@ Salt's own [content style guide](https://github.com/jpmorganchase/salt-ds/blob/m
 - **Animation:** Minimal and functional — short (150–200ms) ease-in-out fades/slides for menus, dialogs and overlays opening/closing. The wave field and OmniInput's animated typewriter placeholder are the only continuous/looping motion. Nothing bounces; no parallax or decorative motion elsewhere.
 - **Hover / press states:** Hover darkens (solid buttons) or tints backward toward a "weakest" accent tone (bordered/transparent buttons and pills); press goes one step further (`active` tokens are always slightly stronger than `hover`). No scale/shrink on press.
 - **Focus:** A visible 2px accent (blue) outline, offset 1px — always present, never suppressed.
-- **Transparency/blur:** Not used, except the wave field's low-opacity gradient strokes and the overlay backdrop (`--salt-overlayable-backdrop`, 50% black) behind Dialog/Drawer.
+- **Transparency/blur:** Not used, except the wave field's low-opacity gradient strokes and the overlay backdrop (`--salt-overlayable-backdrop`, 50% black) behind Dialog/SidePanel.
 - **Imagery color vibe:** No photography is used at all in this system — flat color and line-icon illustration only. If product photography is introduced, keep it cool/neutral-toned to match the blue-gray palette, not warm.
 - **Data figures:** Right-aligned, tabular, colored green/red only for gain/loss — never for arbitrary emphasis.
 - **Cards:** `saltCard` — 1px `gray-200` border, `shadow-lowest` at rest, radius `curve-150`/`corner`, 16–24px padding. `ContentCard` is the one unified card skeleton for the whole platform (media banner or icon tile → eyebrow → title → description → footer) — category sets color, one icon per asset, one action style. Don't invent a second card anatomy.
@@ -71,16 +71,16 @@ No emoji, no unicode-as-icon, no photographic icons. `ContentCard` icons in the 
 
 Location: `components/<group>/<Name>.jsx` + `.d.ts` + `.prompt.md`. 61 components across 7 groups, covering the major Salt DS families used across the Fusion surfaces:
 
-- **Actions** — `Button`, `IconButton`, `Link`, `Pill`, `CopyValue`
+- **Actions** — `Button`, `IconButton`, `ButtonBar`, `InlineButtons`, `Link`, `Pill`, `CopyValue`
 - **Layout** — `FlexLayout`, `FlowLayout`, `StackLayout`, `GridLayout`, `SaltProviderNext`
-- **Feedback** — `Badge`, `Banner`, `BannerStack`, `Spinner`, `ProgressBar`, `StatusIndicator`, `StatusMessage`, `Toast`, `LoadingState`, `EmptyState`
+- **Feedback** — `Badge`, `Banner`, `BannerStack`, `Spinner`, `ProgressBar`, `StatusBadge`, `StatusMessage`, `Toast`, `LoadingState`, `EmptyState`
 - **Forms** — `Input`, `MultilineInput`, `Checkbox`, `FormField`, `RadioButton`, `Switch`, `Textarea`, `Dropdown`, `Slider`, `ToggleButtonGroup`, `SegmentedButtonGroup`, `OmniInput`, `FileUpload`
-- **Display** — `Card`, `InteractableCard`, `ContentCard`, `Carousel`, `Panel`, `Text` (`H1`–`H4`), `Avatar`, `Divider`, `Tabs`, `Accordion`, `List`, `Tag`, `LinkCard`, `Table`/`TableHead`/`TableBody`/`TableRow`/`TableCell`, `Menu`
-- **Data** — `FileResultsGrid`
-- **Navigation** — `Breadcrumbs`, `Stepper`, `NavigationItem`, `ProgressTracker`, `GlobalNav`, `AppHeader`, `PageHeader`, `SubHeader`
-- **Overlays** — `Dialog`, `Drawer`, `Tooltip`
+- **Display** — `Card`, `InteractableCard`, `ContentCard`, `Carousel`, `Panel`, `Text` (`H1`–`H4`), `ExpandableText`, `Avatar`, `Divider`, `Tabs`, `Accordion`, `List`, `Tag`, `LinkCard`, `Table`/`TableHead`/`TableBody`/`TableRow`/`TableCell`, `Menu`
+- **Data** — `FileResultsGrid`, `StaticList`, `StaticListGroup`
+- **Navigation** — `Breadcrumbs`, `Stepper`, `NavigationItem`, `ProgressTracker`, `GlobalNav`, `AppHeader`, `PageHeader`, `SubHeader`, `VerticalNavigation`, `NotificationCenter`, `UserPanel`
+- **Overlays** — `Dialog`, `SidePanel`, `SidePanelHeader`, `Tooltip`
 
-`Button`, `IconButton`, `Link`, `Pill`, `Card`, `Divider`, `Tabs`, `Switch`, `Checkbox`, `RadioButton`, `ToggleButtonGroup`, `Tag`, `Banner`, `StatusIndicator`, `Table`, `Menu` render using CSS classes copied **verbatim** from a real salt-ds CSS extraction (`salt-components.css`) — not approximated. The rest (`Input`, `Badge`, `Panel`, `FormField`, `Avatar`, `Accordion`, `List`, `LinkCard`, `Dropdown`, `Slider`, `Textarea`, `Spinner`, `ProgressBar`, `Breadcrumbs`, `Stepper`, `Dialog`, `Drawer`, `Tooltip`, `OmniInput`, `ContentCard`, `Carousel`) are hand-authored the same token-driven way, since no verbatim source was available for them. A few Salt families with no counterpart yet (ComboBox, Popover, DatePicker, FileDropZone, Tree, Toolbar) can be added on request.
+`Button`, `IconButton`, `Link`, `Pill`, `Card`, `Divider`, `Tabs`, `Switch`, `Checkbox`, `RadioButton`, `ToggleButtonGroup`, `Tag`, `Banner`, `Table`, `Menu` render using CSS classes copied **verbatim** from a real salt-ds CSS extraction (`salt-components.css`) — not approximated. The rest (`Input`, `Badge`, `Panel`, `FormField`, `Avatar`, `Accordion`, `List`, `LinkCard`, `Dropdown`, `Slider`, `Textarea`, `Spinner`, `ProgressBar`, `StatusBadge`, `Breadcrumbs`, `Stepper`, `Dialog`, `Drawer`, `Tooltip`, `OmniInput`, `ContentCard`, `Carousel`) are hand-authored the same token-driven way, since no verbatim source was available for them. A few Salt families with no counterpart yet (ComboBox, Popover, DatePicker, FileDropZone, Tree, Toolbar) can be added on request.
 
 ### Intentional additions
 `FlexLayout`, `FlowLayout`, `StackLayout`, `GridLayout`, `Text`/`H1`–`H4`, and `SaltProviderNext` mirror Salt DS's real layout, typography and theme-provider primitives. `IconButton` is a thin composition of `Button`. `ProgressTracker` is a vertical wizard rail for multi-step forms. `ContentCard` and `Carousel` are Fusion-specific: the unified card skeleton and paged shelf used to compose product tiles, catalog results, and feature promos across the platform. `OmniInput` is the platform's signature conversational entry point.
