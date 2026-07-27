@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 
 const ArrowLeftIcon = () => (
   <svg viewBox="0 0 12 12" fill="currentColor" width="14" height="14" aria-hidden="true">
@@ -20,7 +20,7 @@ const KebabIcon = () => (
  * Fusion PageHeader — full page-level header pattern (distinct from the
  * compact 44px AppHeader nested-page bar).
  * Requires FusionDesignSystem_6db751 (Button, Menu, Tag, StatusBadge,
- * CopyValue, Tabs, Divider, Text/H1) plus ./PageHeader.css.
+ * CopyValue, Tabs, Divider, Text/H1, ExpandableText) plus ./PageHeader.css.
  */
 export function PageHeader({
   showBreadcrumbNav = false,
@@ -45,21 +45,7 @@ export function PageHeader({
   onTabChange,
   style,
 }) {
-  const { Button, Menu, Tag, StatusBadge, CopyValue, Tabs, Divider, H1, Text } = window.FusionDesignSystem_6db751;
-  const [expanded, setExpanded] = useState(false);
-  const [truncated, setTruncated] = useState(false);
-  const textRef = useRef(null);
-
-  useEffect(() => {
-    const el = textRef.current;
-    if (!el) return;
-    const check = () => setTruncated(el.scrollWidth > el.clientWidth + 1);
-    check();
-    const ro = new ResizeObserver(check);
-    ro.observe(el);
-    window.addEventListener("resize", check);
-    return () => { ro.disconnect(); window.removeEventListener("resize", check); };
-  }, [description, expanded]);
+  const { Button, Menu, Tag, StatusBadge, CopyValue, Tabs, Divider, H1, Text, ExpandableText } = window.FusionDesignSystem_6db751;
 
   const hasMeta = primaryTag || secondaryTag || status || copyValue || dataLabels.length > 0;
 
@@ -134,37 +120,7 @@ export function PageHeader({
       </div>
 
       {description && (
-        !expanded ? (
-          <div style={{ display: "flex", alignItems: "baseline", gap: "var(--salt-spacing-100)", minWidth: 0, marginTop: "var(--salt-spacing-150)", paddingTop: "var(--salt-spacing-75)", paddingBottom: "var(--salt-spacing-75)" }}>
-            <p
-              ref={textRef}
-              style={{
-                margin: 0, flex: "1 1 auto", minWidth: 0,
-                fontFamily: "var(--salt-text-fontFamily)", fontWeight: "var(--salt-text-fontWeight)",
-                fontSize: "var(--salt-text-fontSize)", lineHeight: "var(--salt-text-lineHeight)",
-                color: "var(--salt-content-secondary-foreground)",
-                whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-              }}
-            >
-              {description}
-            </p>
-            {truncated && (
-              <button type="button" className="ph-view-more" onClick={() => setExpanded(true)}>View more</button>
-            )}
-          </div>
-        ) : (
-          <p
-            style={{
-              margin: 0, textWrap: "pretty", marginTop: "var(--salt-spacing-150)", paddingTop: "var(--salt-spacing-75)", paddingBottom: "var(--salt-spacing-75)",
-              fontFamily: "var(--salt-text-fontFamily)", fontWeight: "var(--salt-text-fontWeight)",
-              fontSize: "var(--salt-text-fontSize)", lineHeight: "var(--salt-text-lineHeight)",
-              color: "var(--salt-content-secondary-foreground)",
-            }}
-          >
-            {description}{" "}
-            <button type="button" className="ph-view-more ph-view-more-inline" onClick={() => setExpanded(false)}>View less</button>
-          </p>
-        )
+        <ExpandableText text={description} lines={1} style={{ marginTop: "var(--salt-spacing-150)", paddingTop: "var(--salt-spacing-75)", paddingBottom: "var(--salt-spacing-75)" }} />
       )}
 
       {hasMeta && (
