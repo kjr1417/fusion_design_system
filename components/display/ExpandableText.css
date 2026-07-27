@@ -1,0 +1,2 @@
+.et-view-more{all:unset;box-sizing:border-box;cursor:pointer;display:inline;white-space:nowrap;font-family:var(--salt-text-fontFamily);font-size:var(--salt-text-fontSize);font-weight:var(--salt-text-fontWeight-strong);color:var(--salt-actionable-accented-foreground)}
+.et-view-more:hover{color:var(--salt-actionable-accented-foreground-hover);text-decoration:underline}
