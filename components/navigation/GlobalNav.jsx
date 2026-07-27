@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "../forms/Input.jsx";
 import { IconButton } from "../actions/IconButton.jsx";
 import { Badge } from "../feedback/Badge.jsx";
 import { Avatar } from "../display/Avatar.jsx";
+import { NotificationCenter } from "./NotificationCenter.jsx";
+import { UserPanel } from "./UserPanel.jsx";
 
 const stroke = {
   fill: "none",
@@ -65,13 +67,24 @@ export function GlobalNav({
   searchPlaceholder = "Search Fusion Studio\u2026",
   searchValue,
   showSearch = true,
-  userName = "Carolina A.",
-  notificationCount = 3,
+  userName = "User Name",
+  userSid,
+  userEmail,
+  notificationCount,
+  notifications = [],
   onSearch,
+  onSettingsClick,
+  onNotificationClick,
+  onMarkAllRead,
+  accountItems,
+  manageItems,
   style,
   ...rest
 }) {
   const searchProps = searchValue === undefined ? {} : { value: searchValue };
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [userOpen, setUserOpen] = useState(false);
+  const unreadCount = notifications.length ? notifications.filter((n) => n.unread).length : (notificationCount || 0);
   return (
     <header
       className="fusionGlobalNav"
@@ -83,49 +96,70 @@ export function GlobalNav({
         background: "var(--salt-palette-background-secondary)",
         fontFamily: "var(--salt-text-fontFamily)",
         color: "var(--salt-content-primary-foreground)",
+        position: "relative",
+        zIndex: 30,
         ...style,
       }}
       {...rest}
     >
+      <style>{`.fusionNotifBadge.saltBadge-topRight{right:0;transform:translate(0,-40%)}`}</style>
       <img src={logoSrc} alt={logoAlt} style={{ height: 26, width: "auto", display: "block", flexShrink: 0 }} />
-      {showSearch ? (
-        <div style={{ flex: 1, minWidth: 0, display: "flex", justifyContent: "center" }}>
-          <div style={{ width: "100%", maxWidth: 560 }}>
-            <Input
-              placeholder={searchPlaceholder}
-              startAdornment={<SearchIcon />}
-              endAdornment={<CmdKHint />}
-              onChange={onSearch}
-              style={{ width: "100%" }}
-              {...searchProps}
-            />
-          </div>
+      {showSearch && (
+        <div style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", width: "calc(100% - 56px)", maxWidth: 560, zIndex: 1 }}>
+          <Input
+            placeholder={searchPlaceholder}
+            startAdornment={<SearchIcon />}
+            endAdornment={<CmdKHint />}
+            onChange={onSearch}
+            style={{ width: "100%" }}
+            {...searchProps}
+          />
         </div>
-      ) : (
-        <div style={{ flex: 1 }} />
       )}
-      <span style={{ position: "relative", display: "inline-flex", flexShrink: 0 }}>
-        <IconButton appearance="transparent" sentiment="neutral" aria-label="Notifications">
-          <BellIcon />
-        </IconButton>
-        {notificationCount ? <Badge value={notificationCount} topRight /> : null}
-      </span>
-      <span
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 10,
-          padding: "6px 12px 6px 8px",
-          border: "1px solid var(--salt-color-gray-300)",
-          borderRadius: 999,
-          cursor: "pointer",
-          flexShrink: 0,
-        }}
-      >
-        <Avatar name={userName} size={26} />
-        <span style={{ fontSize: 16, fontWeight: "var(--salt-text-fontWeight-strong)", letterSpacing: ".03em", textTransform: "uppercase", whiteSpace: "nowrap" }}>{userName}</span>
-        <ChevronDown />
-      </span>
+      {!showSearch && <div style={{ flex: 1 }} />}
+      <div style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-25)", flexShrink: 0, marginLeft: "auto" }}>
+        <span style={{ position: "relative", display: "inline-flex", flexShrink: 0 }}>
+          <IconButton appearance="transparent" sentiment="neutral" aria-label="Notifications" onClick={() => setNotifOpen((o) => !o)}>
+            <BellIcon />
+          </IconButton>
+          {unreadCount ? <Badge value={unreadCount} topRight className="fusionNotifBadge" /> : null}
+        </span>
+        <span style={{ position: "relative", flexShrink: 0 }}>
+          <span
+            onClick={() => setUserOpen((o) => !o)}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "6px 12px 6px 8px",
+              border: "1px solid var(--salt-color-gray-300)",
+              borderRadius: 999,
+              cursor: "pointer",
+            }}
+          >
+            <Avatar name={userName} size={26} />
+            <span style={{ fontSize: 16, fontWeight: "var(--salt-text-fontWeight-strong)", letterSpacing: ".03em", textTransform: "uppercase", whiteSpace: "nowrap" }}>{userName}</span>
+            <ChevronDown />
+          </span>
+          <UserPanel
+            open={userOpen}
+            onClose={() => setUserOpen(false)}
+            userName={userName}
+            userSid={userSid}
+            userEmail={userEmail}
+            accountItems={accountItems}
+            manageItems={manageItems}
+          />
+        </span>
+      </div>
+      <NotificationCenter
+        open={notifOpen}
+        onClose={() => setNotifOpen(false)}
+        notifications={notifications}
+        onSettingsClick={onSettingsClick}
+        onNotificationClick={onNotificationClick}
+        onMarkAllRead={onMarkAllRead}
+      />
     </header>
   );
 }

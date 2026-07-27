@@ -20,8 +20,17 @@ const { NavigationItem, Breadcrumbs, Stepper, GlobalNav, AppHeader } = window.Fu
 function App() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-      <div style={{ margin: "-16px -16px 0", border: "1px solid var(--salt-separable-primary-borderColor)", borderRadius: 8, overflow: "hidden" }}>
-        <GlobalNav logoSrc="../../assets/logo.svg" />
+      <div style={{ margin: "-16px -16px 0", border: "1px solid var(--salt-separable-primary-borderColor)", borderRadius: 8, overflow: "visible", position: "relative", zIndex: 20 }}>
+        <GlobalNav
+          logoSrc="../../assets/logo.svg"
+          userSid="Z482913"
+          userEmail="email@example.com"
+          notifications={[
+            { id: "1", title: "Dataset approval needed", description: "\u201cAI Research Adoption\u201d is waiting on your review before it can publish.", timeAgo: "1h ago", unread: true },
+            { id: "2", title: "Access request received", description: "J. Chen requested access to the Risk Analytics workspace.", timeAgo: "5h ago", unread: true },
+            { id: "3", title: "Model retrained", description: "Fraud-detection-v3 finished a scheduled retrain with no errors.", timeAgo: "1d ago", unread: false },
+          ]}
+        />
       </div>
       <div style={{ border: "1px solid var(--salt-separable-primary-borderColor)", borderRadius: 8, overflow: "visible", position: "relative", zIndex: 10 }}>
         <AppHeader
