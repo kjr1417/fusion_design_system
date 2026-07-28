@@ -4,5 +4,7 @@ interface MultilineInputProps extends React.TextareaHTMLAttributes<HTMLTextAreaE
   disabled?: boolean;
   validationState?: "error" | "warning" | "success";
   bordered?: boolean;
+  startAdornment?: React.ReactNode;
+  endAdornment?: React.ReactNode;
 }
 export function MultilineInput(props: MultilineInputProps): JSX.Element;

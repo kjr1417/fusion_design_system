@@ -1,8 +1,9 @@
 import React from "react";
 
 export function Dropdown({ options = [], defaultValue, placeholder = "Select...", disabled = false, ...rest }) {
+  const normalized = options.map((opt) => (typeof opt === "string" ? { value: opt, label: opt } : opt));
   return (
-    <div className={["saltInput", "saltInput-bordered", "saltInput-primary", disabled ? "saltInput-disabled" : ""].filter(Boolean).join(" ")}>
+    <div className={["saltInput", "saltInput-bordered", "saltInput-primary", disabled ? "saltInput-disabled" : ""].filter(Boolean).join(" ")} style={{ minWidth: 220 }}>
       <select
         className="saltInput-input"
         defaultValue={defaultValue}
@@ -11,7 +12,7 @@ export function Dropdown({ options = [], defaultValue, placeholder = "Select..."
         {...rest}
       >
         {!defaultValue && <option value="" disabled>{placeholder}</option>}
-        {options.map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+        {normalized.map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
       </select>
     </div>
   );

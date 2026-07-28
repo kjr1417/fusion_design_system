@@ -1,0 +1,256 @@
+<!-- @dsCard group="Components" viewport="1080x760" name="Forms — Field types" subtitle="FormField anatomy, toggletips, combo boxes, selectable cards, date/number/time fields, checkbox/radio groups" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<link rel="stylesheet" href="../display/ExpandableText.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:32px;background:var(--salt-palette-background-secondary)}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const {
+  FormField, Input, MultilineInput, ComboBox, SelectableCard, Checkbox, CheckboxGroup,
+  RadioButton, RadioButtonGroup, DatePicker, RangeDatePicker, TimeInput, NumberInput,
+  CurrencyInput, Dropdown, H4, Divider, GridLayout, SectionHeader,
+} = window.FusionDesignSystem_6db751;
+
+const CalendarGlyph = () => (<svg viewBox="0 0 12 12" width="12" height="12" fill="currentColor"><path d="M4 0v1h4V0h1v1h3v11H0V1h3V0zm7 4H1v7h10zM9 2H8v1h1zM4 2H3v1h1z"></path></svg>);
+const SearchGlyph = () => (<svg viewBox="0 0 12 12" width="12" height="12" fill="currentColor"><path fillRule="evenodd" clipRule="evenodd" d="M8 9a5 5 0 1 1 1-1l3 3-1 1zm1-4a4 4 0 1 1-8 0 4 4 0 0 1 8 0"></path></svg>);
+const DomainIcon = () => (<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg>);
+const AgentIcon = () => (<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="8" width="14" height="10" rx="2.5"/><path d="M12 5v3M9 13h.01M15 13h.01"/><circle cx="12" cy="4" r="1"/></svg>);
+const ModelIcon = () => (<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M12 3v3M12 18v3M4.9 7l2.1 1.2M17 15.8 19.1 17M4.9 17l2.1-1.2M17 8.2 19.1 7"/><circle cx="12" cy="12" r="3.4"/></svg>);
+
+const domainOptions = [
+  { value: "data", label: "Data engineering" },
+  { value: "ai", label: "AI / ML" },
+  { value: "governance", label: "Governance" },
+  { value: "risk", label: "Risk analytics" },
+  { value: "markets", label: "Markets tech" },
+  { value: "ops", label: "Operations" },
+  { value: "longdomain", label: "Enterprise Data Quality & Metadata Governance" },
+];
+const teamOptions = [
+  { value: "cdao", label: "CDAO Data Engineering" },
+  { value: "markets", label: "Markets Tech" },
+  { value: "risk", label: "Risk Analytics" },
+  { value: "compliance", label: "Compliance Systems" },
+];
+
+function Section({ title, description, children }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-100)" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <H4 style={{ margin: 0 }}>{title}</H4>
+        {description && <span style={{ fontSize: "var(--salt-text-fontSize)", color: "var(--salt-content-secondary-foreground)" }}>{description}</span>}
+      </div>
+      <Divider />
+      {children}
+    </div>
+  );
+}
+
+function App() {
+  const [source, setSource] = React.useState("card-1");
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-300)", maxWidth: 720 }}>
+
+      <Section title="Section header" description="Recurring section-opening pattern: status banners, a required-field note with an optional-fields switch, the title, and an expandable description.">
+        <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-450)" }}>
+          <SectionHeader title="Account details" description="Basic identifying information used across billing, support, and reporting for this account and every dataset registered under it." />
+          <Divider />
+          <SectionHeader
+            title="Compliance review"
+            errorBanners={["2 fields need attention before you can submit."]}
+            infoBanners={["Changes here require a second approver."]}
+            description="Reviewed annually by the data governance office."
+          />
+          <Divider />
+          <SectionHeader title="Ownership" />
+          <Divider />
+          <SectionHeader titleVariant="h4" title="Preferences" showRequiredNote={false} showOptionalToggle={false} description="Chat-only compact title, no required note or switch." />
+        </div>
+      </Section>
+
+      <Section title="Label with toggletip" description="Click the info glyph next to a label to disclose supplementary guidance without cluttering the field with permanent helper text. The toggletip floats to the field's right edge — short labels sit right next to it, long labels wrap underneath.">
+        <GridLayout columns={2} gap={9}>
+          <FormField
+            label="Classification"
+            necessity="required"
+            toggletip="Classification determines who can query this dataset. Choose the highest level of any field it contains — see the Data Handling Standard for definitions."
+            helperText="Applies to every column unless overridden per-field."
+          >
+            <Dropdown options={["Public", "Internal", "Confidential", "Restricted"]} defaultValue="Internal" />
+          </FormField>
+          <FormField
+            label="Regulatory data retention classification period"
+            necessity="required"
+            toggletip="Retention classification is set once at creation and cannot be changed later without a compliance review."
+          >
+            <Dropdown options={["Standard", "Extended", "Litigation hold"]} defaultValue="Standard" />
+          </FormField>
+        </GridLayout>
+      </Section>
+
+      <Section title="Text input">
+        <GridLayout columns={2} gap={9}>
+          <FormField label="Dataset name" necessity="required" helperText="Shown to consumers in the catalog listing.">
+            <Input placeholder="e.g. Customer Support FAQ" />
+          </FormField>
+          <FormField
+            label="Slug"
+            necessity="required"
+            helperText="Lowercase, hyphenated. Auto-generated from the name unless"
+            helperLinkText="edited manually."
+            helperLinkHref="#"
+          >
+            <Input placeholder="customer-support-faq" startAdornment={<span>/</span>} />
+          </FormField>
+        </GridLayout>
+        <FormField
+          label="Contact email"
+          necessity="required"
+          error
+          errorMessage="Enter a valid work email address. Personal domains (gmail.com, outlook.com, yahoo.com) are not accepted for data ownership records."
+        >
+          <Input defaultValue="jane.doe@personal-mail.com" validationState="error" endAdornment={<span>@</span>} />
+        </FormField>
+      </Section>
+
+      <Section title="Combo box" description="Search-ahead select — single-select fills the field and closes the list; multi-select keeps it open and renders picks as chips.">
+        <div style={{ display: "flex", gap: "var(--salt-spacing-450)" }}>
+          <FormField label="Owning team" necessity="required" helperText="Search by team name." style={{ width: 280 }}>
+            <ComboBox options={teamOptions} placeholder="Search teams" style={{ width: 280 }} />
+          </FormField>
+          <FormField label="Data domains" helperText="Select every domain this dataset touches." style={{ width: 280 }}>
+            <ComboBox multiselect options={domainOptions} defaultValue={["data", "ai", "governance", "risk", "longdomain"]} style={{ width: 280 }} />
+          </FormField>
+        </div>
+      </Section>
+
+      <Section title="Multiline input">
+        <FormField label="Description" necessity="optional" helperText="Describe the content, audience, and scope of this knowledge base.">
+          <MultilineInput rows={3} placeholder="This knowledge base covers..." />
+        </FormField>
+        <FormField label="Support notes" helperText="Visible only to the owning team." toggletip="Notes never appear to end users — use them for handoff context, known issues, or renewal reminders.">
+          <MultilineInput rows={3} placeholder="Add internal context for the next owner" startAdornment={<SearchGlyph />} />
+        </FormField>
+      </Section>
+
+      <Section title="Selectable cards" description="Card-style single- or multi-select — same interaction as radio/checkbox, different affordance for a handful of richer options.">
+        <GridLayout columns={3} gap={3}>
+          <SelectableCard icon={<DomainIcon />} title="Data source" description="Connect a governed dataset" selected={source === "card-1"} onChange={() => setSource("card-1")} />
+          <SelectableCard icon={<AgentIcon />} title="Agent" description="Point at an existing agent" selected={source === "card-2"} onChange={() => setSource("card-2")} />
+          <SelectableCard icon={<ModelIcon />} title="Model endpoint" description="Call a model directly" selected={source === "card-3"} onChange={() => setSource("card-3")} />
+        </GridLayout>
+      </Section>
+
+      <Section title="Small-size fields" description="Compact variants for dense, paired rows.">
+        <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-100)" }}>
+          <FormField label="Reference name" necessity="required">
+            <Input size="small" placeholder="Q3 risk review" />
+          </FormField>
+          <GridLayout columns={2} gap={9}>
+            <FormField label="City" necessity="required">
+              <ComboBox size="small" options={[{ value: "nyc", label: "New York" }, { value: "lon", label: "London" }, { value: "sng", label: "Singapore" }]} placeholder="Search cities" />
+            </FormField>
+            <FormField label="State / region">
+              <Input size="small" placeholder="e.g. NY" />
+            </FormField>
+          </GridLayout>
+          <GridLayout columns={2} gap={9}>
+            <FormField label="Start date" necessity="required">
+              <DatePicker size="small" />
+            </FormField>
+            <FormField label="End date" necessity="required">
+              <DatePicker size="small" />
+            </FormField>
+          </GridLayout>
+          <FormField label="Reporting period" necessity="required" helperText="Range spanning both fields.">
+            <RangeDatePicker size="small" />
+          </FormField>
+          <GridLayout columns={2} gap={9}>
+            <FormField label="Budget" necessity="required">
+              <CurrencyInput size="small" defaultValue="12,480.55" />
+            </FormField>
+            <FormField label="Headcount">
+              <NumberInput size="small" placeholder="0" />
+            </FormField>
+          </GridLayout>
+          <FormField label="Daily standup time" necessity="required">
+            <TimeInput size="small" defaultValue="09:30 AM" />
+          </FormField>
+        </div>
+      </Section>
+
+      <Section title="Checkbox group">
+        <GridLayout columns={2} gap={9}>
+          <FormField label="Notification channels" helperText="Vertical layout — default for 4+ options.">
+            <CheckboxGroup
+              direction="vertical"
+              defaultValue={["email"]}
+              options={[
+                { value: "email", label: "Email" },
+                { value: "sms", label: "SMS" },
+                { value: "slack", label: "Slack" },
+                { value: "push", label: "Push notification" },
+              ]}
+            />
+          </FormField>
+          <FormField label="Access" necessity="required" helperText="Horizontal layout — use for 2–3 short options.">
+            <CheckboxGroup
+              direction="horizontal"
+              defaultValue={["read"]}
+              options={[
+                { value: "read", label: "Read" },
+                { value: "write", label: "Write" },
+                { value: "admin", label: "Admin" },
+              ]}
+            />
+          </FormField>
+        </GridLayout>
+      </Section>
+
+      <Section title="Radio button group">
+        <GridLayout columns={2} gap={9}>
+          <FormField label="Retention policy" necessity="required" helperText="Vertical layout — default for 4+ options.">
+            <RadioButtonGroup
+              name="retention"
+              direction="vertical"
+              defaultValue="90"
+              options={[
+                { value: "30", label: "30 days" },
+                { value: "90", label: "90 days" },
+                { value: "365", label: "1 year" },
+                { value: "forever", label: "Indefinite" },
+              ]}
+            />
+          </FormField>
+          <FormField label="Visibility" necessity="required" helperText="Horizontal layout — use for 2–3 short options.">
+            <RadioButtonGroup
+              name="visibility"
+              direction="horizontal"
+              defaultValue="team"
+              options={[
+                { value: "private", label: "Private" },
+                { value: "team", label: "Team" },
+                { value: "org", label: "Org-wide" },
+              ]}
+            />
+          </FormField>
+        </GridLayout>
+      </Section>
+
+    </div>
+  );
+}
+const mount = () => ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+document.fonts && document.fonts.ready ? document.fonts.ready.then(mount) : mount();
+</script>
+</body>
+</html>

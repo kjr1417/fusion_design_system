@@ -9,7 +9,9 @@ export function Input({
   defaultValue = "",
   startAdornment,
   endAdornment,
+  size = "medium",
   className = "",
+  style,
   ...rest
 }) {
   const [focused, setFocused] = useState(false);
@@ -24,8 +26,10 @@ export function Input({
     className,
   ].filter(Boolean).join(" ");
 
+  const smallStyle = size === "small" ? { height: 28, minHeight: 28, minWidth: 130, fontSize: "var(--salt-text-label-fontSize)", padding: "0 var(--salt-spacing-50)" } : { minWidth: 220 };
+
   return (
-    <div className={cls}>
+    <div className={cls} style={{ ...smallStyle, ...style }}>
       {startAdornment && <span className="saltInput-startAdornmentContainer">{startAdornment}</span>}
       <input
         className="saltInput-input"

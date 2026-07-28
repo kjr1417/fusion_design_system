@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 
-export function Checkbox({ label, defaultChecked = false, disabled = false, ...rest }) {
-  const [checked, setChecked] = useState(defaultChecked);
+export function Checkbox({ label, checked: checkedProp, defaultChecked = false, disabled = false, onChange, ...rest }) {
+  const controlled = checkedProp !== undefined;
+  const [internalChecked, setInternalChecked] = useState(defaultChecked);
+  const checked = controlled ? checkedProp : internalChecked;
   return (
     <label className={["saltCheckbox", disabled ? "saltCheckbox-disabled" : ""].filter(Boolean).join(" ")}>
       <input
@@ -9,7 +11,7 @@ export function Checkbox({ label, defaultChecked = false, disabled = false, ...r
         className="saltCheckbox-input"
         checked={checked}
         disabled={disabled}
-        onChange={(e) => setChecked(e.target.checked)}
+        onChange={(e) => { if (!controlled) setInternalChecked(e.target.checked); onChange && onChange(e); }}
         {...rest}
       />
       <span className={["saltCheckboxIcon", checked ? "saltCheckboxIcon-checked" : ""].filter(Boolean).join(" ")}>
@@ -19,5 +21,24 @@ export function Checkbox({ label, defaultChecked = false, disabled = false, ...r
       </span>
       {label && <span>{label}</span>}
     </label>
+  );
+}
+
+export function CheckboxGroup({ options = [], defaultValue = [], direction = "vertical", onChange, style, ...rest }) {
+  const [checked, setChecked] = useState(new Set(defaultValue));
+  const toggle = (value) => {
+    setChecked((prev) => {
+      const next = new Set(prev);
+      next.has(value) ? next.delete(value) : next.add(value);
+      onChange && onChange(Array.from(next));
+      return next;
+    });
+  };
+  return (
+    <div role="group" style={{ display: "flex", flexDirection: direction === "horizontal" ? "row" : "column", gap: direction === "horizontal" ? "var(--salt-spacing-200)" : "var(--salt-spacing-50)", flexWrap: direction === "horizontal" ? "wrap" : "nowrap", marginTop: "var(--salt-spacing-75)", marginBottom: "var(--salt-spacing-75)", ...style }} {...rest}>
+      {options.map((opt) => (
+        <Checkbox key={opt.value} label={opt.label} checked={checked.has(opt.value)} onChange={() => toggle(opt.value)} disabled={opt.disabled} />
+      ))}
+    </div>
   );
 }

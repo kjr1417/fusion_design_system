@@ -59,7 +59,7 @@ export function FileUpload({
   } : {};
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", fontFamily: "var(--salt-text-fontFamily)", ...style }}>
+    <div style={{ display: "flex", flexDirection: "column", fontFamily: "var(--salt-text-fontFamily)", marginBottom: "var(--salt-spacing-300)", ...style }}>
       <div style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-200)" }}>
         <H4 style={{ margin: 0 }}>{title}</H4>
         {templateLabel && <Link href={templateHref} onClick={onTemplateClick} variant="primary">{templateLabel}</Link>}

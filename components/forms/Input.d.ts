@@ -8,4 +8,6 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   readOnly?: boolean;
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
+  /** "small" shrinks height/padding for dense field rows (e.g. paired date/number fields). Default "medium". */
+  size?: "medium" | "small";
 }
