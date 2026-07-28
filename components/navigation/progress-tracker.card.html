@@ -1,0 +1,101 @@
+<!-- @dsCard group="Components" viewport="720x480" name="ProgressTracker" subtitle="Vertical wizard step tracker — Vertical Nav Item L0 + L1/Child anatomy" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js?v=14"></script>
+<style>body{margin:0;padding:24px}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { ProgressTracker, Card } = window.FusionDesignSystem_6db751;
+function App() {
+  return (
+    <div style={{ display: "flex", gap: 32, flexWrap: "wrap", alignItems: "flex-start" }}>
+      <Card style={{ width: 260, height: 620, padding: 0, overflow: "hidden" }}>
+        <ProgressTracker
+          headerTitle="Progress Tracker Title"
+          headerDescription="A description clarifies a feature's purpose and function."
+          steps={[
+            { label: "Metadata", status: "complete", children: [
+              { label: "Data publisher", status: "complete" },
+              { label: "Approvers", status: "complete" },
+            ] },
+            { label: "Ownership", status: "inprogress", children: [
+              { label: "Draft", status: "complete" },
+              { label: "Review", status: "inprogress" },
+              { label: "Approve", status: "active" },
+              { label: "Publish", status: "todo" },
+            ] },
+            { label: "Connect Data", status: "todo", children: [
+              { label: "Select source", status: "todo" },
+              { label: "Configure sync", status: "todo" },
+            ] },
+            { label: "Validate", status: "todo", description: "This is placeholder text for the description", children: [
+              { label: "Schema check", status: "todo" },
+              { label: "Sample rows", status: "todo" },
+            ] },
+            { label: "Review", status: "todo" },
+            { label: "Publish", status: "todo", disabled: true },
+          ]}
+        />
+      </Card>
+      <Card style={{ width: 260, height: 420, padding: "8px 0", overflow: "hidden" }}>
+        <ProgressTracker
+          collapsible={false}
+          steps={[
+            { label: "To do", status: "todo" },
+            { label: "To do (disabled)", status: "todo", disabled: true },
+            { label: "Active", status: "active" },
+            { label: "In progress", status: "inprogress" },
+            { label: "In progress (disabled)", status: "inprogress", disabled: true },
+            { label: "Complete", status: "complete" },
+            { label: "Complete (disabled)", status: "complete", disabled: true },
+            { label: "Error", status: "error" },
+          ]}
+        />
+      </Card>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <span style={{ fontSize: 13, fontWeight: 600, color: "var(--salt-content-secondary-foreground)" }}>dock="left" — page content sits to the right</span>
+        <Card style={{ width: 340, height: 420, padding: 0, overflow: "hidden" }}>
+          <ProgressTracker
+            dock="left"
+            defaultRailCollapsed
+            expandOnHover
+            headerTitle="Progress Tracker Title"
+            steps={[
+              { label: "Metadata", status: "complete" },
+              { label: "Ownership", status: "active" },
+              { label: "Connect Data", status: "todo" },
+            ]}
+          />
+        </Card>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <span style={{ fontSize: 13, fontWeight: 600, color: "var(--salt-content-secondary-foreground)" }}>dock="right" — page content sits to the left</span>
+        <Card style={{ width: 340, height: 420, padding: 0, overflow: "hidden" }}>
+          <ProgressTracker
+            dock="right"
+            defaultRailCollapsed
+            expandOnHover
+            headerTitle="Progress Tracker Title"
+            steps={[
+              { label: "Metadata", status: "complete" },
+              { label: "Ownership", status: "active" },
+              { label: "Connect Data", status: "todo" },
+            ]}
+          />
+        </Card>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
