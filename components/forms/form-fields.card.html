@@ -16,7 +16,7 @@
 <script type="text/babel">
 const {
   FormField, Input, MultilineInput, ComboBox, SelectableCard, Checkbox, CheckboxGroup,
-  RadioButton, RadioButtonGroup, DatePicker, RangeDatePicker, TimeInput, NumberInput,
+  RadioButton, RadioButtonGroup, ToggleButtonGroup, DatePicker, RangeDatePicker, TimeInput, NumberInput,
   CurrencyInput, Dropdown, H4, Divider, GridLayout, SectionHeader, Accordion,
 } = window.FusionDesignSystem_6db751;
 
@@ -51,10 +51,10 @@ function ValidationDemo() {
   return (
     <GridLayout columns={2} gap={9}>
       <FormField label="Dataset name" necessity="required" error={nameErr} errorMessage="Dataset name is required.">
-        <Input validationState={nameErr ? "error" : undefined} placeholder="e.g. Customer Support FAQ" onChange={(e) => setNameErr(e.target.value.trim().length === 0)} />
+        <Input validationState={nameErr ? "error" : undefined} placeholder="Enter dataset name" onChange={(e) => setNameErr(e.target.value.trim().length === 0)} />
       </FormField>
       <FormField label="Owning team" necessity="required" error={teamErr} errorMessage="Select a team before continuing." style={{ width: 280 }}>
-        <ComboBox validationState={teamErr ? "error" : undefined} options={teamOptions} placeholder="Search teams" style={{ width: 280 }} onChange={(v) => setTeamErr(!v)} />
+        <ComboBox validationState={teamErr ? "error" : undefined} options={teamOptions} placeholder="Select team" style={{ width: 280 }} onChange={(v) => setTeamErr(!v)} />
       </FormField>
       <FormField label="Classification" necessity="required" error={classErr} errorMessage="Choose a classification level.">
         <Dropdown validationState={classErr ? "error" : undefined} defaultValue="" options={["Public", "Internal", "Confidential", "Restricted"]} onChange={(e) => setClassErr(!e.target.value)} />
@@ -91,12 +91,88 @@ function AccordionValidationDemo() {
         items={[
           { title: "Ownership", hasError: teamErr, content: (
             <FormField label="Owning team" necessity="required" error={teamErr} errorMessage="Select a team before continuing.">
-              <ComboBox validationState={teamErr ? "error" : undefined} options={teamOptions} placeholder="Search teams" onChange={(v) => setTeamErr(!v)} />
+              <ComboBox validationState={teamErr ? "error" : undefined} options={teamOptions} placeholder="Select team" onChange={(v) => setTeamErr(!v)} />
             </FormField>
           ) },
           { title: "Access", content: <span>No errors in this section.</span> },
         ]}
       />
+    </div>
+  );
+}
+
+function SubLabel({ children }) {
+  return <span style={{ fontSize: "var(--salt-text-label-fontSize)", fontWeight: "var(--salt-text-fontWeight-strong)", color: "var(--salt-content-secondary-foreground)" }}>{children}</span>;
+}
+
+function ConditionalModeDemo() {
+  const [mode, setMode] = React.useState("individual");
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-100)" }}>
+      <SubLabel>ToggleButtonGroup — switches the whole panel below</SubLabel>
+      <ToggleButtonGroup options={[{ label: "Individual", value: "individual" }, { label: "Organization", value: "organization" }]} defaultValue="individual" onChange={setMode} style={{ marginBottom: 0 }} />
+      {mode === "individual" ? (
+        <GridLayout columns={2} gap={9}>
+          <FormField label="Full name" necessity="required"><Input placeholder="Enter full name" /></FormField>
+          <FormField label="Date of birth" necessity="required"><DatePicker /></FormField>
+        </GridLayout>
+      ) : (
+        <GridLayout columns={2} gap={9}>
+          <FormField label="Organization name" necessity="required"><Input placeholder="Enter organization name" /></FormField>
+          <FormField label="Tax ID" necessity="required"><Input placeholder="Enter tax ID" /></FormField>
+        </GridLayout>
+      )}
+    </div>
+  );
+}
+
+function ConditionalFieldDemo() {
+  const [notify, setNotify] = React.useState("email");
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-100)" }}>
+      <SubLabel>RadioButtonGroup — reveals only the field this choice needs</SubLabel>
+      <FormField label="Notification method" necessity="required">
+        <RadioButtonGroup name="notify" direction="horizontal" defaultValue="email" options={[{ label: "Email", value: "email" }, { label: "SMS", value: "sms" }]} onChange={setNotify} />
+      </FormField>
+      {notify === "email" ? (
+        <FormField label="Email address" necessity="required"><Input placeholder="Enter email address" /></FormField>
+      ) : (
+        <FormField label="Phone number" necessity="required"><Input placeholder="Enter phone number" /></FormField>
+      )}
+    </div>
+  );
+}
+
+function ConditionalCardDemo() {
+  const [kind, setKind] = React.useState("dataset");
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-100)" }}>
+      <SubLabel>SelectableCard — reveals only the field this choice needs</SubLabel>
+      <GridLayout columns={2} gap={9}>
+        <SelectableCard title="Dataset" description="Connect a governed dataset" selected={kind === "dataset"} onChange={() => setKind("dataset")} />
+        <SelectableCard title="API" description="Call an external API directly" selected={kind === "api"} onChange={() => setKind("api")} />
+      </GridLayout>
+      {kind === "dataset" ? (
+        <FormField label="Dataset" necessity="required"><ComboBox options={teamOptions} placeholder="Select dataset" /></FormField>
+      ) : (
+        <FormField label="API endpoint URL" necessity="required"><Input placeholder="Enter API endpoint URL" /></FormField>
+      )}
+    </div>
+  );
+}
+
+function ConditionalComboBoxDemo() {
+  const [env, setEnv] = React.useState("");
+  const envOptions = [{ value: "aws", label: "AWS" }, { value: "gcp", label: "Google Cloud" }, { value: "onprem", label: "On-premises" }];
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-100)" }}>
+      <SubLabel>ComboBox — selection reveals that environment's connection fields</SubLabel>
+      <FormField label="Hosting environment" necessity="required" helperText="Selecting an environment reveals its connection fields." style={{ width: 280 }}>
+        <ComboBox options={envOptions} placeholder="Select hosting environment" style={{ width: 280 }} onChange={setEnv} />
+      </FormField>
+      {env === "aws" && <FormField label="AWS region" necessity="required"><Input placeholder="Enter AWS region" /></FormField>}
+      {env === "gcp" && <FormField label="GCP project ID" necessity="required"><Input placeholder="Enter GCP project ID" /></FormField>}
+      {env === "onprem" && <FormField label="Server hostname" necessity="required"><Input placeholder="Enter server hostname" /></FormField>}
     </div>
   );
 }
@@ -161,10 +237,10 @@ function App() {
         </GridLayout>
       </Section>
 
-      <Section title="Text input">
+      <Section title="Text input" description={'Empty state placeholder is "Enter {value}", contextual to the field.'}>
         <GridLayout columns={2} gap={9}>
           <FormField label="Dataset name" necessity="required" helperText="Shown to consumers in the catalog listing.">
-            <Input placeholder="e.g. Customer Support FAQ" />
+            <Input placeholder="Enter dataset name" />
           </FormField>
           <FormField
             label="Slug"
@@ -173,7 +249,7 @@ function App() {
             helperLinkText="edited manually."
             helperLinkHref="#"
           >
-            <Input placeholder="customer-support-faq" startAdornment={<span>/</span>} />
+            <Input placeholder="Enter slug" startAdornment={<span>/</span>} />
           </FormField>
         </GridLayout>
         <FormField
@@ -184,12 +260,15 @@ function App() {
         >
           <Input defaultValue="jane.doe@personal-mail.com" validationState="error" endAdornment={<span>@</span>} />
         </FormField>
+        <FormField label="Display name" necessity="required" helperText="Shown on shared links and exports.">
+          <Input characterLimit={24} defaultValue="Q3 Risk Review" />
+        </FormField>
       </Section>
 
-      <Section title="Combo box" description="Search-ahead select — single-select fills the field and closes the list; multi-select keeps it open and renders picks as chips.">
+      <Section title="Combo box" description={'Search-ahead select — single-select fills the field and closes the list; multi-select keeps it open and renders picks as chips. Empty state placeholder is "Select {value}", contextual to the field.'}>
         <div style={{ display: "flex", gap: "var(--salt-spacing-450)" }}>
           <FormField label="Owning team" necessity="required" helperText="Search by team name." style={{ width: 280 }}>
-            <ComboBox options={teamOptions} placeholder="Search teams" style={{ width: 280 }} />
+            <ComboBox options={teamOptions} placeholder="Select team" style={{ width: 280 }} />
           </FormField>
           <FormField label="Data domains" helperText="Select every domain this dataset touches." style={{ width: 280 }}>
             <ComboBox multiselect options={domainOptions} defaultValue={["data", "ai", "governance", "risk", "longdomain"]} style={{ width: 280 }} />
@@ -199,10 +278,13 @@ function App() {
 
       <Section title="Multiline input">
         <FormField label="Description" necessity="optional" helperText="Describe the content, audience, and scope of this knowledge base.">
-          <MultilineInput rows={3} placeholder="This knowledge base covers..." />
+          <MultilineInput rows={3} placeholder="Enter description" />
         </FormField>
         <FormField label="Support notes" helperText="Visible only to the owning team." toggletip="Notes never appear to end users — use them for handoff context, known issues, or renewal reminders.">
-          <MultilineInput rows={3} placeholder="Add internal context for the next owner" startAdornment={<SearchGlyph />} />
+          <MultilineInput rows={3} placeholder="Enter support notes" startAdornment={<SearchGlyph />} />
+        </FormField>
+        <FormField label="Short summary" necessity="required" helperText="One or two sentences — shown in list views.">
+          <MultilineInput rows={2} characterLimit={120} defaultValue="Central FAQ set for the support team, refreshed weekly from ticket themes." />
         </FormField>
       </Section>
 
@@ -214,24 +296,36 @@ function App() {
         </GridLayout>
       </Section>
 
-      <Section title="Small-size fields" description="Compact variants for dense, paired rows.">
+      <Section title="Conditional logic" description="Selections drive which fields or sections appear. ToggleButtonGroup switches the whole panel — use for high-priority, mutually-exclusive modes that change the overall context. SelectableCard/RadioButtonGroup reveal only the specific fields tied to a lower-priority, granular choice within a section. ComboBox selections can drive the same pattern, revealing fields relevant to the picked option. Only visible fields are required for validation — hidden fields are ignored.">
+        <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-300)" }}>
+          <ConditionalModeDemo />
+          <Divider />
+          <ConditionalFieldDemo />
+          <Divider />
+          <ConditionalCardDemo />
+          <Divider />
+          <ConditionalComboBoxDemo />
+        </div>
+      </Section>
+
+      <Section title="Small-size fields" description="Compact variants for dense, paired rows. Date/time fields show their expected entry pattern (dd mmm yyyy / hh mm aa) as placeholder text until a value is set.">
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-100)" }}>
           <FormField label="Reference name" necessity="required">
-            <Input size="small" placeholder="Q3 risk review" />
+            <Input size="small" placeholder="Enter reference name" />
           </FormField>
           <GridLayout columns={2} gap={9}>
             <FormField label="City" necessity="required">
-              <ComboBox size="small" options={[{ value: "nyc", label: "New York" }, { value: "lon", label: "London" }, { value: "sng", label: "Singapore" }]} placeholder="Search cities" />
+              <ComboBox size="small" options={[{ value: "nyc", label: "New York" }, { value: "lon", label: "London" }, { value: "sng", label: "Singapore" }]} placeholder="Select city" />
             </FormField>
             <FormField label="State / region">
-              <Input size="small" placeholder="e.g. NY" />
+              <Input size="small" placeholder="Enter state or region" />
             </FormField>
           </GridLayout>
           <GridLayout columns={2} gap={9}>
             <FormField label="Start date" necessity="required">
-              <DatePicker size="small" />
+              <DatePicker size="small" defaultValue="18 Mar 2026" />
             </FormField>
-            <FormField label="End date" necessity="required">
+            <FormField label="End date" necessity="required" helperText="Empty state shows the expected entry pattern.">
               <DatePicker size="small" />
             </FormField>
           </GridLayout>
@@ -243,11 +337,14 @@ function App() {
               <CurrencyInput size="small" defaultValue="12,480.55" />
             </FormField>
             <FormField label="Headcount">
-              <NumberInput size="small" placeholder="0" />
+              <NumberInput size="small" placeholder="Enter headcount" />
             </FormField>
           </GridLayout>
           <FormField label="Daily standup time" necessity="required">
             <TimeInput size="small" defaultValue="09:30 AM" />
+          </FormField>
+          <FormField label="Meeting time" necessity="required" helperText="Empty state shows the expected entry pattern.">
+            <TimeInput size="small" />
           </FormField>
         </div>
       </Section>

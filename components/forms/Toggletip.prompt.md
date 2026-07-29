@@ -4,7 +4,7 @@ Use it for "nice to know" context (why a field exists, format examples, links to
 
 ```jsx
 <FormField label="API key" necessity="required" toggletip="Generate a key from Settings → Developer access. Keys expire after 90 days.">
-  <Input placeholder="sk-..." />
+  <Input placeholder="Enter API key" />
 </FormField>
 ```
 

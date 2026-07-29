@@ -51,7 +51,7 @@ export function ComboBox({
   options = [],
   multiselect = false,
   defaultValue,
-  placeholder = "Search...",
+  placeholder = "Select an option",
   size = "medium",
   disabled = false,
   validationState,

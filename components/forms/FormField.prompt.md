@@ -2,7 +2,7 @@ FormField wraps one Input/Checkbox/Dropdown with a label and helper/error text.
 
 ```jsx
 <FormField label="Account nickname" necessity="required" helperText="Visible only to you">
-  <Input placeholder="e.g. Household checking" />
+  <Input placeholder="Enter account nickname" />
 </FormField>
 ```
 

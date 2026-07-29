@@ -2,7 +2,7 @@
 
 ```jsx
 <FormField label="Owning team" necessity="required">
-  <ComboBox options={[{ value: "risk", label: "Risk Analytics" }, { value: "markets", label: "Markets Tech" }]} placeholder="Search teams" />
+  <ComboBox options={[{ value: "risk", label: "Risk Analytics" }, { value: "markets", label: "Markets Tech" }]} placeholder="Select team" />
 </FormField>
 
 <FormField label="Data domains" helperText="Select every domain this dataset touches.">
@@ -15,3 +15,5 @@ Use plain `Dropdown` instead when the option list is short (under ~8) and doesn'
 Multi-select chips fill the collapsed row as many as fit (measured against the field's width), then a "+n" badge covers the rest; clicking "+n" expands the field to show every pill (capped at 88px tall / ~3 rows, scrollable) and reveals a clear-all "×" next to the chevron. Each pill caps at 190px (leaving clearance for the trailing clear/chevron icons) and shows a native title-attribute tooltip only when its label is actually truncated — untruncated pills get no tooltip.
 
 Option rows in the overlay: multiselect rows show a leading `Checkbox` (checked when that option is selected, non-interactive itself — the whole row handles the click) — single-select rows have no leading checkbox. In both modes, a selected row keeps the accent-weakest background fill but renders its label in `--salt-content-primary-foreground` (not accent-foreground) for legibility.
+
+Conditional forms: a combo box selection can drive progressive disclosure just like RadioButtonGroup/SelectableCard — use `onChange` to reveal the fields relevant to the picked option and skip validation for the rest while hidden.

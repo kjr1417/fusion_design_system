@@ -5,7 +5,7 @@ const CalendarIcon = () => (<svg viewBox="0 0 12 12" width="12" height="12" fill
 
 /* Single date field — Input with a calendar adornment and a native date
    picker underneath (no calendar-grid overlay yet; add on request). */
-export function DatePicker({ size = "medium", placeholder = "dd/mm/yyyy", ...rest }) {
+export function DatePicker({ size = "medium", placeholder = "dd mmm yyyy", ...rest }) {
   return <Input type="text" size={size} placeholder={placeholder} endAdornment={<CalendarIcon />} {...rest} />;
 }
 

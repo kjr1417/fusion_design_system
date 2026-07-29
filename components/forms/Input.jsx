@@ -22,9 +22,12 @@ export function Input({
   size = "medium",
   className = "",
   style,
+  characterLimit,
+  onChange,
   ...rest
 }) {
   const [focused, setFocused] = useState(false);
+  const [count, setCount] = useState(String(rest.value ?? defaultValue ?? "").length);
   const isError = validationState === "error";
   const cls = [
     "saltInput",
@@ -39,6 +42,10 @@ export function Input({
 
   const smallStyle = size === "small" ? { height: 28, minHeight: 28, minWidth: 130, fontSize: "var(--salt-text-label-fontSize)", padding: "0 var(--salt-spacing-50)" } : { minWidth: 220 };
   const resolvedEndAdornment = isError ? <ErrorAdornmentIcon /> : endAdornment;
+  const handleChange = (e) => {
+    setCount(e.target.value.length);
+    onChange && onChange(e);
+  };
 
   return (
     <div className={cls} style={{ ...smallStyle, ...style }}>
@@ -49,12 +56,17 @@ export function Input({
         readOnly={readOnly}
         placeholder={placeholder}
         defaultValue={defaultValue}
+        maxLength={characterLimit}
         aria-invalid={isError || undefined}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
+        onChange={handleChange}
         {...rest}
       />
       {resolvedEndAdornment && <span className="saltInput-endAdornmentContainer">{resolvedEndAdornment}</span>}
+      {characterLimit != null && (
+        <span className="saltInput-characterCount" style={{ flex: "none", paddingLeft: "var(--salt-spacing-50)", fontSize: "var(--salt-text-label-fontSize)", color: "var(--salt-content-secondary-foreground)", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{count}/{characterLimit}</span>
+      )}
       <div className="saltInput-activationIndicator" />
     </div>
   );

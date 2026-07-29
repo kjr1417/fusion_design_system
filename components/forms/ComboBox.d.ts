@@ -9,6 +9,9 @@ export interface ComboBoxOption {
  * typed text filters the list, picking an option fills the field and closes
  * the list. `multiselect=true` renders chosen options as removable chips
  * inside the field and keeps the list open across picks.
+ *
+ * Empty state shows placeholder text inviting a selection — standard is
+ * "Select {value}" (e.g. "Select team"), contextual to the field.
  */
 export interface ComboBoxProps {
   options: ComboBoxOption[];
