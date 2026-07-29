@@ -34,7 +34,7 @@ const MIN_TITLE_W = 48;
  * "+n" trigger that lists them on hover.
  *
  * Requires FusionDesignSystem_6db751 (H2, Text, Button, IconButton, Tag,
- * StatusBadge, CopyValue) plus ./SidePanelHeader.css.
+ * StatusBadge, CopyValue, ExpandableText) plus ./SidePanelHeader.css.
  */
 export function SidePanelHeader({
   title,
@@ -51,36 +51,7 @@ export function SidePanelHeader({
   dataLabels = [],
   style,
 }) {
-  const { H2, Text, Button, IconButton, Tag, StatusBadge, CopyValue } = window.FusionDesignSystem_6db751;
-  const [expanded, setExpanded] = useState(false);
-  const [displayText, setDisplayText] = useState(description);
-  const [truncated, setTruncated] = useState(false);
-  const measureRef = useRef(null);
-
-  useEffect(() => {
-    const el = measureRef.current;
-    if (!el || !description) return;
-    const measure = () => {
-      const lineHeightPx = parseFloat(getComputedStyle(el).lineHeight) || 0;
-      const maxHeight = lineHeightPx * 2 + 1;
-      el.textContent = description;
-      if (el.scrollHeight <= maxHeight) { setTruncated(false); setDisplayText(description); return; }
-      const words = description.split(" ");
-      let lo = 0, hi = words.length, best = 0;
-      while (lo <= hi) {
-        const mid = (lo + hi) >> 1;
-        el.textContent = words.slice(0, mid).join(" ") + "\u2026 View more";
-        if (el.scrollHeight <= maxHeight) { best = mid; lo = mid + 1; } else { hi = mid - 1; }
-      }
-      setTruncated(true);
-      setDisplayText(words.slice(0, best).join(" "));
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el.parentElement);
-    window.addEventListener("resize", measure);
-    return () => { ro.disconnect(); window.removeEventListener("resize", measure); };
-  }, [description]);
+  const { H2, Text, Button, IconButton, Tag, StatusBadge, CopyValue, ExpandableText } = window.FusionDesignSystem_6db751;
 
   const visibleActions = actions.slice(0, 2);
   const hasMeta = primaryTag || secondaryTag || status || copyValue || dataLabels.length > 0;
@@ -228,25 +199,7 @@ export function SidePanelHeader({
       </div>
 
       {description && (
-        <div style={{ marginTop: "var(--salt-spacing-100)", position: "relative" }}>
-          <p aria-hidden="true" ref={measureRef} style={{
-            position: "absolute", top: 0, left: 0, right: 0, visibility: "hidden", pointerEvents: "none", margin: 0,
-            fontFamily: "var(--salt-text-fontFamily)", fontWeight: "var(--salt-text-fontWeight)",
-            fontSize: "var(--salt-text-fontSize)", lineHeight: "var(--salt-text-lineHeight)",
-          }} />
-          <p style={{
-            margin: 0, textWrap: "pretty",
-            display: !truncated || expanded ? "block" : "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: !truncated || expanded ? "unset" : 2, overflow: !truncated || expanded ? "visible" : "hidden",
-            fontFamily: "var(--salt-text-fontFamily)", fontWeight: "var(--salt-text-fontWeight)",
-            fontSize: "var(--salt-text-fontSize)", lineHeight: "var(--salt-text-lineHeight)",
-            color: "var(--salt-content-secondary-foreground)",
-          }}>
-            {expanded ? description + " " : (truncated ? displayText + "\u2026 " : description)}
-            {truncated && (
-              <button type="button" className="sph-view-more sph-view-more-inline" onClick={() => setExpanded((v) => !v)}>{expanded ? "View less" : "View more"}</button>
-            )}
-          </p>
-        </div>
+        <ExpandableText text={description} lines={2} style={{ marginTop: "var(--salt-spacing-100)" }} />
       )}
 
       {hasMeta && (
