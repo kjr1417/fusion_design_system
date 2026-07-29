@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 
-export function Checkbox({ label, checked: checkedProp, defaultChecked = false, disabled = false, onChange, ...rest }) {
+export function Checkbox({ label, checked: checkedProp, defaultChecked = false, indeterminate = false, disabled = false, onChange, ...rest }) {
   const controlled = checkedProp !== undefined;
   const [internalChecked, setInternalChecked] = useState(defaultChecked);
   const checked = controlled ? checkedProp : internalChecked;
+  const inputRef = React.useRef(null);
+  React.useEffect(() => { if (inputRef.current) inputRef.current.indeterminate = !!indeterminate && !checked; }, [indeterminate, checked]);
   return (
     <label className={["saltCheckbox", disabled ? "saltCheckbox-disabled" : ""].filter(Boolean).join(" ")}>
       <input
+        ref={inputRef}
         type="checkbox"
         className="saltCheckbox-input"
         checked={checked}
@@ -14,9 +17,10 @@ export function Checkbox({ label, checked: checkedProp, defaultChecked = false, 
         onChange={(e) => { if (!controlled) setInternalChecked(e.target.checked); onChange && onChange(e); }}
         {...rest}
       />
-      <span className={["saltCheckboxIcon", checked ? "saltCheckboxIcon-checked" : ""].filter(Boolean).join(" ")}>
+      <span className={["saltCheckboxIcon", (checked || indeterminate) ? "saltCheckboxIcon-checked" : ""].filter(Boolean).join(" ")}>
         <svg viewBox="0 0 14 14" width="100%" height="100%">
           {checked && <path d="M4 7l2 2 4-4.5" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />}
+          {!checked && indeterminate && <path d="M4 7h6" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" />}
         </svg>
       </span>
       {label && <span>{label}</span>}

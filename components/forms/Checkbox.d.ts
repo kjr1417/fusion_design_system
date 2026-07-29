@@ -7,6 +7,8 @@ import type { InputHTMLAttributes } from "react";
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
   label?: string;
   disabled?: boolean;
+  /** Renders a dash instead of a check (parent-with-some-children-selected state in a tree). Ignored while `checked` is true. */
+  indeterminate?: boolean;
 }
 export function Checkbox(props: CheckboxProps): JSX.Element;
 

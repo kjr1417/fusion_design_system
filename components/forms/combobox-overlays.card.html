@@ -1,0 +1,145 @@
+<!-- @dsCard group="Forms" viewport="1200x1500" name="ComboBox overlay variants" subtitle="Metadata-comparison and tree-nested list menus, single- and multi-select" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js?v=7"></script>
+<style>
+body{margin:0;padding:32px;background:var(--salt-color-background-marble);font-family:var(--salt-text-fontFamily)}
+.stack{display:flex;flex-direction:column;gap:56px;max-width:520px}
+.sect{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--salt-content-secondary-foreground);margin:0 0 12px}
+.field{margin-bottom:8px}
+</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { FormField, ComboBox, ComboBoxMetadataOverlay, ComboBoxTreeOverlay, Button } = window.FusionDesignSystem_6db751;
+
+const datasetOptions = [
+  { value: "ds1", label: "EMEA Settlements — Daily Recon", metadata: [
+    { label: "Owner", value: "J. Chen" }, { label: "Rows", value: "4.2M" }, { label: "Updated", value: "2h ago" },
+  ] },
+  { value: "ds2", label: "APAC Custody Positions", metadata: [
+    { label: "Owner", value: "R. Patel" }, { label: "Rows", value: "1.8M" }, { label: "Updated", value: "1d ago" },
+  ] },
+  { value: "ds3", label: "Americas Trade Blotter", metadata: [
+    { label: "Owner", value: "M. Silva" }, { label: "Rows", value: "9.6M" }, { label: "Updated", value: "5m ago" },
+  ] },
+  { value: "ds4", label: "Global Reference Data — Instruments", metadata: [
+    { label: "Owner", value: "K. Novak" }, { label: "Rows", value: "620K" }, { label: "Updated", value: "3d ago" },
+  ] },
+  { value: "ds5", label: "EMEA Client Onboarding Feed", metadata: [
+    { label: "Owner", value: "J. Chen" }, { label: "Rows", value: "88K" }, { label: "Updated", value: "6h ago" },
+  ] },
+];
+
+const orgTree = [
+  { value: "americas", label: "Americas", children: [
+    { value: "us", label: "United States", children: [
+      { value: "us-east", label: "US East Desk" },
+      { value: "us-west", label: "US West Desk" },
+    ] },
+    { value: "ca", label: "Canada" },
+    { value: "br", label: "Brazil" },
+  ] },
+  { value: "emea", label: "EMEA", children: [
+    { value: "uk", label: "United Kingdom" },
+    { value: "de", label: "Germany" },
+    { value: "fr", label: "France" },
+  ] },
+  { value: "apac", label: "APAC", children: [
+    { value: "jp", label: "Japan" },
+    { value: "sg", label: "Singapore" },
+    { value: "au", label: "Australia" },
+  ] },
+];
+
+function Example({ title, children }) {
+  return (
+    <div>
+      <div className="sect">{title}</div>
+      {children}
+    </div>
+  );
+}
+
+function StatusDemo() {
+  const [mode, setMode] = React.useState("normal");
+  const wrapRef = React.useRef(null);
+  const status = mode === "loading" ? "loading" : mode === "error" ? "error" : null;
+  const options = mode === "empty" ? [] : datasetOptions.map((o) => ({ value: o.value, label: o.label }));
+  const pick = (m) => { setMode(m); requestAnimationFrame(() => wrapRef.current?.querySelector("input")?.focus()); };
+  return (
+    <Example title="Status messaging (applies to every ComboBox variant)">
+      <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+        {["normal", "empty", "loading", "error"].map((m) => (
+          <Button key={m} appearance={mode === m ? "solid" : "bordered"} sentiment="neutral" onClick={() => pick(m)}>{m}</Button>
+        ))}
+      </div>
+      <div ref={wrapRef}>
+        <FormField label="Dataset" className="field">
+          <ComboBox options={options} placeholder="Search datasets (or click a mode above, then focus)" status={status} onReload={() => setMode("normal")} defaultValue="" />
+        </FormField>
+      </div>
+    </Example>
+  );
+}
+
+function App() {
+  return (
+    <div className="stack">
+      <StatusDemo />
+
+      <Example title="Metadata overlay — single-select">
+        <FormField label="Dataset" className="field">
+          <ComboBoxMetadataOverlay
+            options={datasetOptions}
+            placeholder="Search datasets"
+            secondaryActions={[{ label: "Filters" }, { label: "Recent" }]}
+          />
+        </FormField>
+      </Example>
+
+      <Example title="Metadata overlay — multi-select (max 3 selections)">
+        <FormField label="Datasets" className="field">
+          <ComboBoxMetadataOverlay
+            multiselect
+            options={datasetOptions}
+            defaultValue={["ds1", "ds3"]}
+            placeholder="Search datasets"
+            maxSelections={3}
+            secondaryActions={[{ label: "Filters" }, { label: "Recent" }]}
+          />
+        </FormField>
+      </Example>
+
+      <Example title="Tree overlay — single-select">
+        <FormField label="Desk" className="field">
+          <ComboBoxTreeOverlay nodes={orgTree} placeholder="Search desks" defaultExpanded={["americas"]} />
+        </FormField>
+      </Example>
+
+      <Example title="Tree overlay — multi-select (max 4 selections)">
+        <FormField label="Desks" className="field">
+          <ComboBoxTreeOverlay
+            multiselect
+            nodes={orgTree}
+            defaultValue={["us-east", "us-west", "us", "uk"]}
+            placeholder="Search desks"
+            maxSelections={4}
+            defaultExpanded={["americas", "us", "emea"]}
+          />
+        </FormField>
+      </Example>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

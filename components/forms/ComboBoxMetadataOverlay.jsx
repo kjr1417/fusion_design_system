@@ -1,52 +1,27 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { Checkbox } from "./Checkbox.jsx";
+import { ComboBoxPill as Pill, PILL_MAX_WIDTH } from "./ComboBox.jsx";
 import { HighlightMatch } from "./highlightMatch.jsx";
 import { LoadingDots, EmptyStatus, ErrorStatus } from "./ComboBoxStatus.jsx";
 import { Spinner } from "../feedback/Spinner.jsx";
+import { Drawer } from "../overlays/Drawer.jsx";
 
 const ChevronDown = () => (<svg viewBox="0 0 12 12" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M5.618 8.593 6 9l.382-.407L11 3.661 10.236 3 6 7.524 1.764 3 1 3.66z"></path></svg>);
-const CloseIcon = () => (<svg viewBox="0 0 12 12" width="9" height="9" fill="currentColor" aria-hidden="true"><path d="m5.999 5.292 3.89-3.888.707.707L6.707 6l3.889 3.889-.707.708-3.89-3.89-3.889 3.89-.707-.708L5.292 6 1.403 2.111l.707-.708z"></path></svg>);
+const TEAROUT_PATHS = ["M0 12L12 12L12 6H11L11 11L1 11L1 1L6 1V5.24536e-07L1.04907e-06 0L0 12Z", "M11.9962 4V9.53989e-08H7.99619V1H10.2891L5.99608 5.29289L6.70319 6L10.9962 1.70711V4H11.9962Z"];
+const TearOutIcon = () => (<svg viewBox="0 0 12 12" width="12" height="12" fill="currentColor" aria-hidden="true">{TEAROUT_PATHS.map((d, i) => <path key={i} d={d} />)}</svg>);
 
-export const PILL_MAX_WIDTH = 190;
 const CONTROL_MAX_HEIGHT = 88;
 
-export function ComboBoxPill({ label, onRemove }) {
-  const textRef = useRef(null);
-  const [truncated, setTruncated] = useState(false);
-
-  useLayoutEffect(() => {
-    const el = textRef.current;
-    if (!el) return;
-    const check = () => setTruncated(el.scrollWidth > el.clientWidth + 1);
-    check();
-    const ro = new ResizeObserver(check);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [label]);
-
-  return (
-    <span style={{
-      display: "inline-flex", alignItems: "center", gap: 4, maxWidth: PILL_MAX_WIDTH,
-      background: "var(--salt-palette-accent-weakest)", color: "var(--salt-content-accent-foreground)",
-      borderRadius: "var(--salt-palette-corner-pill, 999px)", padding: "2px 4px 2px 8px",
-      fontSize: "var(--salt-text-label-fontSize)", lineHeight: "var(--salt-text-label-lineHeight)",
-    }}>
-      <span ref={textRef} title={truncated ? label : undefined} style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", minWidth: 0 }}>{label}</span>
-      <button type="button" aria-label={`Remove ${label}`} onClick={onRemove} style={{ display: "inline-flex", flex: "none", border: "none", background: "none", padding: 2, color: "inherit", cursor: "var(--salt-cursor-hover)" }}>
-        <CloseIcon />
-      </button>
-    </span>
-  );
-}
-
-/* Salt-style combo box: type-ahead search over `options`, single- or
-   multi-select. Multi-select renders chosen values as removable chips
-   (max 240px, ellipsis + hover tooltip when truncated). When chips overflow
-   the field's single visible row, a "+n" indicator replaces the rest;
-   clicking it expands the control (max 88px / ~3 rows, scrollable, last row
-   partially clipped to hint more) and reveals a clear-all icon beside the
-   chevron. */
-export function ComboBox({
+/**
+ * Fusion ComboBoxMetadataOverlay — a combo box whose overlay rows carry a
+ * second, at-a-glance row of comparison metadata (a single horizontal
+ * StaticListGroup) beneath each option's label, for choosing among
+ * data-heavy items. The overlay footer holds up to two secondary actions
+ * and a "Browse All" primary action (tear-out icon) that opens a Drawer.
+ * Requires FusionDesignSystem_6db751 (StaticListGroup, Button, Drawer via
+ * relative import).
+ */
+export function ComboBoxMetadataOverlay({
   options = [],
   multiselect = false,
   defaultValue,
@@ -57,13 +32,18 @@ export function ComboBox({
   status,
   onReload,
   maxSelections,
+  secondaryActions = [],
+  browseAllLabel = "Browse All",
+  onBrowseAll,
   onChange,
   style,
 }) {
+  const { StaticListGroup, Button } = window.FusionDesignSystem_6db751;
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [visibleCount, setVisibleCount] = useState(1);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [selected, setSelected] = useState(() => multiselect ? (defaultValue || []) : (defaultValue || ""));
   const ref = useRef(null);
   const rowRef = useRef(null);
@@ -76,15 +56,12 @@ export function ComboBox({
     return () => document.removeEventListener("mousedown", onDoc);
   }, [open]);
 
-  // Measure how many chips fit on one collapsed row from an always-fully-rendered,
-  // visibility:hidden measuring copy (so hiding chips in the visible row never feeds
-  // back into their own width — that caused chips to be miscounted as fitting).
   useLayoutEffect(() => {
     if (!multiselect || expanded) return;
     const row = rowRef.current;
     if (!row || selected.length === 0) { setVisibleCount(selected.length); return; }
     const recalc = () => {
-      const available = row.clientWidth - 44; // reserve for "+n" badge
+      const available = row.clientWidth - 44;
       let used = 0, count = 0;
       for (let i = 0; i < selected.length; i++) {
         const chip = measureRefs.current[i];
@@ -136,7 +113,7 @@ export function ComboBox({
     else { setSelected(""); onChange && onChange(""); }
   };
 
-  const smallStyle = size === "small" ? { minHeight: 28, minWidth: 130, fontSize: "var(--salt-text-label-fontSize)", padding: "2px var(--salt-spacing-50)" } : { minWidth: 220, padding: multiselect ? "var(--salt-spacing-25) var(--salt-spacing-100) var(--salt-spacing-25) var(--salt-spacing-50)" : undefined };
+  const smallStyle = size === "small" ? { minHeight: 28, minWidth: 130, fontSize: "var(--salt-text-label-fontSize)", padding: "2px var(--salt-spacing-50)" } : { minWidth: 260, padding: multiselect ? "var(--salt-spacing-25) var(--salt-spacing-100) var(--salt-spacing-25) var(--salt-spacing-50)" : undefined };
 
   const cls = [
     "saltInput", "saltInput-bordered", "saltInput-primary",
@@ -145,9 +122,15 @@ export function ComboBox({
     disabled ? "saltInput-disabled" : "",
   ].filter(Boolean).join(" ");
 
-  // Collapsed row shows as many chips as fit (measured), then a "+n" badge for the rest.
   const overflowCount = multiselect ? Math.max(0, selected.length - visibleCount) : 0;
   const iconGutter = multiselect ? (expanded ? 52 : 28) : 0;
+
+  const handleBrowseAll = (e) => {
+    e.stopPropagation();
+    setOpen(false);
+    if (onBrowseAll) onBrowseAll();
+    setDrawerOpen(true);
+  };
 
   return (
     <div ref={ref} style={{ position: "relative", ...style }}>
@@ -170,7 +153,7 @@ export function ComboBox({
             if (!expanded && i >= visibleCount) return null;
             return (
               <span key={v} style={{ display: "inline-flex", flex: "none" }}>
-                <ComboBoxPill label={opt.label} onRemove={(e) => removeChip(v, e)} />
+                <Pill label={opt.label} onRemove={(e) => removeChip(v, e)} />
               </span>
             );
           })}
@@ -203,7 +186,7 @@ export function ComboBox({
           {selected.map((v, i) => {
             const opt = options.find((o) => o.value === v);
             if (!opt) return null;
-            return <span key={v} ref={(el) => (measureRefs.current[i] = el)} style={{ display: "inline-flex", flex: "none" }}><ComboBoxPill label={opt.label} onRemove={() => {}} /></span>;
+            return <span key={v} ref={(el) => (measureRefs.current[i] = el)} style={{ display: "inline-flex", flex: "none" }}><Pill label={opt.label} onRemove={() => {}} /></span>;
           })}
         </div>
       )}
@@ -211,7 +194,7 @@ export function ComboBox({
         {status === "loading" && <Spinner size={12} />}
         {hasClearable && (
           <button type="button" aria-label="Clear" onClick={handleClear} style={{ display: "inline-flex", border: "none", background: "none", padding: 0, color: "inherit", cursor: "var(--salt-cursor-hover)" }}>
-            <CloseIcon />
+            <svg viewBox="0 0 12 12" width="9" height="9" fill="currentColor" aria-hidden="true"><path d="m5.999 5.292 3.89-3.888.707.707L6.707 6l3.889 3.889-.707.708-3.89-3.89-3.889 3.89-.707-.708L5.292 6 1.403 2.111l.707-.708z"/></svg>
           </button>
         )}
         <button
@@ -228,41 +211,66 @@ export function ComboBox({
           position: "absolute", zIndex: 10, top: "calc(100% + 4px)", left: 0, right: 0,
           background: "var(--salt-color-white)", border: "1px solid var(--salt-color-gray-200)",
           borderRadius: "var(--salt-palette-corner-weak)", boxShadow: "var(--salt-overlayable-shadow-popout)",
-          maxHeight: 200, overflowY: "auto", padding: "var(--salt-spacing-25) 0",
+          display: "flex", flexDirection: "column", maxHeight: 380,
         }}>
-          {status === "loading" && <LoadingDots />}
-          {status === "error" && <ErrorStatus onReload={onReload} />}
-          {!status && filtered.length === 0 && <EmptyStatus />}
-          {!status && filtered.map((opt) => {
-            const isSel = multiselect ? selected.includes(opt.value) : selected === opt.value;
-            const disabledByLimit = limitReached && !isSel;
-            return (
-              <div
-                key={opt.value}
-                role="option"
-                aria-selected={isSel}
-                aria-disabled={disabledByLimit}
-                title={disabledByLimit ? "Maximum selections reached" : undefined}
-                onClick={() => { if (!disabledByLimit) pick(opt); }}
-                style={{
-                  display: "flex", alignItems: "center", gap: "var(--salt-spacing-75)", justifyContent: multiselect ? "flex-start" : "space-between",
-                  padding: "var(--salt-spacing-50) var(--salt-spacing-100)", cursor: disabledByLimit ? "not-allowed" : "var(--salt-cursor-hover)",
-                  background: isSel ? "var(--salt-palette-accent-weakest)" : "transparent",
-                  color: isSel ? "var(--salt-content-primary-foreground)" : "var(--salt-content-primary-foreground)",
-                  opacity: disabledByLimit ? 0.5 : 1,
-                  fontSize: "var(--salt-text-fontSize)",
-                }}
-                onMouseEnter={(e) => { if (!isSel && !disabledByLimit) e.currentTarget.style.background = "var(--salt-color-gray-100)"; }}
-                onMouseLeave={(e) => { if (!isSel) e.currentTarget.style.background = "transparent"; }}
-              >
-                {multiselect && <span style={{ pointerEvents: "none" }}><Checkbox checked={isSel} onChange={() => {}} tabIndex={-1} /></span>}
-                <span><HighlightMatch text={opt.label} query={query} /></span>
-              </div>
-            );
-          })}
+          <div style={{ overflowY: "auto", padding: "var(--salt-spacing-25) 0" }}>
+            {status === "loading" && <LoadingDots />}
+            {status === "error" && <ErrorStatus onReload={onReload} />}
+            {!status && filtered.length === 0 && <EmptyStatus />}
+            {!status && filtered.map((opt) => {
+              const isSel = multiselect ? selected.includes(opt.value) : selected === opt.value;
+              const disabledByLimit = limitReached && !isSel;
+              return (
+                <div
+                  key={opt.value}
+                  role="option"
+                  aria-selected={isSel}
+                  aria-disabled={disabledByLimit}
+                  title={disabledByLimit ? "Maximum selections reached" : undefined}
+                  onClick={() => { if (!disabledByLimit) pick(opt); }}
+                  style={{
+                    display: "flex", flexDirection: "column", gap: "var(--salt-spacing-50)",
+                    padding: "var(--salt-spacing-75) var(--salt-spacing-100)", cursor: disabledByLimit ? "not-allowed" : "var(--salt-cursor-hover)",
+                    background: isSel ? "var(--salt-palette-accent-weakest)" : "transparent",
+                    opacity: disabledByLimit ? 0.5 : 1,
+                  }}
+                  onMouseEnter={(e) => { if (!isSel && !disabledByLimit) e.currentTarget.style.background = "var(--salt-color-gray-100)"; }}
+                  onMouseLeave={(e) => { if (!isSel) e.currentTarget.style.background = "transparent"; }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-75)" }}>
+                    {multiselect && <span style={{ pointerEvents: "none" }}><Checkbox checked={isSel} onChange={() => {}} tabIndex={-1} /></span>}
+                    <span style={{ fontFamily: "var(--salt-text-fontFamily)", fontWeight: "var(--salt-text-fontWeight)", fontSize: "var(--salt-text-fontSize)", color: "var(--salt-content-primary-foreground)" }}><HighlightMatch text={opt.label} query={query} /></span>
+                  </div>
+                  {opt.metadata && opt.metadata.length > 0 && (
+                    <StaticListGroup
+                      items={opt.metadata}
+                      orientation="horizontal"
+                      labelPosition="left"
+                      labelWidth="hug"
+                      style={{ paddingLeft: multiselect ? "calc(var(--salt-size-selectable) + var(--salt-spacing-75))" : 0 }}
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <div style={{
+            display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "var(--salt-spacing-100)",
+            padding: "var(--salt-spacing-100)", borderTop: "1px solid var(--salt-separable-tertiary-borderColor)", flexShrink: 0,
+          }}>
+            {secondaryActions.slice(0, 2).map((a, i) => (
+              <Button key={i} appearance="bordered" sentiment="neutral" disabled={status === "loading" || status === "error"} onClick={(e) => { e.stopPropagation(); a.onClick && a.onClick(e); }} style={{ whiteSpace: "nowrap" }}>
+                {a.label}
+              </Button>
+            ))}
+            <Button appearance="solid" sentiment="accented" disabled={status === "loading" || status === "error"} onClick={handleBrowseAll} style={{ whiteSpace: "nowrap", display: "inline-flex", alignItems: "center", gap: "var(--salt-spacing-50)" }}>
+              <TearOutIcon />
+              {browseAllLabel}
+            </Button>
+          </div>
         </div>
       )}
+      <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title={browseAllLabel} />
     </div>
   );
 }
-
