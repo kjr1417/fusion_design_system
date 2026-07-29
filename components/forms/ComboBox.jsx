@@ -3,6 +3,7 @@ import { Checkbox } from "./Checkbox.jsx";
 import { HighlightMatch } from "./highlightMatch.jsx";
 import { LoadingDots, EmptyStatus, ErrorStatus } from "./ComboBoxStatus.jsx";
 import { Spinner } from "../feedback/Spinner.jsx";
+import { ErrorAdornmentIcon } from "./Input.jsx";
 
 const ChevronDown = () => (<svg viewBox="0 0 12 12" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M5.618 8.593 6 9l.382-.407L11 3.661 10.236 3 6 7.524 1.764 3 1 3.66z"></path></svg>);
 const CloseIcon = () => (<svg viewBox="0 0 12 12" width="9" height="9" fill="currentColor" aria-hidden="true"><path d="m5.999 5.292 3.89-3.888.707.707L6.707 6l3.889 3.889-.707.708-3.89-3.89-3.889 3.89-.707-.708L5.292 6 1.403 2.111l.707-.708z"></path></svg>);
@@ -162,6 +163,7 @@ export function ComboBox({
           ...smallStyle,
         }}
         onClick={() => !disabled && setOpen(true)}
+        aria-invalid={validationState === "error" || undefined}
       >
         <div ref={rowRef} style={{ display: "flex", flexWrap: multiselect && expanded ? "wrap" : "nowrap", alignItems: "center", gap: 4, flex: 1, minWidth: 0, overflow: multiselect && !expanded ? "hidden" : undefined }}>
           {multiselect && selected.map((v, i) => {
@@ -207,18 +209,19 @@ export function ComboBox({
           })}
         </div>
       )}
-      <div style={{ position: "absolute", top: 0, right: 8, height: "var(--salt-size-base)", display: "flex", alignItems: "center", gap: 6, color: "var(--salt-content-secondary-foreground)" }}>
+      <div style={{ position: "absolute", top: 0, right: 4, height: "var(--salt-size-base)", display: "flex", alignItems: "center", gap: 6, color: "var(--salt-content-secondary-foreground)" }}>
         {status === "loading" && <Spinner size={12} />}
         {hasClearable && (
-          <button type="button" aria-label="Clear" onClick={handleClear} style={{ display: "inline-flex", border: "none", background: "none", padding: 0, color: "inherit", cursor: "var(--salt-cursor-hover)" }}>
+          <button type="button" aria-label="Clear" onClick={handleClear} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 20, height: 20, border: "none", background: "none", padding: 0, color: "inherit", cursor: "var(--salt-cursor-hover)" }}>
             <CloseIcon />
           </button>
         )}
+        {validationState === "error" && <ErrorAdornmentIcon />}
         <button
           type="button"
           aria-label={expanded ? "Collapse" : "Expand"}
           onClick={(e) => { if (multiselect) { e.stopPropagation(); setExpanded((x) => !x); } }}
-          style={{ display: "inline-flex", border: "none", background: "none", padding: 0, color: "inherit", cursor: multiselect ? "var(--salt-cursor-hover)" : "inherit", transform: expanded ? "rotate(180deg)" : "none" }}
+          style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 20, height: 20, border: "none", background: "none", padding: 0, color: "inherit", cursor: multiselect ? "var(--salt-cursor-hover)" : "inherit", transform: expanded ? "rotate(180deg)" : "none" }}
         >
           <ChevronDown />
         </button>

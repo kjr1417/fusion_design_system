@@ -9,6 +9,8 @@ export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement
   disabled?: boolean;
   /** Renders a dash instead of a check (parent-with-some-children-selected state in a tree). Ignored while `checked` is true. */
   indeterminate?: boolean;
+  /** "error" tints the box border red — only visible while the box is unchecked/not indeterminate. */
+  validationState?: "error";
 }
 export function Checkbox(props: CheckboxProps): JSX.Element;
 
@@ -23,6 +25,9 @@ export interface CheckboxGroupProps {
   defaultValue?: string[];
   direction?: "vertical" | "horizontal";
   onChange?: (values: string[]) => void;
+  /** Pass with `errorMessage` to red-border every unselected checkbox in the group and render an error message (with icon, role="alert") below the whole group. */
+  error?: boolean;
+  errorMessage?: React.ReactNode;
   style?: React.CSSProperties;
 }
 export function CheckboxGroup(props: CheckboxGroupProps): JSX.Element;

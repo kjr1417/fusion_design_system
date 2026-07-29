@@ -17,7 +17,7 @@
 const {
   FormField, Input, MultilineInput, ComboBox, SelectableCard, Checkbox, CheckboxGroup,
   RadioButton, RadioButtonGroup, DatePicker, RangeDatePicker, TimeInput, NumberInput,
-  CurrencyInput, Dropdown, H4, Divider, GridLayout, SectionHeader,
+  CurrencyInput, Dropdown, H4, Divider, GridLayout, SectionHeader, Accordion,
 } = window.FusionDesignSystem_6db751;
 
 const CalendarGlyph = () => (<svg viewBox="0 0 12 12" width="12" height="12" fill="currentColor"><path d="M4 0v1h4V0h1v1h3v11H0V1h3V0zm7 4H1v7h10zM9 2H8v1h1zM4 2H3v1h1z"></path></svg>);
@@ -42,6 +42,65 @@ const teamOptions = [
   { value: "compliance", label: "Compliance Systems" },
 ];
 
+function ValidationDemo() {
+  const [nameErr, setNameErr] = React.useState(true);
+  const [teamErr, setTeamErr] = React.useState(true);
+  const [classErr, setClassErr] = React.useState(true);
+  const [budgetErr, setBudgetErr] = React.useState(true);
+  const [accessErr, setAccessErr] = React.useState(true);
+  return (
+    <GridLayout columns={2} gap={9}>
+      <FormField label="Dataset name" necessity="required" error={nameErr} errorMessage="Dataset name is required.">
+        <Input validationState={nameErr ? "error" : undefined} placeholder="e.g. Customer Support FAQ" onChange={(e) => setNameErr(e.target.value.trim().length === 0)} />
+      </FormField>
+      <FormField label="Owning team" necessity="required" error={teamErr} errorMessage="Select a team before continuing." style={{ width: 280 }}>
+        <ComboBox validationState={teamErr ? "error" : undefined} options={teamOptions} placeholder="Search teams" style={{ width: 280 }} onChange={(v) => setTeamErr(!v)} />
+      </FormField>
+      <FormField label="Classification" necessity="required" error={classErr} errorMessage="Choose a classification level.">
+        <Dropdown validationState={classErr ? "error" : undefined} defaultValue="" options={["Public", "Internal", "Confidential", "Restricted"]} onChange={(e) => setClassErr(!e.target.value)} />
+      </FormField>
+      <FormField label="Budget" necessity="required" error={budgetErr} errorMessage="Enter an amount greater than 0.">
+        <CurrencyInput validationState={budgetErr ? "error" : undefined} defaultValue="" onChange={(e) => setBudgetErr(!(parseFloat((e.target.value || "").replace(/[^0-9.]/g, "")) > 0))} />
+      </FormField>
+      <FormField label="Access" necessity="required">
+        <CheckboxGroup
+          direction="horizontal"
+          defaultValue={[]}
+          error={accessErr}
+          errorMessage="Select at least one access level."
+          onChange={(vals) => setAccessErr(vals.length === 0)}
+          options={[
+            { value: "read", label: "Read" },
+            { value: "write", label: "Write" },
+            { value: "admin", label: "Admin" },
+          ]}
+        />
+      </FormField>
+    </GridLayout>
+  );
+}
+
+function AccordionValidationDemo() {
+  const [teamErr, setTeamErr] = React.useState(true);
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-100)", marginTop: "var(--salt-spacing-200)" }}>
+      <span style={{ fontSize: "var(--salt-text-label-fontSize)", fontWeight: "var(--salt-text-fontWeight-strong)", color: "var(--salt-content-primary-foreground)" }}>Accordion — collapsed section with a field error</span>
+      <Accordion
+        variant="boxed"
+        defaultOpen={-1}
+        items={[
+          { title: "Ownership", hasError: teamErr, content: (
+            <FormField label="Owning team" necessity="required" error={teamErr} errorMessage="Select a team before continuing.">
+              <ComboBox validationState={teamErr ? "error" : undefined} options={teamOptions} placeholder="Search teams" onChange={(v) => setTeamErr(!v)} />
+            </FormField>
+          ) },
+          { title: "Access", content: <span>No errors in this section.</span> },
+        ]}
+      />
+    </div>
+  );
+}
+
 function Section({ title, description, children }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-100)" }}>
@@ -59,6 +118,11 @@ function App() {
   const [source, setSource] = React.useState("card-1");
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-300)", maxWidth: 720 }}>
+
+      <Section title="Validation" description="Field-level errors use Salt's built-in error styling — red border/background, the field's own adornment replaced by a red status circle, and a red error message with icon below the field (rendered via FormField's built-in Status pattern, announced to screen readers via an alert role). Multiple errors on a page also get a summary banner at the top, in the form header — see Section header above. Once a field becomes valid it simply returns to default styling — there is no success/green state. Try editing a field below.">
+        <ValidationDemo />
+        <AccordionValidationDemo />
+      </Section>
 
       <Section title="Section header" description="Recurring section-opening pattern: status banners, a required-field note with an optional-fields switch, the title, and an expandable description.">
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-450)" }}>
