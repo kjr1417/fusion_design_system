@@ -55,7 +55,7 @@ export function Input({
         disabled={disabled}
         readOnly={readOnly}
         placeholder={placeholder}
-        defaultValue={defaultValue}
+        defaultValue={rest.value === undefined ? defaultValue : undefined}
         maxLength={characterLimit}
         aria-invalid={isError || undefined}
         onFocus={() => setFocused(true)}

@@ -341,10 +341,13 @@ function App() {
             </FormField>
           </GridLayout>
           <FormField label="Daily standup time" necessity="required">
-            <TimeInput size="small" defaultValue="09:30 AM" />
+            <TimeInput defaultValue="09:30 AM" />
           </FormField>
           <FormField label="Meeting time" necessity="required" helperText="Empty state shows the expected entry pattern.">
-            <TimeInput size="small" />
+            <TimeInput />
+          </FormField>
+          <FormField label="System maintenance window (24h, with seconds)" necessity="required">
+            <TimeInput mode="24h" showSeconds defaultValue="14:05:30" />
           </FormField>
         </div>
       </Section>
