@@ -1,0 +1,96 @@
+<!-- @dsCard group="Data" viewport="1040x1500" name="StaticList" subtitle="Read-only label/value rows: left/top label position, hug/fluid/fixed label width, single or multi-column groupings" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+body{margin:0;padding:32px;background:var(--salt-color-background-marble);font-family:var(--salt-text-fontFamily)}
+.panel{background:var(--salt-color-white);border:1px solid var(--salt-container-primary-borderColor);border-radius:var(--salt-palette-corner);padding:24px;box-shadow:var(--salt-shadow-lowest)}
+.stack{display:flex;flex-direction:column;gap:32px}
+.sect{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--salt-content-secondary-foreground);margin:0 0 12px}
+</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { StaticList, StaticListGroup } = window.FusionDesignSystem_6db751;
+
+const singleColData = [
+  { label: "Owner", value: "J. Chen" },
+  { label: "Created", value: "Jan 4, 2026" },
+  { label: "Status", value: "Active" },
+];
+const longData = [
+  { label: "Dataset description", value: "Daily reconciliation feed for EMEA settlements covering all custody accounts" },
+  { label: "Data owner", value: "Reconciliation Engineering, Markets Technology" },
+  { label: "Retention policy", value: "7 years, immutable after quarter close" },
+];
+const sixItems = [
+  { label: "Owner", value: "J. Chen" },
+  { label: "Created", value: "Jan 4, 2026" },
+  { label: "Status", value: "Active" },
+  { label: "Updated", value: "2h ago" },
+  { label: "Region", value: "EMEA" },
+  { label: "Tier", value: "Gold" },
+];
+
+function Example({ title, children }) {
+  return (
+    <div>
+      <div className="sect">{title}</div>
+      <div className="panel">{children}</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div className="stack">
+      <Example title="Singular — horizontal — label left / width hug (dot separator, spacing-150)">
+        <StaticListGroup items={singleColData} orientation="horizontal" labelPosition="left" labelWidth="hug" />
+      </Example>
+
+      <Example title="Singular — vertical — label left / width fixed (spacing-fixed-100 rows)">
+        <StaticListGroup items={longData} labelPosition="left" labelWidth="fixed" fixedWidth={160} />
+      </Example>
+
+      <Example title="Singular — vertical — label top / width fixed (spacing-250 rows)">
+        <StaticListGroup items={longData} labelPosition="top" labelWidth="fixed" fixedWidth={160} />
+      </Example>
+
+      <Example title="Multi column — 2 col flex — label left (spacing-600 divider)">
+        <StaticListGroup items={sixItems} columns={2} labelPosition="left" labelWidth="fixed" fixedWidth={100} />
+      </Example>
+
+      <Example title="Multi column — 3 col flex — label left / width fixed (spacing-600 divider)">
+        <StaticListGroup items={sixItems} columns={3} labelPosition="left" labelWidth="fixed" fixedWidth={100} />
+      </Example>
+
+      <Example title="Multi column — 2 col flex — label top / width fixed">
+        <StaticListGroup items={sixItems} columns={2} labelPosition="top" labelWidth="fixed" fixedWidth={120} />
+      </Example>
+
+      <Example title="Multi column — 3 col flex — label top / width fixed">
+        <StaticListGroup items={sixItems} columns={3} labelPosition="top" labelWidth="fixed" fixedWidth={120} />
+      </Example>
+
+      <Example title="Standalone StaticList — all variants">
+        <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-300)" }}>
+          <StaticList label="Label left / hug, a much longer label that should not wrap at all" value="A much longer value that should also stay on a single line and truncate with an ellipsis instead of wrapping" labelPosition="left" labelWidth="hug" />
+          <StaticList label="Label left / fixed 160px, a much longer label that will clamp to two lines before it truncates" value="A much longer value that will also clamp to two lines before it truncates with an ellipsis at the end" labelPosition="left" labelWidth="fixed" fixedWidth={160} />
+          <StaticList label="Label left / fixed 140px, a much longer label that will clamp to two lines before it truncates" value="A much longer value that will also clamp to two lines before it truncates with an ellipsis at the end" labelPosition="left" labelWidth="fixed" fixedWidth={140} />
+          <StaticList label="Label top / fixed, a much longer label that wraps freely with no line limit at all under this position" value="Values under a top-aligned label also wrap freely with no line limit, unlike the left-label variants which clamp after two lines." labelPosition="top" labelWidth="fixed" fixedWidth={160} />
+        </div>
+      </Example>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
