@@ -17,7 +17,7 @@ const ChevronUp = () => (
   </svg>
 );
 
-export function Accordion({ items = [], defaultOpen = 0, variant = "boxed", allowMultiple = false, chevronPosition = "start" }) {
+export function Accordion({ items = [], defaultOpen = 0, variant = "boxed", allowMultiple = false, chevronPosition = "start", style }) {
   const [open, setOpen] = useState(() => {
     if (allowMultiple) return Array.isArray(defaultOpen) ? defaultOpen : (defaultOpen === -1 ? [] : [defaultOpen]);
     return defaultOpen;
@@ -31,13 +31,14 @@ export function Accordion({ items = [], defaultOpen = 0, variant = "boxed", allo
   const chevronEnd = chevronPosition === "end";
   const contentIndent = chevronEnd ? "var(--salt-spacing-200)" : "calc(var(--salt-spacing-200) + 12px)";
   return (
-    <div style={boxed ? { border: "1px solid var(--salt-color-gray-200)", borderRadius: "var(--salt-palette-corner)", overflow: "hidden" } : undefined}>
+    <div style={style}>
       {items.map((it, i) => {
         const collapsible = it.content != null && it.collapsible !== false;
         const errored = it.hasError && !isOpen(i);
         return (
         <div key={i} style={{
-          borderTop: errored ? "1px solid var(--salt-palette-negative)" : (boxed && i === 0 ? "none" : "1px solid var(--salt-color-gray-200)"),
+          borderTop: errored ? "1px solid var(--salt-palette-negative)" : "1px solid var(--salt-color-gray-200)",
+          borderRight: "none", borderLeft: "none",
           borderBottom: !boxed && i === items.length - 1 ? "1px solid var(--salt-color-gray-200)" : "none",
           background: errored ? "var(--salt-palette-negative-weakest)" : undefined,
         }}>
