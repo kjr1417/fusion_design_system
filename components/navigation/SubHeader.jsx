@@ -28,7 +28,7 @@ export function SubHeader({ title, actions = [], tertiaryAction, description, st
             appearance="bordered"
             sentiment="neutral"
             onClick={action.onClick}
-            style={{ flexShrink: 0, marginRight: (i < visibleActions.length - 1 || tertiaryAction) ? "var(--salt-spacing-100)" : 0 }}
+            style={{ flexShrink: 0, whiteSpace: "nowrap", marginRight: (i < visibleActions.length - 1 || tertiaryAction) ? "var(--salt-spacing-100)" : 0 }}
           >
             {action.label}
           </Button>
