@@ -32,6 +32,24 @@ function segmentValid(key, values, mode12) {
   return n >= 0 && n <= 59; // mm, ss
 }
 
+const SEGMENT_LABEL = { hh: "Hour", mm: "Minutes", ss: "Seconds" };
+
+function firstErrorMessage(order, values, mode12) {
+  for (const key of order) {
+    const v = values[key] || "";
+    if (key === "ap") { if (!v) return "Select AM or PM."; continue; }
+    if (v.length < 2) return `${SEGMENT_LABEL[key]} is incomplete.`;
+    const n = parseInt(v, 10);
+    if (key === "hh") {
+      const [min, max] = mode12 ? [1, 12] : [0, 23];
+      if (n < min || n > max) return `Hour must be between ${String(min).padStart(2, "0")}-${max}.`;
+    } else if (n < 0 || n > 59) {
+      return `${SEGMENT_LABEL[key]} must be between 00-59.`;
+    }
+  }
+  return "";
+}
+
 function Segment({ segKey, value, focused, onKeyDownSeg, onFocusSeg, onBlurSeg, setRef }) {
   return (
     <span
@@ -70,6 +88,7 @@ export function TimeInput({ mode = "12h", showSeconds = false, defaultValue = ""
   const [focusedKey, setFocusedKey] = useState(null);
   const [touched, setTouched] = useState(false);
   const refs = useRef({});
+  const containerRef = useRef(null);
 
   useEffect(() => {
     if (isControlled) setValues(parseValue(value, mode12, showSeconds));
@@ -131,28 +150,38 @@ export function TimeInput({ mode = "12h", showSeconds = false, defaultValue = ""
   const allEmpty = order.every((k) => !values[k]);
   const allValid = order.every((k) => segmentValid(k, values, mode12));
   const isError = validationState === "error" || (touched && !allEmpty && !allValid);
+  const errorMessage = isError ? firstErrorMessage(order, values, mode12) : "";
   const isFocused = focusedKey != null;
 
   const cls = ["saltInput", "saltInput-bordered", "saltInput-primary", isError ? "saltInput-error" : "", isFocused ? "saltInput-focused" : "", disabled ? "saltInput-disabled" : ""].filter(Boolean).join(" ");
 
+  const handleContainerBlur = (e) => {
+    if (containerRef.current && e.relatedTarget && containerRef.current.contains(e.relatedTarget)) return;
+    setFocusedKey(null);
+    setTouched(true);
+  };
+
   return (
+    <div style={{ display: "inline-flex", flexDirection: "column", gap: "var(--salt-spacing-25)", width: "fit-content" }}>
     <div
+      ref={containerRef}
       className={cls}
+      onBlur={handleContainerBlur}
       style={{ display: "inline-flex", flex: "none", width: "fit-content", height: 28, minHeight: 28, minWidth: 0, fontSize: "var(--salt-text-label-fontSize)", padding: "0 var(--salt-spacing-50)", alignItems: "center", gap: "var(--salt-spacing-50)", ...style }}
     >
-      <Segment segKey="hh" value={values.hh} focused={focusedKey === "hh"} onKeyDownSeg={handleKeyDown} onFocusSeg={setFocusedKey} onBlurSeg={() => { setFocusedKey(null); setTouched(true); }} setRef={(el) => (refs.current.hh = el)} />
+      <Segment segKey="hh" value={values.hh} focused={focusedKey === "hh"} onKeyDownSeg={handleKeyDown} onFocusSeg={setFocusedKey} onBlurSeg={() => {}} setRef={(el) => (refs.current.hh = el)} />
       <span aria-hidden="true" style={{ color: "var(--salt-content-secondary-foreground)" }}>:</span>
-      <Segment segKey="mm" value={values.mm} focused={focusedKey === "mm"} onKeyDownSeg={handleKeyDown} onFocusSeg={setFocusedKey} onBlurSeg={() => { setFocusedKey(null); setTouched(true); }} setRef={(el) => (refs.current.mm = el)} />
+      <Segment segKey="mm" value={values.mm} focused={focusedKey === "mm"} onKeyDownSeg={handleKeyDown} onFocusSeg={setFocusedKey} onBlurSeg={() => {}} setRef={(el) => (refs.current.mm = el)} />
       {showSeconds && (
         <React.Fragment>
           <span aria-hidden="true" style={{ color: "var(--salt-content-secondary-foreground)" }}>:</span>
-          <Segment segKey="ss" value={values.ss} focused={focusedKey === "ss"} onKeyDownSeg={handleKeyDown} onFocusSeg={setFocusedKey} onBlurSeg={() => { setFocusedKey(null); setTouched(true); }} setRef={(el) => (refs.current.ss = el)} />
+          <Segment segKey="ss" value={values.ss} focused={focusedKey === "ss"} onKeyDownSeg={handleKeyDown} onFocusSeg={setFocusedKey} onBlurSeg={() => {}} setRef={(el) => (refs.current.ss = el)} />
         </React.Fragment>
       )}
       {mode12 && (
         <React.Fragment>
           <span aria-hidden="true" style={{ width: "1em" }} />
-          <Segment segKey="ap" value={values.ap} focused={focusedKey === "ap"} onKeyDownSeg={handleKeyDown} onFocusSeg={setFocusedKey} onBlurSeg={() => { setFocusedKey(null); setTouched(true); }} setRef={(el) => (refs.current.ap = el)} />
+          <Segment segKey="ap" value={values.ap} focused={focusedKey === "ap"} onKeyDownSeg={handleKeyDown} onFocusSeg={setFocusedKey} onBlurSeg={() => {}} setRef={(el) => (refs.current.ap = el)} />
         </React.Fragment>
       )}
       <span style={{ display: "inline-flex", marginLeft: "auto", paddingLeft: 4, color: isError ? "var(--salt-palette-negative)" : "var(--salt-content-secondary-foreground)" }}>
@@ -162,6 +191,15 @@ export function TimeInput({ mode = "12h", showSeconds = false, defaultValue = ""
           <ClockIcon />
         )}
       </span>
+    </div>
+    {isError && errorMessage && (
+      <span role="alert" style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-25)", fontFamily: "var(--salt-text-label-fontFamily)", fontStyle: "italic", fontSize: "var(--salt-text-label-fontSize)", lineHeight: "var(--salt-text-label-lineHeight)", color: "var(--salt-palette-negative)" }}>
+        <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" style={{ flex: "none", fill: "var(--salt-palette-negative)" }}>
+          <path fillRule="evenodd" clipRule="evenodd" d="M9 0H3L0 3v6l3 3h6l3-3V3zM7 2H5v5h2zm-1 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2"></path>
+        </svg>
+        <span style={{ flex: 1 }}>{errorMessage}</span>
+      </span>
+    )}
     </div>
   );
 }

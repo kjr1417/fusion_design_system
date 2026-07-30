@@ -25,9 +25,10 @@ export interface TimeInputProps {
  * already-full segment starts a fresh value (overwrites, doesn't block).
  * ArrowUp/ArrowDown increment/decrement the focused hh/mm/ss segment
  * (wrapping at its valid range) or toggle AM/PM in the meridiem segment.
- * Valid ranges: hh 01–12
- * (12h) or 00–23 (24h), mm/ss 00–59; incomplete or out-of-range entries
- * shown with the error style once the field has been touched. Always
+ * Valid ranges: hh 01–12 (12h) or 00–23 (24h), mm/ss 00–59; incomplete or
+ * out-of-range entries show the error style once the field has been touched,
+ * plus a dynamic message below the field naming the first offending segment
+ * (e.g. "Minutes must be between 00-59.", "Hour is incomplete."). Always
  * renders at the compact field size and never stretches to fill its
  * container — size the containing layout around it, not the reverse.
  */
