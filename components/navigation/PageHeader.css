@@ -3,6 +3,3 @@
 .ph-seg-btn:hover{background:var(--salt-actionable-subtle-background-hover)}
 .ph-seg-divider{width:1px;background:var(--salt-color-gray-200)}
 .ph-overflow-btn{border-radius:var(--salt-curve-50)}
-.ph-seg-group{display:flex;align-items:stretch}
-.ph-seg-group-btn{cursor:pointer}
-.ph-seg-group-chevron{border-top-left-radius:0!important;border-bottom-left-radius:0!important;border-left:1px solid var(--salt-actionable-bold-foreground);opacity:0.9}

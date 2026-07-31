@@ -182,7 +182,7 @@ export function AppHeader({
 
       <div style={{ display: "flex", alignItems: "center", gap: 0, flexShrink: 0 }}>
         <div className="ah-actions" style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-100)" }}>
-          {showViewToggle && <ToggleButtonGroup options={viewToggleOptions} defaultValue={viewToggleOptions[0]?.value} onChange={onViewToggleChange} />}
+          {showViewToggle && <ToggleButtonGroup options={viewToggleOptions} defaultValue={viewToggleOptions[0]?.value} onChange={onViewToggleChange} style={{ marginBottom: 0 }} />}
           {actions.map((action, i) => (
             <Button key={i} appearance="bordered" sentiment="neutral" onClick={action.onClick} style={{ height: 28 }}>
               {action.icon && <span style={{ display: "inline-flex", marginRight: 6, flexShrink: 0 }}>{action.icon}</span>}

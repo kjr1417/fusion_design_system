@@ -18,34 +18,37 @@ const KebabIcon = () => (
 
 /**
  * Fusion PageHeader — full page-level header pattern (distinct from the
- * compact 44px AppHeader nested-page bar).
- * Requires FusionDesignSystem_6db751 (Button, Menu, Tag, StatusBadge,
+ * compact 44px AppHeader nested-page bar). Title-row actions (primary,
+ * secondary, tertiary) render as a single InlineButtons group immediately
+ * after the title.
+ * Requires FusionDesignSystem_6db751 (InlineButtons, Menu, Tag, StatusBadge,
  * CopyValue, Tabs, Divider, Text/H1, ExpandableText) plus ./PageHeader.css.
  */
-export function PageHeader({
-  showBreadcrumbNav = false,
-  onBreadcrumbBack,
-  breadcrumbMenuItems = [],
-  onBreadcrumbMenuSelect,
-  title,
-  primaryAction,
-  secondaryActions = [],
-  tertiaryAction,
-  overflowActions = [],
-  onOverflowSelect,
-  description,
-  primaryTag,
-  secondaryTag,
-  status,
-  copyValue,
-  onCopy,
-  dataLabels = [],
-  tabs = [],
-  activeTab = 0,
-  onTabChange,
-  style,
-}) {
-  const { Button, Menu, Tag, StatusBadge, CopyValue, Tabs, Divider, H1, Text, ExpandableText } = window.FusionDesignSystem_6db751;
+export function PageHeader(props) {
+  const {
+    showBreadcrumbNav = false,
+    onBreadcrumbBack,
+    breadcrumbMenuItems = [],
+    onBreadcrumbMenuSelect,
+    title,
+    primaryAction,
+    secondaryActions = [],
+    tertiaryAction,
+    overflowActions = [],
+    onOverflowSelect,
+    description,
+    primaryTag,
+    secondaryTag,
+    status,
+    copyValue,
+    onCopy,
+    dataLabels = [],
+    tabs = [],
+    activeTab = 0,
+    onTabChange,
+    style,
+  } = props;
+  const { Menu, Tag, StatusBadge, CopyValue, Tabs, Divider, H1, Text, ExpandableText, InlineButtons } = window.FusionDesignSystem_6db751;
 
   const hasMeta = primaryTag || secondaryTag || status || copyValue || dataLabels.length > 0;
 
@@ -75,39 +78,14 @@ export function PageHeader({
         )}
         <H1 style={{ minWidth: 0, flex: "0 1 auto", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", marginRight: "var(--salt-spacing-200)" }}>{title}</H1>
 
-        {primaryAction && (
-          <Button appearance="solid" sentiment="accented" onClick={primaryAction.onClick} style={{ flexShrink: 0, marginRight: "var(--salt-spacing-50)" }}>{primaryAction.label}</Button>
-        )}
-        {secondaryActions.length > 0 && (
-          <div className="ph-seg-group" style={{ flexShrink: 0, marginRight: "var(--salt-spacing-50)" }}>
-            <button
-              type="button"
-              className="saltButton saltButton-neutral saltButton-solid ph-seg-group-btn"
-              onClick={secondaryActions[0].onClick}
-              style={{
-                borderTopLeftRadius: "var(--salt-palette-corner-strongest)",
-                borderBottomLeftRadius: "var(--salt-palette-corner-strongest)",
-                borderTopRightRadius: secondaryActions.length > 1 ? 0 : "var(--salt-palette-corner-strongest)",
-                borderBottomRightRadius: secondaryActions.length > 1 ? 0 : "var(--salt-palette-corner-strongest)",
-              }}
-            >
-              {secondaryActions[0].label}
-            </button>
-            {secondaryActions.length > 1 && (
-              <Menu
-                items={secondaryActions.slice(1).map((a) => a.label)}
-                onSelect={(label) => secondaryActions.slice(1).find((a) => a.label === label)?.onClick?.()}
-                trigger={<ChevronDownIcon />}
-                triggerProps={{
-                  className: "saltButton saltButton-neutral saltButton-solid ph-seg-group-btn ph-seg-group-chevron",
-                  "aria-label": "More secondary actions",
-                }}
-              />
-            )}
-          </div>
-        )}
-        {tertiaryAction && (
-          <Button appearance="bordered" sentiment="neutral" onClick={tertiaryAction.onClick} style={{ flexShrink: 0, marginRight: "var(--salt-spacing-50)" }}>{tertiaryAction.label}</Button>
+        {(primaryAction || secondaryActions.length > 0 || tertiaryAction) && (
+          <InlineButtons
+            direction="left-to-right"
+            primaryAction={primaryAction}
+            secondaryActions={secondaryActions}
+            tertiaryActions={tertiaryAction ? [tertiaryAction] : []}
+            style={{ flexShrink: 0, marginRight: "var(--salt-spacing-50)" }}
+          />
         )}
         {overflowActions.length > 0 && (
           <Menu
