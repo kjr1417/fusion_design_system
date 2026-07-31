@@ -1,0 +1,23 @@
+<!-- @dsCard group="Studio Layouts" viewport="1400x820" name="Chat Layout" subtitle="Global nav + collapsible chat history + chat experience + resizable/closable preview split + Footer (structure only)" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js?v=1785425538957"></script>
+<style>body{margin:0;background:var(--salt-palette-background-secondary)}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { ChatLayout } = window.FusionDesignSystem_6db751;
+function App() {
+  return <ChatLayout globalNavProps={{ logoSrc: "../../assets/logo.svg", userSid: "Z482913" }} defaultPreviewOpen={false} welcomeDescription="Ask anything about your data, agents, or workflows." promptHelperText="AI-generated responses may be inaccurate. Verify important information." previewHeader="report.html" />;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

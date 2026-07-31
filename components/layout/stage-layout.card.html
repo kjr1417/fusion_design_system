@@ -1,0 +1,171 @@
+<!-- @dsCard group="Studio Layouts" viewport="1400x820" name="Stage Layout — Large / X-Small/Small" subtitle="Global nav + fixed AppHeader + ProgressTracker + SubHeader + spacing-400 + form + right panel/overlay + full-width ButtonBar + Footer" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<link rel="stylesheet" href="../navigation/AppHeader.css">
+<link rel="stylesheet" href="../navigation/Breadcrumbs.css">
+<link rel="stylesheet" href="../actions/CopyValue.css">
+<link rel="stylesheet" href="../display/ExpandableText.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js?v=1785425538593"></script>
+<style>body{margin:0;background:var(--salt-palette-background-secondary)}.demo-stage>.salt-theme.salt-density-low{height:100% !important}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const {
+  StageLayout, Card, SubHeader, FormField, Input, Textarea, Dropdown, ComboBox,
+  RadioButtonGroup, CheckboxGroup, DatePicker, Switch, NumberInput, Slider, FileUpload,
+} = window.FusionDesignSystem_6db751;
+const { Accordion } = window.FusionDesignSystem_6db751;
+
+function Toggle({ label, options, value, onChange }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <span style={{ fontSize: 11, color: "var(--salt-content-secondary-foreground)", minWidth: 78 }}>{label}</span>
+      <div style={{ display: "flex", gap: 4 }}>
+        {options.map((opt) => (
+          <button key={opt.value} onClick={() => onChange(opt.value)} style={{ padding: "4px 10px", fontSize: 12, borderRadius: 6, cursor: "pointer", background: value === opt.value ? "var(--salt-selectable-selected-background)" : "transparent", border: value === opt.value ? "1.5px solid var(--salt-palette-accent)" : "1.5px solid transparent" }}>{opt.label}</button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AiAssist() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <p style={{ margin: 0, fontSize: 13, color: "var(--salt-content-secondary-foreground)" }}>AI Assist panel content — chat, suggestions, etc.</p>
+      <Card style={{ padding: 16, fontSize: 13 }}>"Want help naming this agent based on its data sources?"</Card>
+    </div>
+  );
+}
+
+// Each parent step = a page; each child = an accordion section on that page.
+const PAGES = [
+  {
+    label: "Connect data",
+    children: [
+      { label: "Data source", content: (
+        <React.Fragment>
+          <FormField label="Source type" necessity="required"><Dropdown options={[{ label: "Database", value: "database" }, { label: "API", value: "api" }, { label: "File upload", value: "file" }, { label: "Data warehouse", value: "warehouse" }]} defaultValue="database" /></FormField>
+          <FormField label="Connection string" necessity="required" helperText="Read-only credentials recommended."><Input placeholder="postgres://…" /></FormField>
+          <FormField label="Upload a schema file" necessity="optional"><FileUpload title="Upload a document" subtitle="Drag and drop or browse" /></FormField>
+        </React.Fragment>
+      ) },
+      { label: "Authentication", content: (
+        <React.Fragment>
+          <FormField label="Auth method" necessity="required"><RadioButtonGroup name="auth" options={[{ label: "OAuth 2.0", value: "oauth" }, { label: "API key", value: "apikey" }, { label: "Service account", value: "service" }]} defaultValue="oauth" /></FormField>
+          <FormField label="API key" necessity="optional"><Input type="password" placeholder="••••••••••••" /></FormField>
+        </React.Fragment>
+      ) },
+    ],
+  },
+  {
+    label: "Configure agent",
+    children: [
+      { label: "Basic info", content: (
+        <React.Fragment>
+          <FormField label="Name" necessity="required"><Input defaultValue="Support Assistant" /></FormField>
+          <FormField label="Description" necessity="optional"><Textarea placeholder="Describe what this agent does" defaultValue="Answers tier-1 support questions and escalates when confidence is low." /></FormField>
+          <FormField label="Category" necessity="required"><Dropdown options={[{ label: "Customer support", value: "support" }, { label: "Sales", value: "sales" }, { label: "Internal ops", value: "ops" }, { label: "Research", value: "research" }]} defaultValue="support" /></FormField>
+        </React.Fragment>
+      ) },
+      { label: "Model settings", content: (
+        <React.Fragment>
+          <FormField label="Model" necessity="required"><ComboBox options={[{ label: "gpt-4.1", value: "gpt-4.1" }, { label: "gpt-4.1-mini", value: "gpt-4.1-mini" }, { label: "claude-sonnet", value: "claude-sonnet" }, { label: "claude-haiku", value: "claude-haiku" }]} defaultValue="claude-sonnet" /></FormField>
+          <FormField label="Temperature" necessity="optional" helperText="Higher values increase response variety."><Slider min={0} max={1} step={0.1} defaultValue={0.4} /></FormField>
+          <FormField label="Max tokens" necessity="optional"><NumberInput defaultValue={2048} /></FormField>
+          <Switch label="Enable streaming responses" defaultChecked />
+        </React.Fragment>
+      ) },
+      { label: "Permissions", content: (
+        <React.Fragment>
+          <FormField label="Visibility" necessity="required"><RadioButtonGroup name="visibility" options={[{ label: "Private", value: "private" }, { label: "Team", value: "team" }, { label: "Organization", value: "org" }]} defaultValue="team" /></FormField>
+          <FormField label="Allowed actions" necessity="optional"><CheckboxGroup options={[{ label: "Read knowledge base", value: "read_kb" }, { label: "Send email", value: "send_email" }, { label: "Create tickets", value: "create_tickets" }, { label: "Access customer records", value: "access_records" }]} defaultValue={["read_kb", "create_tickets"]} /></FormField>
+          <FormField label="Effective date" necessity="optional"><DatePicker /></FormField>
+        </React.Fragment>
+      ) },
+    ],
+  },
+  {
+    label: "Review",
+    children: [
+      { label: "Summary", content: <p style={{ margin: 0, fontSize: 13 }}>Review the agent configuration before publishing.</p> },
+      { label: "Validation", content: <p style={{ margin: 0, fontSize: 13 }}>No validation errors found.</p> },
+    ],
+  },
+  {
+    label: "Publish",
+    children: [
+      { label: "Release notes", content: <FormField label="Notes" necessity="optional"><Textarea placeholder="What changed in this version?" /></FormField> },
+    ],
+  },
+];
+
+function App() {
+  const [size, setSize] = React.useState("large");
+  const [tracker, setTracker] = React.useState("on");
+  const [panelMode, setPanelMode] = React.useState("off");
+  const [overlayOpen, setOverlayOpen] = React.useState(false);
+  const [activeStep, setActiveStep] = React.useState(1);
+  const page = PAGES[activeStep];
+
+  return (
+    <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+      <div style={{ flexShrink: 0, zIndex: 50, display: "flex", alignItems: "center", gap: 20, padding: "8px 16px", background: "#fff", borderBottom: "1px solid var(--salt-separable-secondary-borderColor)" }}>
+        <Toggle label="Size" value={size} onChange={setSize} options={[{ label: "Large", value: "large" }, { label: "X-Small/Small", value: "small" }]} />
+        <Toggle label="Tracker" value={tracker} onChange={setTracker} options={[{ label: "On", value: "on" }, { label: "Off", value: "off" }]} />
+        <Toggle label="Side panel" value={panelMode} onChange={setPanelMode} options={[{ label: "Off", value: "off" }, { label: "Resizable", value: "resizable" }, { label: "Push", value: "push" }]} />
+      </div>
+      <div className="demo-stage" style={{ flex: 1, minHeight: 0 }}>
+      <StageLayout
+        size={size}
+        showProgressTracker={tracker === "on"}
+        globalNavProps={{ logoSrc: "../../assets/logo.svg", userSid: "Z482913" }}
+        appHeaderProps={{ breadcrumbItems: [{ label: "Agents" }, { label: "New Agent" }], copyValue: "AGT-2024-0847" }}
+        progressTrackerProps={{
+          headerTitle: "Create Agent",
+          steps: PAGES.map((p) => ({ label: p.label, children: p.children.map((c) => c.label) })),
+          activeStep,
+          onStepClick: setActiveStep,
+        }}
+        buttonBarProps={{ statusMessage: "Last saved: 2:41pm", secondaryActions: [{ label: "Back" }], primaryAction: { label: "Continue" } }}
+        rightPanel={panelMode !== "off" ? <AiAssist /> : undefined}
+        rightPanelTitle="AI Assist"
+        rightPanelResizable={panelMode === "resizable"}
+        overlayPanel={<AiAssist />}
+        overlayTitle="Record detail"
+        overlayOpen={overlayOpen}
+        onOverlayOpenChange={setOverlayOpen}
+      >
+        <SubHeader
+          title={page.label}
+          actions={[{ label: "Save draft" }, { label: "Duplicate" }]}
+          tertiaryAction={{ label: "More actions" }}
+        />
+        <div style={{ height: "var(--salt-spacing-400)" }} />
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-200)", marginBottom: "var(--salt-spacing-150)" }}>
+          <span style={{ fontFamily: "var(--salt-text-fontFamily)", fontWeight: "var(--salt-text-label-fontWeight)", fontSize: "var(--salt-text-fontSize)", lineHeight: "var(--salt-text-lineHeight)", color: "var(--salt-content-primary-foreground)" }}>* = Required field</span>
+          <Switch label="Show optional fields" defaultChecked />
+        </div>
+        <Accordion
+          variant="boxed"
+          chevronPosition="end"
+          allowMultiple
+          defaultOpen={page.children.map((_, i) => i)}
+          items={page.children.map((c) => ({ title: c.label, content: c.content }))}
+        />
+      </StageLayout>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

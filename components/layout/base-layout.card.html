@@ -1,0 +1,62 @@
+<!-- @dsCard group="Studio Layouts" viewport="1400x820" name="Base Layout — Large / Medium" subtitle="Global nav + vertical nav + PageHeader + spacing-200 content + Footer" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js?v=1785425622006"></script>
+<style>body{margin:0;background:var(--salt-palette-background-secondary)}.demo-stage>.salt-theme.salt-density-low{height:100% !important}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { BaseLayout, Card } = window.FusionDesignSystem_6db751;
+const navItems = [
+  { id: "home", label: "Home", icon: "home" },
+  { id: "kb", label: "Knowledge Bases", icon: "database" },
+  { id: "agents", label: "Agents", icon: "chart-pie" },
+  { id: "settings", label: "Settings", icon: "settings" },
+];
+function Content({ label }) {
+  return <Card style={{ padding: 24, minHeight: 300, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--salt-content-secondary-foreground)", fontSize: 14 }}>{label}</Card>;
+}
+function App() {
+  const [size, setSize] = React.useState("large");
+  return (
+    <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+      <div style={{ flexShrink: 0, zIndex: 50, display: "flex", gap: 4, padding: "8px 16px", background: "#fff", borderBottom: "1px solid var(--salt-separable-secondary-borderColor)" }}>
+        <button onClick={() => setSize("large")} style={{ padding: "4px 10px", fontSize: 12, borderRadius: 6, cursor: "pointer", background: size === "large" ? "var(--salt-selectable-selected-background)" : "transparent", border: size === "large" ? "1.5px solid var(--salt-palette-accent)" : "1.5px solid transparent" }}>Large</button>
+        <button onClick={() => setSize("medium")} style={{ padding: "4px 10px", fontSize: 12, borderRadius: 6, cursor: "pointer", background: size === "medium" ? "var(--salt-selectable-selected-background)" : "transparent", border: size === "medium" ? "1.5px solid var(--salt-palette-accent)" : "1.5px solid transparent" }}>Medium</button>
+      </div>
+      <div className="demo-stage" style={{ flex: 1, minHeight: 0 }}>
+      <BaseLayout
+        size={size}
+        globalNavProps={{ logoSrc: "../../assets/logo.svg", userSid: "Z482913" }}
+        navItems={navItems}
+        pageHeaderProps={{ title: "Knowledge Bases", description: "Manage the knowledge bases available to your agents.", primaryAction: { label: "Create" } }}
+        rightPanel={<Content label="Resizable inline panel — drag the left edge" />}
+        rightPanelTitle="Compare versions"
+        overlayPanel={<Content label="Fixed-width overlay panel with a scrim" />}
+        overlayTitle="Record detail"
+      >
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <Content label="Swappable content area — spacing-200 padding" />
+          <Content label="Shares one scroll region with the PageHeader — try scrolling" />
+          <Content label="Card 3" />
+          <Content label="Card 4" />
+          <Content label="Card 5" />
+          <Content label="Card 6" />
+          <Content label="Card 7 — nav rail and any open panel stay fixed while this scrolls" />
+        </div>
+      </BaseLayout>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
