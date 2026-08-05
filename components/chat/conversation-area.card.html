@@ -1,0 +1,33 @@
+<!-- @dsCard group="Chat" viewport="760x520" name="Conversation Area" subtitle="Message list — user, agent, status, typing" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<link rel="stylesheet" href="./ConversationArea.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--salt-container-primary-background)}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { ConversationArea } = window.FusionDesignSystem_6db751;
+function App() {
+  const messages = [
+    { role: "user", text: "Triage the last 60 days of advisory-desk emails and produce a leadership-ready summary." },
+    { role: "status", text: "Connecting to Microsoft Graph API…", done: true },
+    { role: "status", text: "Clustering by theme — 8 themes identified…", done: true },
+    { role: "status", text: "Flagging Platinum-tier urgencies — 12 flagged…", done: false },
+    { role: "typing", name: "Builder_Agent_v2" },
+  ];
+  return <div style={{ height: 520, display: "flex", flexDirection: "column" }}>
+    <ConversationArea messages={messages} />
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

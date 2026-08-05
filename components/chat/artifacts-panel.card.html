@@ -1,0 +1,34 @@
+<!-- @dsCard group="Chat" viewport="900x600" name="Artifacts Panel" subtitle="Library SidePanel — divided cards, view/download actions" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<link rel="stylesheet" href="../overlays/SidePanelHeader.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js?v=3"></script>
+<style>body{margin:0;background:var(--salt-palette-background-secondary)}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { ArtifactsPanel, Button } = window.FusionDesignSystem_6db751;
+function App() {
+  const [open, setOpen] = React.useState(true);
+  const artifacts = [
+    { id: "1", title: "Q4 leadership summary", description: "Leadership-ready recap of the 60-day email triage." },
+    { id: "2", title: "triage_by_theme.py", description: "Script clustering emails into themes." },
+    { id: "3", title: "advisory_desk_emails.csv", description: "Raw export of the last 60 days of desk emails." },
+    { id: "4", title: "Theme breakdown", description: "Chart of email volume by theme, Platinum flags highlighted." },
+  ];
+  return <div style={{ height: 600, position: "relative", display: "flex", alignItems: "flex-start", padding: 24, boxSizing: "border-box" }}>
+    <Button appearance="bordered" sentiment="neutral" onClick={() => setOpen(true)}>Open Library</Button>
+    <ArtifactsPanel open={open} onClose={() => setOpen(false)} artifacts={artifacts} onDownloadAll={() => {}} onDownload={() => {}} />
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

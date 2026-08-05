@@ -1,0 +1,36 @@
+<!-- @dsCard group="Chat" viewport="740x220" name="Prompt Input" subtitle="Composer — attachments, model dropdowns, send" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js?v=2"></script>
+<style>body{margin:0;background:var(--salt-palette-background-secondary)}</style>
+</head>
+<body class="salt-theme">
+<div id="root" style="padding:24px;box-sizing:border-box"></div>
+<script type="text/babel">
+const { PromptInput } = window.FusionDesignSystem_6db751;
+function App() {
+  const [value, setValue] = React.useState("");
+  const [files, setFiles] = React.useState([{ name: "report.pdf" }]);
+  return <PromptInput
+    value={value}
+    onChange={setValue}
+    onSend={() => setValue("")}
+    attachments={files}
+    onRemoveAttachment={(f, i) => setFiles(files.filter((_, idx) => idx !== i))}
+    dropdowns={[
+      { options: [{ label: "Claude", value: "claude" }, { label: "GPT-5", value: "gpt5" }, { label: "Gemini", value: "gemini" }], defaultValue: "claude" },
+      { options: [{ label: "v1.0", value: "v1" }, { label: "v2.0", value: "v2" }], defaultValue: "v2", minWidth: 84 },
+    ]}
+    helperText="AI-generated responses may be inaccurate. Verify important information."
+  />;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

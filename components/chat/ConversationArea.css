@@ -1,0 +1,5 @@
+@keyframes ca-typing-dot{0%,60%,100%{opacity:.25;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+.ca-typing{display:inline-flex;gap:5px;align-items:center;padding:4px 0}
+.ca-typing span{width:7px;height:7px;border-radius:999px;background:var(--salt-content-secondary-foreground);animation:ca-typing-dot 1.2s infinite}
+.ca-typing span:nth-child(2){animation-delay:.2s}
+.ca-typing span:nth-child(3){animation-delay:.4s}

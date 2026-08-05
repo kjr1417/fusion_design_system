@@ -1,0 +1,32 @@
+<!-- @dsCard group="Chat" viewport="900x44" name="Chat Header" subtitle="Conversation title, tag, actions, overflow menu" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js?v=2"></script>
+<style>body{margin:0;background:var(--salt-palette-background-secondary)}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { ChatHeader } = window.FusionDesignSystem_6db751;
+function App() {
+  const [title, setTitle] = React.useState("Q4 board deck summary");
+  const [view, setView] = React.useState("Chat");
+  return <ChatHeader
+    title={title}
+    onTitleChange={setTitle}
+    view={view}
+    onViewChange={setView}
+    onOpenLibrary={() => {}}
+    onDownload={() => {}}
+  />;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

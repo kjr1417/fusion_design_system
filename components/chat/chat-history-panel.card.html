@@ -1,0 +1,91 @@
+<!-- @dsCard group="Chat" viewport="700x640" name="Chat History Panel" subtitle="Fixed 300px/45px left rail — new chat, search, grouped list, footer toggle" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js?v=5"></script>
+<style>html,body{margin:0;height:100%;background:var(--salt-palette-background-secondary)}#root{height:100%}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { ChatHistoryPanel } = window.FusionDesignSystem_6db751;
+function App() {
+  const [todayChats, setTodayChats] = React.useState([
+    { id: "1", title: "Q4 board deck summary" },
+    { id: "2", title: "Draft an email to the desk lead" },
+  ]);
+  const [olderChats, setOlderChats] = React.useState([
+    { id: "3", title: "ETL pipeline debugging" },
+    { id: "4", title: "Compliance rules for Q3 filings" },
+    { id: "6", title: "Generate Python code for ETL" },
+    { id: "7", title: "What are the compliance rules" },
+    { id: "8", title: "Draft an email to the desk lead" },
+    { id: "9", title: "Explain the difference in models" },
+    { id: "10", title: "Create a SQL query to join two tables" },
+    { id: "11", title: "Review this Java code for bugs" },
+    { id: "12", title: "What are best practices for RAG" },
+    { id: "13", title: "Help me prepare for the audit" },
+  ]);
+  const [activeId, setActiveId] = React.useState("1");
+  const [newEmptyChatId, setNewEmptyChatId] = React.useState(null);
+  const [query, setQuery] = React.useState("");
+  const [collapsed, setCollapsed] = React.useState(false);
+
+  const allChats = () => [...todayChats, ...olderChats];
+
+  function newChat() {
+    if (newEmptyChatId) return;
+    const id = "draft-" + Date.now();
+    setTodayChats((c) => [{ id, title: "New chat", draft: true }, ...c]);
+    setNewEmptyChatId(id);
+    setActiveId(id);
+  }
+  function deleteChat(id) {
+    const remaining = allChats().filter((c) => c.id !== id);
+    setTodayChats((c) => c.filter((x) => x.id !== id));
+    setOlderChats((c) => c.filter((x) => x.id !== id));
+    setActiveId((prevActive) => (prevActive === id ? (remaining[0] ? remaining[0].id : null) : prevActive));
+    setNewEmptyChatId((cur) => (cur === id ? null : cur));
+  }
+  // Demo-only: simulates the first prompt landing in the new chat, turning it into real history.
+  function sendFirstMessage() {
+    if (!newEmptyChatId) return;
+    setTodayChats((c) => c.map((x) => x.id === newEmptyChatId ? { ...x, title: "Untitled conversation", draft: false } : x));
+    setNewEmptyChatId(null);
+  }
+
+  function toChatItem(c) {
+    return {
+      ...c, active: c.id === activeId, onClick: () => setActiveId(c.id),
+      menuItems: ["Rename", "Share", "Delete"],
+      onMenuSelect: (v) => { if (v === "Delete") deleteChat(c.id); },
+    };
+  }
+
+  const groups = [
+    { label: "Today", items: todayChats.map(toChatItem) },
+    { label: "Previous 7 days", items: olderChats.map(toChatItem) },
+    { label: "Row states (example)", items: [
+      { id: "s1", title: "Default row" },
+      { id: "s2", title: "Hover row (forced)", hovered: true },
+      { id: "s3", title: "Draft with a much longer title that has to truncate", draft: true },
+      { id: "s4", title: "Active + draft + hover, forced", active: true, draft: true, hovered: true },
+    ] },
+  ];
+
+  return <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+    {newEmptyChatId && <button onClick={sendFirstMessage} style={{ flexShrink: 0, padding: "6px 10px", fontSize: 12 }}>Demo: simulate sending first message in the new chat</button>}
+    <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
+      <ChatHistoryPanel collapsed={collapsed} onCollapsedChange={setCollapsed} onNewChat={newChat} hideNewChat={!!newEmptyChatId} searchValue={query} onSearchChange={setQuery} groups={groups} />
+    </div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
