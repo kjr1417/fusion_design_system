@@ -18,7 +18,9 @@ export function SidePanel({
   title,
   secondaryInfo,
   onBack,
+  backLabel,
   actions,
+  closeLabel,
   description,
   primaryTag,
   secondaryTag,
@@ -92,8 +94,10 @@ export function SidePanel({
             title={title}
             secondaryInfo={secondaryInfo}
             onBack={onBack}
+            backLabel={backLabel}
             actions={actions}
             onClose={onClose}
+            closeLabel={closeLabel}
             description={description}
             primaryTag={primaryTag}
             secondaryTag={secondaryTag}

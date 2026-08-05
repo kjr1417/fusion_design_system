@@ -40,8 +40,10 @@ export function SidePanelHeader({
   title,
   secondaryInfo,
   onBack,
+  backLabel = "Back",
   actions = [],
   onClose,
+  closeLabel = "Close",
   description,
   primaryTag,
   secondaryTag,
@@ -165,17 +167,17 @@ export function SidePanelHeader({
         )}
         {visibleActions.length > 0 && (
           <div aria-hidden="true" ref={actionsFullMeasureRef} style={{ ...hiddenStyle, display: "flex", gap: "var(--salt-spacing-100)" }}>
-            {visibleActions.map((a, i) => <Button key={i} appearance="bordered" sentiment="neutral">{a.label}</Button>)}
+            {visibleActions.map((a, i) => a.icon ? <IconButton key={i} appearance="transparent" sentiment="neutral" aria-label={a.label}>{a.icon}</IconButton> : <Button key={i} appearance="bordered" sentiment="neutral">{a.label}</Button>)}
           </div>
         )}
         {visibleActions.length > 0 && (
           <div aria-hidden="true" ref={actionsIconMeasureRef} style={{ ...hiddenStyle, display: "flex", gap: "var(--salt-spacing-100)" }}>
-            {visibleActions.map((a, i) => <IconButton key={i} appearance="bordered" sentiment="neutral" aria-label={a.label}><EditIcon /></IconButton>)}
+            {visibleActions.map((a, i) => a.icon ? <IconButton key={i} appearance="transparent" sentiment="neutral" aria-label={a.label}>{a.icon}</IconButton> : <IconButton key={i} appearance="bordered" sentiment="neutral" aria-label={a.label}><EditIcon /></IconButton>)}
           </div>
         )}
 
         {onBack && (
-          <IconButton appearance="transparent" sentiment="neutral" aria-label="Back" onClick={onBack} style={{ flexShrink: 0, marginRight: "var(--salt-spacing-100)" }}>
+          <IconButton appearance="transparent" sentiment="neutral" aria-label={backLabel} title={backLabel} onClick={onBack} style={{ flexShrink: 0, marginRight: "var(--salt-spacing-100)" }}>
             <ArrowLeftIcon />
           </IconButton>
         )}
@@ -186,13 +188,16 @@ export function SidePanelHeader({
           )}
         </div>
         <div style={{ display: "flex", alignItems: "center", flexShrink: 0, marginLeft: "var(--salt-spacing-150)" }}>
-          {rowLayout.actionsMode === "full" && visibleActions.map((action, i) => (
-            <Button key={i} appearance="bordered" sentiment="neutral" onClick={action.onClick} style={{ flexShrink: 0, marginRight: "var(--salt-spacing-100)" }}>{action.label}</Button>
+          {visibleActions.map((action, i) => (
+            action.icon ? (
+              <IconButton key={i} appearance="transparent" sentiment="neutral" aria-label={action.label} title={action.label} onClick={action.onClick} style={{ flexShrink: 0, marginRight: "var(--salt-spacing-100)" }}>{action.icon}</IconButton>
+            ) : rowLayout.actionsMode === "full" ? (
+              <Button key={i} appearance="bordered" sentiment="neutral" onClick={action.onClick} style={{ flexShrink: 0, marginRight: "var(--salt-spacing-100)" }}>{action.label}</Button>
+            ) : rowLayout.actionsMode === "icon" ? (
+              <IconButton key={i} appearance="bordered" sentiment="neutral" aria-label={action.label} onClick={action.onClick} style={{ flexShrink: 0, marginRight: "var(--salt-spacing-100)" }}><EditIcon /></IconButton>
+            ) : null
           ))}
-          {rowLayout.actionsMode === "icon" && visibleActions.map((action, i) => (
-            <IconButton key={i} appearance="bordered" sentiment="neutral" aria-label={action.label} onClick={action.onClick} style={{ flexShrink: 0, marginRight: "var(--salt-spacing-100)" }}><EditIcon /></IconButton>
-          ))}
-          <IconButton appearance="transparent" sentiment="neutral" aria-label="Close" onClick={onClose} style={{ flexShrink: 0 }}>
+          <IconButton appearance="transparent" sentiment="neutral" aria-label={closeLabel} title={closeLabel} onClick={onClose} style={{ flexShrink: 0 }}>
             <CloseGlyph />
           </IconButton>
         </div>

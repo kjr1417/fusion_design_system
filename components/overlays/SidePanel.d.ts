@@ -26,6 +26,10 @@ export interface SidePanelProps {
   secondaryInfo?: string;
   /** Shows a leading transparent back icon button when provided. */
   onBack?: (e: any) => void;
+  /** aria-label/title for the back icon button. Default "Back". */
+  backLabel?: string;
+  /** aria-label/title for the close icon button. Default "Close". */
+  closeLabel?: string;
   /** Bordered, neutral action buttons in the header. Only the first two are rendered. */
   actions?: SidePanelHeaderAction[];
   /** Supporting description, clamped to 2 lines. */

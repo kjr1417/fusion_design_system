@@ -3,6 +3,8 @@ import type { CSSProperties } from "react";
 export interface SidePanelHeaderAction {
   label: string;
   onClick?: (e: any) => void;
+  /** When set, always renders as an icon-only button (this icon, `label` as its title/aria-label) instead of the text Button — ignores the width-collision text/icon/none collapse. */
+  icon?: any;
 }
 
 /**
@@ -34,6 +36,10 @@ export interface SidePanelHeaderProps {
   secondaryInfo?: string;
   /** Shows a leading transparent back icon button when provided. */
   onBack?: (e: any) => void;
+  /** aria-label/title for the back icon button. Default "Back". */
+  backLabel?: string;
+  /** aria-label/title for the close icon button. Default "Close". */
+  closeLabel?: string;
   /** Bordered, neutral action buttons shown before the close button. Only the first two are rendered. */
   actions?: SidePanelHeaderAction[];
   /** Called when the close icon button is clicked. */
