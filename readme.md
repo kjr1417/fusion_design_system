@@ -72,18 +72,22 @@ No emoji, no unicode-as-icon, no photographic icons. `ContentCard` icons in the 
 Location: `components/<group>/<Name>.jsx` + `.d.ts` + `.prompt.md`. 61 components across 7 groups, covering the major Salt DS families used across the Fusion surfaces:
 
 - **Actions** — `Button`, `IconButton`, `ButtonBar`, `InlineButtons`, `Link`, `Pill`, `CopyValue`
-- **Layout** — `FlexLayout`, `FlowLayout`, `StackLayout`, `GridLayout`, `SaltProviderNext`
+- **Layout** — `FlexLayout`, `FlowLayout`, `StackLayout`, `GridLayout`, `SaltProviderNext`, `Footer`, `BaseLayout`, `StageLayout`, `CanvasLayout`, `ChatLayout`
 - **Feedback** — `Badge`, `Banner`, `BannerStack`, `Spinner`, `ProgressBar`, `StatusBadge`, `StatusMessage`, `Toast`, `LoadingState`, `EmptyState`
-- **Forms** — `Input`, `MultilineInput`, `Checkbox`, `FormField`, `RadioButton`, `Switch`, `Textarea`, `Dropdown`, `Slider`, `ToggleButtonGroup`, `SegmentedButtonGroup`, `OmniInput`, `FileUpload`
+- **Forms** — `Input`, `MultilineInput`, `Checkbox`, `CheckboxGroup`, `FormField`, `SectionHeader`, `RadioButton`, `RadioButtonGroup`, `Switch`, `Textarea`, `Dropdown`, `ComboBox`, `ComboBoxMetadataOverlay`, `ComboBoxTreeOverlay`, `Slider`, `ToggleButtonGroup`, `SegmentedButtonGroup`, `OmniInput`, `FileUpload`, `Toggletip`, `SelectableCard`, `DatePicker`, `RangeDatePicker`, `Calendar`, `TimeInput`, `NumberInput`, `CurrencyInput`
 - **Display** — `Card`, `InteractableCard`, `ContentCard`, `Carousel`, `Panel`, `Text` (`H1`–`H4`), `ExpandableText`, `Avatar`, `Divider`, `Tabs`, `Accordion`, `List`, `Tag`, `LinkCard`, `Table`/`TableHead`/`TableBody`/`TableRow`/`TableCell`, `Menu`
 - **Data** — `FileResultsGrid`, `StaticList`, `StaticListGroup`
 - **Navigation** — `Breadcrumbs`, `Stepper`, `NavigationItem`, `ProgressTracker`, `GlobalNav`, `AppHeader`, `PageHeader`, `SubHeader`, `VerticalNavigation`, `NotificationCenter`, `UserPanel`
-- **Overlays** — `Dialog`, `SidePanel`, `SidePanelHeader`, `Tooltip`
+- **Overlays** — `Dialog`, `Drawer`, `SidePanel`, `SidePanelHeader`, `Tooltip`
+- **Chat** — `ChatHeader`, `ChatHistoryPanel`, `ArtifactsPanel`, `PromptInput`, `ConversationArea`
 
 `Button`, `IconButton`, `Link`, `Pill`, `Card`, `Divider`, `Tabs`, `Switch`, `Checkbox`, `RadioButton`, `ToggleButtonGroup`, `Tag`, `Banner`, `Table`, `Menu` render using CSS classes copied **verbatim** from a real salt-ds CSS extraction (`salt-components.css`) — not approximated. The rest (`Input`, `Badge`, `Panel`, `FormField`, `Avatar`, `Accordion`, `List`, `LinkCard`, `Dropdown`, `Slider`, `Textarea`, `Spinner`, `ProgressBar`, `StatusBadge`, `Breadcrumbs`, `Stepper`, `Dialog`, `Drawer`, `Tooltip`, `OmniInput`, `ContentCard`, `Carousel`) are hand-authored the same token-driven way, since no verbatim source was available for them. A few Salt families with no counterpart yet (ComboBox, Popover, DatePicker, FileDropZone, Tree, Toolbar) can be added on request.
 
 ### Intentional additions
-`FlexLayout`, `FlowLayout`, `StackLayout`, `GridLayout`, `Text`/`H1`–`H4`, and `SaltProviderNext` mirror Salt DS's real layout, typography and theme-provider primitives. `IconButton` is a thin composition of `Button`. `ProgressTracker` is a vertical wizard rail for multi-step forms. `ContentCard` and `Carousel` are Fusion-specific: the unified card skeleton and paged shelf used to compose product tiles, catalog results, and feature promos across the platform. `OmniInput` is the platform's signature conversational entry point.
+`FlexLayout`, `FlowLayout`, `StackLayout`, `GridLayout`, `Text`/`H1`–`H4`, and `SaltProviderNext` mirror Salt DS's real layout, typography and theme-provider primitives. `IconButton` is a thin compo
+
+### Studio Layouts
+`BaseLayout`, `StageLayout`, `CanvasLayout`, `ChatLayout` are the shared structural shells Templates build on: full-page compositions of GlobalNav/VerticalNavigation/PageHeader/AppHeader/ProgressTracker/ButtonBar plus the new `Footer` (a 29px placeholder legal/copyright bar, to be finalized later). See the "Studio Layouts" cards group.sition of `Button`. `ProgressTracker` is a vertical wizard rail for multi-step forms. `ContentCard` and `Carousel` are Fusion-specific: the unified card skeleton and paged shelf used to compose product tiles, catalog results, and feature promos across the platform. `OmniInput` is the platform's signature conversational entry point.
 
 ## UI kit
 

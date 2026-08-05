@@ -130,6 +130,8 @@
   border-color: var(--saltButton-borderColor-disabled, var(--button-borderColor));
   opacity: 0.4;
 }
+.saltButton-transparent { --button-borderColor: transparent; --button-borderColor-hover: transparent; --button-borderColor-active: transparent; }
+.saltButton-transparent:hover, .saltButton-transparent:focus-visible, .saltButton-transparent:active { outline: none !important; }
 .saltButton-accented.saltButton-solid { --button-text-color: var(--salt-actionable-accented-bold-foreground); --button-text-color-hover: var(--salt-actionable-accented-bold-foreground-hover); --button-text-color-active: var(--salt-actionable-accented-bold-foreground-active); --button-background: var(--salt-actionable-accented-bold-background); --button-background-hover: var(--salt-actionable-accented-bold-background-hover); --button-background-active: var(--salt-actionable-accented-bold-background-active); --button-borderColor: var(--salt-actionable-accented-bold-borderColor); --button-borderColor-hover: var(--salt-actionable-accented-bold-borderColor-hover); --button-borderColor-active: var(--salt-actionable-accented-bold-borderColor-active); }
 .saltButton-accented.saltButton-bordered { --button-text-color: var(--salt-actionable-accented-foreground); --button-text-color-hover: var(--salt-actionable-accented-foreground-hover); --button-text-color-active: var(--salt-actionable-accented-foreground-active); --button-background: var(--salt-actionable-accented-background); --button-background-hover: var(--salt-actionable-accented-background-hover); --button-background-active: var(--salt-actionable-accented-background-active); --button-borderColor: var(--salt-actionable-accented-borderColor); --button-borderColor-hover: var(--salt-actionable-accented-borderColor-hover); --button-borderColor-active: var(--salt-actionable-accented-borderColor-active); }
 .saltButton-accented.saltButton-transparent { --button-text-color: var(--salt-actionable-accented-subtle-foreground); --button-text-color-hover: var(--salt-actionable-accented-subtle-foreground-hover); --button-text-color-active: var(--salt-actionable-accented-subtle-foreground-active); --button-background: var(--salt-actionable-accented-subtle-background); --button-background-hover: var(--salt-actionable-accented-subtle-background-hover); --button-background-active: var(--salt-actionable-accented-subtle-background-active); --button-borderColor: var(--salt-actionable-accented-subtle-borderColor); --button-borderColor-hover: var(--salt-actionable-accented-subtle-borderColor-hover); --button-borderColor-active: var(--salt-actionable-accented-subtle-borderColor-active); }
@@ -196,14 +198,15 @@
 /* ===== salt-switch ===== */
 .saltSwitch { display: flex; width: fit-content; gap: var(--salt-spacing-100); position: relative; cursor: var(--salt-cursor-hover); color: var(--salt-content-primary-foreground); font-family: var(--salt-text-fontFamily); font-size: var(--salt-text-fontSize); font-weight: var(--salt-text-fontWeight); line-height: var(--salt-text-lineHeight); align-items: center; }
 .saltSwitch-disabled { color: var(--salt-content-primary-foreground-disabled); cursor: var(--salt-cursor-disabled); }
-.saltSwitch-track { border: var(--salt-size-fixed-100) var(--salt-borderStyle-solid) var(--salt-selectable-borderColor); border-radius: 999px; display: flex; flex-shrink: 0; height: calc(var(--salt-size-base) - var(--salt-spacing-100)); width: calc((var(--salt-size-selectable) + var(--salt-spacing-25) + var(--salt-size-fixed-100)) * 2); align-items: center; color: var(--salt-selectable-foreground); background: var(--salt-container-primary-background); box-sizing: border-box; }
+.saltSwitch-track { border: var(--salt-size-fixed-100) var(--salt-borderStyle-solid) var(--salt-selectable-borderColor); border-radius: 999px; display: flex; flex-shrink: 0; height: calc(var(--salt-size-selectable) + var(--salt-spacing-25) * 2 + var(--salt-size-fixed-100) * 2); width: calc((var(--salt-size-selectable) + var(--salt-spacing-25) + var(--salt-size-fixed-100)) * 2); align-items: center; justify-content: flex-start; color: var(--salt-selectable-foreground); background: var(--salt-container-primary-background); box-sizing: border-box; }
 .saltSwitch:hover .saltSwitch-track { border-color: var(--salt-selectable-borderColor-hover); color: var(--salt-selectable-foreground-hover); }
 .saltSwitch-checked .saltSwitch-track, .saltSwitch-checked:hover .saltSwitch-track { border-color: var(--salt-selectable-borderColor-selected); color: var(--salt-selectable-foreground-selected); background: var(--salt-selectable-borderColor-selected); }
 .saltSwitch-disabled .saltSwitch-track, .saltSwitch-disabled:hover .saltSwitch-track { border-color: var(--salt-selectable-borderColor-disabled); color: var(--salt-selectable-foreground-disabled); background: var(--salt-container-primary-background-disabled); }
-.saltSwitch-thumb { display: flex; aspect-ratio: 1; height: var(--salt-size-selectable); background: currentColor; margin: var(--salt-spacing-25); border: var(--salt-size-fixed-100) var(--salt-borderStyle-solid) var(--salt-selectable-borderColor); box-sizing: border-box; border-radius: 50%; }
+.saltSwitch-thumb { display: flex; flex-shrink: 0; aspect-ratio: 1; height: var(--salt-size-selectable); background: currentColor; margin: var(--salt-spacing-25); border: var(--salt-size-fixed-100) var(--salt-borderStyle-solid) var(--salt-selectable-borderColor); box-sizing: border-box; border-radius: 50%; }
 .saltSwitch:hover .saltSwitch-thumb { border-color: var(--salt-selectable-borderColor-hover); transition: transform var(--salt-duration-perceptible) ease-in-out; }
-.saltSwitch-checked .saltSwitch-thumb, .saltSwitch-checked:hover .saltSwitch-thumb { background: var(--salt-color-white); border-color: var(--salt-color-white); transform: translateX(100%); }
-.saltSwitch-input { cursor: inherit; position: absolute; inset: 0; margin: 0; opacity: 0; padding: 0; z-index: var(--salt-zIndex-default); height: calc(var(--salt-size-base) - var(--salt-spacing-100)); width: calc((var(--salt-size-selectable) + var(--salt-spacing-25) + var(--salt-size-fixed-100)) * 2); }
+.saltSwitch-checked .saltSwitch-track, .saltSwitch-checked:hover .saltSwitch-track { justify-content: flex-end; }
+.saltSwitch-checked .saltSwitch-thumb, .saltSwitch-checked:hover .saltSwitch-thumb { background: var(--salt-color-white); border-color: var(--salt-color-white); }
+.saltSwitch-input { cursor: inherit; position: absolute; inset: 0; margin: 0; opacity: 0; padding: 0; z-index: var(--salt-zIndex-default); height: calc(var(--salt-size-selectable) + var(--salt-spacing-25) * 2 + var(--salt-size-fixed-100) * 2); width: calc((var(--salt-size-selectable) + var(--salt-spacing-25) + var(--salt-size-fixed-100)) * 2); }
 .saltSwitch-input:focus-visible + .saltSwitch-track { outline-offset: var(--salt-focused-outlineOffset); outline: var(--salt-focused-outline); border-color: var(--salt-selectable-borderColor-hover); color: var(--salt-selectable-foreground-hover); }
 
 /* ===== salt-checkbox ===== */
@@ -217,6 +220,7 @@
 .saltCheckboxIcon-checked, .saltCheckbox:hover .saltCheckboxIcon-checked { border-color: var(--salt-selectable-borderColor-selected); color: var(--salt-color-white); background: var(--salt-selectable-borderColor-selected); }
 .saltCheckbox:hover .saltCheckboxIcon { border-color: var(--salt-selectable-borderColor-hover); color: var(--salt-selectable-foreground-hover); }
 .saltCheckboxIcon-disabled, .saltCheckbox:hover .saltCheckboxIcon-disabled { border-color: var(--salt-selectable-borderColor-disabled); background: var(--salt-container-primary-background-disabled); color: var(--salt-selectable-foreground-disabled); }
+.saltCheckboxIcon-error, .saltCheckbox:hover .saltCheckboxIcon-error { border-color: var(--salt-palette-negative); }
 .saltCheckboxIcon > svg { position: absolute; }
 
 /* ===== salt-radio-button ===== */
@@ -271,13 +275,6 @@
 .saltBanner-secondary.saltBanner-warning { --banner-background: var(--salt-status-warning-background); }
 .saltBanner-secondary.saltBanner-success { --banner-background: var(--salt-status-success-background); }
 .saltBannerContent { flex: 1 0; margin: var(--salt-spacing-75) 0; }
-
-/* ===== salt-status-indicator ===== */
-.saltStatusIndicator { --statusIndicator-warning-color: var(--salt-status-warning-foreground-decorative); --statusIndicator-info-color: var(--salt-status-info-foreground-decorative); --statusIndicator-success-color: var(--salt-status-success-foreground-decorative); --statusIndicator-error-color: var(--salt-status-error-foreground-decorative); color: var(--saltStatusIndicator-color, var(--statusIndicator-Color)); }
-.saltStatusIndicator-error { --statusIndicator-Color: var(--statusIndicator-error-color); }
-.saltStatusIndicator-warning { --statusIndicator-Color: var(--statusIndicator-warning-color); }
-.saltStatusIndicator-success { --statusIndicator-Color: var(--statusIndicator-success-color); }
-.saltStatusIndicator-info { --statusIndicator-Color: var(--statusIndicator-info-color); }
 
 /* ===== salt-divider ===== */
 .saltDivider-primary { --divider-background: var(--salt-separable-primary-borderColor); }
