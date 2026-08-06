@@ -1,4 +1,4 @@
-<!-- @dsCard group="Chat" viewport="740x220" name="Prompt Input" subtitle="Composer — attachments, model dropdowns, send" -->
+<!-- @dsCard group="Chat" viewport="740x1400" name="Prompt Input" subtitle="Composer — attachments, drop scrim, queue, plan/requirements overlay" -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,13 +7,23 @@
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
-<script src="../../_ds_bundle.js?v=6"></script>
+<script src="../../_ds_bundle.js?v=13"></script>
 <style>body{margin:0;background:var(--salt-palette-background-secondary)}</style>
 </head>
 <body class="salt-theme">
 <div id="root" style="padding:24px;box-sizing:border-box"></div>
 <script type="text/babel">
-const { PromptInput } = window.FusionDesignSystem_6db751;
+const { PromptInput, PromptInputPlanCard } = window.FusionDesignSystem_6db751;
+function Section({ label, children }) {
+  return <div style={{ marginBottom: 40 }}>
+    <div style={{ fontSize: 12, fontWeight: "var(--salt-text-fontWeight-strong, 700)", color: "var(--salt-content-secondary-foreground)", textTransform: "uppercase", letterSpacing: ".03em", marginBottom: 12 }}>{label}</div>
+    {children}
+  </div>;
+}
+const dropdownsDemo = [
+  { options: [{ label: "Claude", value: "claude" }, { label: "GPT-5", value: "gpt5" }, { label: "Gemini", value: "gemini" }], defaultValue: "claude" },
+  { options: [{ label: "v1.0", value: "v1" }, { label: "v2.0", value: "v2" }], defaultValue: "v2", minWidth: 84 },
+];
 function App() {
   const [value, setValue] = React.useState("");
   const [files, setFiles] = React.useState([
@@ -23,18 +33,83 @@ function App() {
     { name: "assets.zip", fileType: "zip" },
     { name: "training_dataset", fileType: "data", description: "PII-safe, daily refresh" },
   ]);
-  return <div style={{ width: 480 }}><PromptInput
-    value={value}
-    onChange={setValue}
-    onSend={() => setValue("")}
-    attachments={files}
-    onRemoveAttachment={(f, i) => setFiles(files.filter((_, idx) => idx !== i))}
-    dropdowns={[
-      { options: [{ label: "Claude", value: "claude" }, { label: "GPT-5", value: "gpt5" }, { label: "Gemini", value: "gemini" }], defaultValue: "claude" },
-      { options: [{ label: "v1.0", value: "v1" }, { label: "v2.0", value: "v2" }], defaultValue: "v2", minWidth: 84 },
-    ]}
-    helperText="AI-generated responses may be inaccurate. Verify important information."
-  /></div>;
+  const [queued, setQueued] = React.useState([
+    { id: "q1", text: "Now break the Q3 numbers out by region" },
+    { id: "q2", text: "Then draft a one-paragraph summary for the exec email" },
+  ]);
+  const [answers, setAnswers] = React.useState([]);
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [modValue, setModValue] = React.useState("");
+  const [contextValue, setContextValue] = React.useState("");
+
+  return <div style={{ fontFamily: "var(--salt-text-fontFamily)", maxWidth: 480 }}>
+    <Section label="Base composer — with attachments">
+      <PromptInput
+        value={value}
+        onChange={setValue}
+        onSend={() => setValue("")}
+        attachments={files}
+        onRemoveAttachment={(f, i) => setFiles(files.filter((_, idx) => idx !== i))}
+        dropdowns={dropdownsDemo}
+        helperText="AI-generated responses may be inaccurate. Verify important information."
+      />
+    </Section>
+
+    <Section label="File drop state (forced via dragOver — real drag-and-drop works too)">
+      <PromptInput value="" dragOver maxFiles={5} dropdowns={dropdownsDemo} />
+    </Section>
+
+    <Section label="Queued messages state (collapsed by default — click to expand)">
+      <PromptInput
+        value={value}
+        onChange={setValue}
+        onSend={() => setValue("")}
+        queuedMessages={queued}
+        onRemoveQueuedMessage={(id) => setQueued((q) => q.filter((m) => m.id !== id))}
+        dropdowns={dropdownsDemo}
+      />
+    </Section>
+
+    <Section label="Summary card overlay (agent's plan, with optional modification input)">
+      <PromptInput
+        overlay={
+          <PromptInputPlanCard
+            variant="summary"
+            steps={[
+              "Pull Q3 revenue and churn figures from the data warehouse",
+              "Break results out by region and customer segment",
+              "Draft a one-page summary with the three biggest movers",
+            ]}
+            modification={{ value: modValue, onChange: (e) => setModValue(e.target.value) }}
+            primaryAction={{ label: "Go ahead" }}
+            tertiaryActions={[{ label: "Cancel" }]}
+          />
+        }
+      />
+    </Section>
+
+    <Section label="Requirements gathering card overlay (clarifying questions, with optional context input)">
+      <PromptInput
+        overlay={
+          <PromptInputPlanCard
+            variant="requirements"
+            title="Some questions"
+            questions={[
+              "Which quarter should this cover?",
+              "Should this include churned accounts under $10k ARR?",
+              "Who's the audience for the summary?",
+            ]}
+            activeStep={activeStep}
+            answers={answers}
+            onAnswerChange={(i, v) => setAnswers((a) => { const next = [...a]; next[i] = v; return next; })}
+            additionalContext={{ value: contextValue, onChange: (e) => setContextValue(e.target.value), style: { height: 37, width: 400 } }}
+            primaryAction={{ label: "Next", onClick: () => setActiveStep((s) => Math.min(2, s + 1)) }}
+            tertiaryActions={[{ label: "Close" }, { label: "Back", onClick: () => setActiveStep((s) => Math.max(0, s - 1)) }]}
+          />
+        }
+      />
+    </Section>
+  </div>;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
