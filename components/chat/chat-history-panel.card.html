@@ -45,6 +45,10 @@ function App() {
     setNewEmptyChatId(id);
     setActiveId(id);
   }
+  function renameChat(id, title) {
+    setTodayChats((c) => c.map((x) => x.id === id ? { ...x, title } : x));
+    setOlderChats((c) => c.map((x) => x.id === id ? { ...x, title } : x));
+  }
   function deleteChat(id) {
     const remaining = allChats().filter((c) => c.id !== id);
     setTodayChats((c) => c.filter((x) => x.id !== id));
@@ -81,7 +85,7 @@ function App() {
   return <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
     {newEmptyChatId && <button onClick={sendFirstMessage} style={{ flexShrink: 0, padding: "6px 10px", fontSize: 12 }}>Demo: simulate sending first message in the new chat</button>}
     <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
-      <ChatHistoryPanel collapsed={collapsed} onCollapsedChange={setCollapsed} onNewChat={newChat} hideNewChat={!!newEmptyChatId} searchValue={query} onSearchChange={setQuery} groups={groups} />
+      <ChatHistoryPanel collapsed={collapsed} onCollapsedChange={setCollapsed} onNewChat={newChat} hideNewChat={!!newEmptyChatId} searchValue={query} onSearchChange={setQuery} groups={groups} onRenameChat={renameChat} />
     </div>
   </div>;
 }

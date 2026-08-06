@@ -4,7 +4,7 @@ import { ChatIcon } from "./chatIcons.jsx";
 const WIDTH_EXPANDED = 300;
 const WIDTH_COLLAPSED = 45;
 
-function ChatRow({ item, query }) {
+function ChatRow({ item, query, onRenameRequest }) {
   const { Menu, HighlightMatch } = window.FusionDesignSystem_6db751;
   const [hovered, setHovered] = useState(false);
   const showHoverLook = hovered || item.hovered;
@@ -28,7 +28,7 @@ function ChatRow({ item, query }) {
       <span style={{ marginLeft: "var(--salt-spacing-100)", flexShrink: 0, width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center", opacity: showHoverLook ? 1 : 0, pointerEvents: showHoverLook ? "auto" : "none" }}>
         <Menu
           items={item.menuItems || ["Rename", "Share", "Delete"]}
-          onSelect={(v) => item.onMenuSelect && item.onMenuSelect(v)}
+          onSelect={(v) => { if (v === "Rename") { onRenameRequest && onRenameRequest(item); return; } item.onMenuSelect && item.onMenuSelect(v); }}
           trigger={<ChatIcon name="micro-menu" size={14} />}
           triggerAppearance="transparent"
           triggerProps={{ "aria-label": "Chat options", title: "Chat options", tabIndex: showHoverLook ? 0 : -1 }}
@@ -49,8 +49,11 @@ function ChatRow({ item, query }) {
  * on click). Each row: a full-height (minus row padding) active accent
  * bar, a draft dot (accent-background, spacing-100 right of the title,
  * never hidden — the title truncates first), and a hover-revealed
- * transparent kebab opening a Menu.
- * Requires FusionDesignSystem_6db751 (Button, IconButton, Input, Menu).
+ * transparent kebab opening a Menu. Selecting "Rename" from that menu
+ * opens the same rename Dialog pattern as ChatHeader (single "Title"
+ * field); Save calls `onRenameChat(id, title)`.
+ * Requires FusionDesignSystem_6db751 (Button, IconButton, Input, Menu,
+ * Dialog, FormField).
  */
 export function ChatHistoryPanel({
   collapsed: collapsedProp,
@@ -65,12 +68,15 @@ export function ChatHistoryPanel({
   searchPlaceholder = "Search chats",
   groups = [],
   emptyStateText = "No conversations yet.",
+  onRenameChat,
   style,
 }) {
-  const { Button, IconButton, Input } = window.FusionDesignSystem_6db751;
+  const { Button, IconButton, Input, Dialog, FormField } = window.FusionDesignSystem_6db751;
   const isControlled = collapsedProp !== undefined;
   const [collapsedState, setCollapsedState] = useState(defaultCollapsed);
   const [flyoutHover, setFlyoutHover] = useState(false);
+  const [renaming, setRenaming] = useState(null);
+  const [renameDraft, setRenameDraft] = useState("");
   const [hasMoreBelow, setHasMoreBelow] = useState(false);
   const listRef = useRef(null);
   const recomputeScrollBorder = useCallback(() => {
@@ -147,7 +153,7 @@ export function ChatHistoryPanel({
             <div key={gi} style={{ marginTop: gi === 0 ? 0 : "var(--salt-spacing-200)" }}>
               <div style={{ padding: "0 0 var(--salt-spacing-100)", fontSize: 12, fontWeight: "var(--salt-text-fontWeight-strong, 700)", color: "var(--salt-content-secondary-foreground)", textTransform: "uppercase", letterSpacing: ".03em" }}>{group.label}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-fixed-100)" }}>
-                {group.items.map((item) => <ChatRow key={item.id} item={item} query={query} />)}
+                {group.items.map((item) => <ChatRow key={item.id} item={item} query={query} onRenameRequest={(it) => { setRenaming(it); setRenameDraft(it.title); }} />)}
               </div>
             </div>
           ))}
@@ -177,6 +183,22 @@ export function ChatHistoryPanel({
           </button>
         </div>
       </div>
+
+      {renaming && (
+        <Dialog
+          open={!!renaming}
+          title="Rename chat"
+          onClose={() => setRenaming(null)}
+          actions={<>
+            <Button appearance="bordered" sentiment="neutral" onClick={() => setRenaming(null)}>Cancel</Button>
+            <Button appearance="solid" sentiment="accented" onClick={() => { onRenameChat && onRenameChat(renaming.id, renameDraft.trim() || renaming.title); setRenaming(null); }}>Save</Button>
+          </>}
+        >
+          <FormField label="Title">
+            <Input value={renameDraft} onChange={(e) => setRenameDraft(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { onRenameChat && onRenameChat(renaming.id, renameDraft.trim() || renaming.title); setRenaming(null); } }} autoFocus />
+          </FormField>
+        </Dialog>
+      )}
     </div>
   );
 }

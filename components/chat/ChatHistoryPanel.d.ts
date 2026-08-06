@@ -5,7 +5,7 @@ export interface ChatHistoryItem {
   /** Shows an 8x8 accent-background draft dot spacing-100 after the title; always visible \u2014 the title truncates first if space runs out. */
   draft?: boolean;
   onClick?: () => void;
-  /** Overflow menu items for the hover-revealed kebab (micro-menu.svg), opened via the design system's Menu. Defaults to Rename/Share/Delete. */
+  /** Overflow menu items for the hover-revealed kebab (micro-menu.svg), opened via the design system's Menu. Defaults to Rename/Share/Delete. "Rename" is handled internally (opens the rename Dialog) and is not passed to onMenuSelect. */
   menuItems?: string[];
   onMenuSelect?: (item: string) => void;
   /** Forces the hover look (background + visible kebab) \u2014 for documenting the hover state, e.g. in a states matrix. */
@@ -44,6 +44,8 @@ export interface ChatHistoryPanelProps {
   groups?: ChatHistoryGroup[];
   /** Shown when every group is empty. */
   emptyStateText?: string;
+  /** Called with (id, title) when a row's "Rename" action is saved from the built-in rename Dialog. */
+  onRenameChat?: (id: string, title: string) => void;
   style?: React.CSSProperties;
 }
 export function ChatHistoryPanel(props: ChatHistoryPanelProps): JSX.Element;
