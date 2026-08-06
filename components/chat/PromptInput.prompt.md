@@ -5,6 +5,8 @@ PromptInput is the chat composer — pairs with ChatHeader and ConversationArea 
   value={draft}
   onChange={setDraft}
   onSend={sendMessage}
+  onAttachDocuments={() => {}}
+  onAttachKnowledgeBases={() => openKnowledgeBasePicker()}
   attachments={files}
   onRemoveAttachment={(f, i) => removeFile(i)}
   dropdowns={[{ options: [{ label: "Claude", value: "claude" }, { label: "GPT-5", value: "gpt5" }], defaultValue: "claude" }]}

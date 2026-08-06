@@ -7,13 +7,13 @@
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
-<script src="../../_ds_bundle.js?v=13"></script>
+<script src="../../_ds_bundle.js?v=33"></script>
 <style>body{margin:0;background:var(--salt-palette-background-secondary)}</style>
 </head>
 <body class="salt-theme">
 <div id="root" style="padding:24px;box-sizing:border-box"></div>
 <script type="text/babel">
-const { PromptInput, PromptInputPlanCard } = window.FusionDesignSystem_6db751;
+const { PromptInput, PromptInputPlanCard, Dialog, InlineButtons } = window.FusionDesignSystem_6db751;
 function Section({ label, children }) {
   return <div style={{ marginBottom: 40 }}>
     <div style={{ fontSize: 12, fontWeight: "var(--salt-text-fontWeight-strong, 700)", color: "var(--salt-content-secondary-foreground)", textTransform: "uppercase", letterSpacing: ".03em", marginBottom: 12 }}>{label}</div>
@@ -37,42 +37,126 @@ function App() {
     { id: "q1", text: "Now break the Q3 numbers out by region" },
     { id: "q2", text: "Then draft a one-paragraph summary for the exec email" },
   ]);
+  const [queuedValue, setQueuedValue] = React.useState("");
+  const [editingQueuedId, setEditingQueuedId] = React.useState(null);
+  const handleQueuedSend = () => {
+    const text = queuedValue.trim();
+    if (!text) return;
+    if (editingQueuedId !== null) {
+      setQueued((q) => q.map((m) => (m.id === editingQueuedId ? { ...m, text } : m)));
+      setEditingQueuedId(null);
+    } else if (queued.length > 0) {
+      setQueued((q) => [...q, { id: `q${Date.now()}`, text }]);
+    }
+    setQueuedValue("");
+  };
+  const handleQueuedMessageClick = (id) => {
+    const msg = queued.find((m) => m.id === id);
+    if (!msg) return;
+    setQueuedValue(msg.text);
+    setEditingQueuedId(id);
+  };
   const [answers, setAnswers] = React.useState([]);
   const [activeStep, setActiveStep] = React.useState(0);
   const [modValue, setModValue] = React.useState("");
   const [contextValue, setContextValue] = React.useState("");
+  const [showSummaryOverlay, setShowSummaryOverlay] = React.useState(true);
+  const [showRequirementsOverlay, setShowRequirementsOverlay] = React.useState(true);
+  const [summaryValue, setSummaryValue] = React.useState("");
+  const [summaryFiles, setSummaryFiles] = React.useState([]);
+  const [requirementsValue, setRequirementsValue] = React.useState("");
+  const [requirementsFiles, setRequirementsFiles] = React.useState([]);
+  const [statesValue, setStatesValue] = React.useState("");
+  const [statesFiles, setStatesFiles] = React.useState([{ name: "transcript.pdf", fileType: "pdf", loading: true }]);
+  const [statesSending, setStatesSending] = React.useState(false);
+  const [statesBanner, setStatesBanner] = React.useState({ status: "error", message: "Something went wrong generating a response. Please try again." });
+  const [statesScrollToLatest, setStatesScrollToLatest] = React.useState(true);
+  const [testMode, setTestMode] = React.useState(true);
+  const [kbDialogOpen, setKbDialogOpen] = React.useState(false);
 
   return <div style={{ fontFamily: "var(--salt-text-fontFamily)", maxWidth: 480 }}>
-    <Section label="Base composer — with attachments">
+    <Section label="Base composer — with attachments (type / or @ anywhere in the message for the inline trigger menu)">
       <PromptInput
         value={value}
         onChange={setValue}
         onSend={() => setValue("")}
         attachments={files}
         onRemoveAttachment={(f, i) => setFiles(files.filter((_, idx) => idx !== i))}
+        onFilesDropped={(fileList) => setFiles((f) => [...f, ...Array.from(fileList).map((file) => ({ name: file.name }))])}
+        onAttachKnowledgeBases={() => setKbDialogOpen(true)}
         dropdowns={dropdownsDemo}
         helperText="AI-generated responses may be inaccurate. Verify important information."
       />
     </Section>
 
+    <Dialog open={kbDialogOpen} title="Attach Knowledge Bases" onClose={() => setKbDialogOpen(false)} actions={<InlineButtons primaryAction={{ label: "Confirm", onClick: () => setKbDialogOpen(false) }} />}>
+      <div style={{ padding: "var(--salt-spacing-300)", textAlign: "center", border: "1px dashed var(--salt-separable-secondary-borderColor)", borderRadius: "var(--salt-palette-corner-weaker)", color: "var(--salt-content-secondary-foreground)", fontSize: 13 }}>Knowledge base picker — form or list content goes here</div>
+    </Dialog>
+
     <Section label="File drop state (forced via dragOver — real drag-and-drop works too)">
       <PromptInput value="" dragOver maxFiles={5} dropdowns={dropdownsDemo} />
     </Section>
 
-    <Section label="Queued messages state (collapsed by default — click to expand)">
+    <Section label="Queued messages state (click a queued message to edit it; typing a new message while one is queued adds it to the queue)">
+      <PromptInput
+        value={queuedValue}
+        onChange={setQueuedValue}
+        onSend={handleQueuedSend}
+        queuedMessages={queued}
+        onRemoveQueuedMessage={(id) => setQueued((q) => q.filter((m) => m.id !== id))}
+        onQueuedMessageClick={handleQueuedMessageClick}
+        dropdowns={dropdownsDemo}
+      />
+    </Section>
+
+    <Section label="Composer states — focus border, 3–7 line auto-grow, clear button, banner, sending/stop, uploading attachment, scroll-to-latest">
+      <div style={{ display: "flex", gap: "var(--salt-spacing-100)", marginBottom: 12, flexWrap: "wrap" }}>
+        <button onClick={() => setStatesSending((s) => !s)}>{statesSending ? "Stop sending" : "Simulate sending"}</button>
+        <button onClick={() => setStatesFiles((f) => f.map((a) => ({ ...a, loading: !a.loading })))}>Toggle upload loading</button>
+        <button onClick={() => setStatesBanner((b) => (b ? null : { status: "error", message: "Something went wrong generating a response. Please try again." }))}>{statesBanner ? "Clear banner" : "Show error banner"}</button>
+        <button onClick={() => setStatesScrollToLatest((s) => !s)}>Toggle scroll-to-latest</button>
+      </div>
+      <PromptInput
+        value={statesValue}
+        onChange={setStatesValue}
+        onSend={() => setStatesValue("")}
+        sending={statesSending}
+        onCancel={() => setStatesSending(false)}
+        attachments={statesFiles}
+        onRemoveAttachment={(f, i) => setStatesFiles(statesFiles.filter((_, idx) => idx !== i))}
+        onFilesDropped={(fileList) => setStatesFiles((f) => [...f, ...Array.from(fileList).map((file) => ({ name: file.name }))])}
+        onAttachKnowledgeBases={() => setKbDialogOpen(true)}
+        banner={statesBanner ? { ...statesBanner, onDismiss: () => setStatesBanner(null) } : undefined}
+        scrollToLatest={statesScrollToLatest}
+        onScrollToLatest={() => setStatesScrollToLatest(false)}
+        dropdowns={dropdownsDemo}
+      />
+    </Section>
+
+    <Section label="Test Mode (gradient-bordered container; info banner sits above even an error banner)">
+      <button onClick={() => setTestMode((t) => !t)} style={{ marginBottom: 12 }}>{testMode ? "Exit Test Mode (button)" : "Enter Test Mode"}</button>
       <PromptInput
         value={value}
         onChange={setValue}
         onSend={() => setValue("")}
-        queuedMessages={queued}
-        onRemoveQueuedMessage={(id) => setQueued((q) => q.filter((m) => m.id !== id))}
         dropdowns={dropdownsDemo}
+        testMode={testMode}
+        onExitTestMode={() => setTestMode(false)}
+        banner={testMode ? { status: "error", message: "The agent hit an error while testing this prompt." } : undefined}
       />
     </Section>
 
     <Section label="Summary card overlay (agent's plan, with optional modification input)">
       <PromptInput
-        overlay={
+        value={summaryValue}
+        onChange={setSummaryValue}
+        onSend={() => setSummaryValue("")}
+        attachments={summaryFiles}
+        onRemoveAttachment={(f, i) => setSummaryFiles(summaryFiles.filter((_, idx) => idx !== i))}
+        onFilesDropped={(fileList) => setSummaryFiles((f) => [...f, ...Array.from(fileList).map((file) => ({ name: file.name }))])}
+        onAttachKnowledgeBases={() => setKbDialogOpen(true)}
+        dropdowns={dropdownsDemo}
+        overlay={showSummaryOverlay ? (
           <PromptInputPlanCard
             variant="summary"
             steps={[
@@ -81,32 +165,45 @@ function App() {
               "Draft a one-page summary with the three biggest movers",
             ]}
             modification={{ value: modValue, onChange: (e) => setModValue(e.target.value) }}
-            primaryAction={{ label: "Go ahead" }}
-            tertiaryActions={[{ label: "Cancel" }]}
+            primaryAction={{ label: "Go ahead", onClick: () => { setShowSummaryOverlay(false); setModValue(""); } }}
+            tertiaryActions={[{ label: "Cancel", onClick: () => { setShowSummaryOverlay(false); setModValue(""); } }]}
           />
-        }
+        ) : undefined}
       />
     </Section>
 
     <Section label="Requirements gathering card overlay (clarifying questions, with optional context input)">
       <PromptInput
-        overlay={
+        value={requirementsValue}
+        onChange={setRequirementsValue}
+        onSend={() => setRequirementsValue("")}
+        attachments={requirementsFiles}
+        onRemoveAttachment={(f, i) => setRequirementsFiles(requirementsFiles.filter((_, idx) => idx !== i))}
+        onFilesDropped={(fileList) => setRequirementsFiles((f) => [...f, ...Array.from(fileList).map((file) => ({ name: file.name }))])}
+        onAttachKnowledgeBases={() => setKbDialogOpen(true)}
+        dropdowns={dropdownsDemo}
+        overlay={showRequirementsOverlay ? (
           <PromptInputPlanCard
             variant="requirements"
-            title="Some questions"
             questions={[
-              "Which quarter should this cover?",
-              "Should this include churned accounts under $10k ARR?",
-              "Who's the audience for the summary?",
+              { text: "Which quarter should this cover?", description: "This determines the date range pulled from the data warehouse.", type: "single-select", options: [{ label: "Q1", value: "q1" }, { label: "Q2", value: "q2" }, { label: "Q3", value: "q3" }, { label: "Q4", value: "q4" }] },
+              { text: "Which segments should be included?", type: "multi-select", options: [{ label: "Enterprise", value: "enterprise" }, { label: "Mid-market", value: "midmarket" }, { label: "SMB", value: "smb" }, { label: "Churned accounts under $10k ARR", value: "small-churn" }] },
+              { text: "Who's the audience for the summary?", type: "text" },
             ]}
             activeStep={activeStep}
             answers={answers}
             onAnswerChange={(i, v) => setAnswers((a) => { const next = [...a]; next[i] = v; return next; })}
             additionalContext={{ value: contextValue, onChange: (e) => setContextValue(e.target.value), style: { height: 37, width: 400 } }}
-            primaryAction={{ label: "Next", onClick: () => setActiveStep((s) => Math.min(2, s + 1)) }}
-            tertiaryActions={[{ label: "Close" }, { label: "Back", onClick: () => setActiveStep((s) => Math.max(0, s - 1)) }]}
+            primaryAction={{
+              label: activeStep === 2 ? "Submit" : "Next",
+              onClick: () => {
+                if (activeStep === 2) { setShowRequirementsOverlay(false); setActiveStep(0); setAnswers([]); setContextValue(""); }
+                else setActiveStep((s) => Math.min(2, s + 1));
+              },
+            }}
+            tertiaryActions={[{ label: "Close", onClick: () => setShowRequirementsOverlay(false) }, ...(activeStep > 0 ? [{ label: "Back", onClick: () => setActiveStep((s) => Math.max(0, s - 1)) }] : [])]}
           />
-        }
+        ) : undefined}
       />
     </Section>
   </div>;
