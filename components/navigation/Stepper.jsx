@@ -4,7 +4,7 @@ export function Stepper({ steps = [], activeStep = 0 }) {
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
       {steps.map((label, i) => (
-        <React.Fragment key={label}>
+        <React.Fragment key={i}>
           <div style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-50)" }}>
             <span style={{
               width: "var(--salt-spacing-150)", height: "var(--salt-spacing-150)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
