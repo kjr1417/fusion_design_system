@@ -7,7 +7,7 @@
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
-<script src="../../_ds_bundle.js?v=2"></script>
+<script src="../../_ds_bundle.js?v=6"></script>
 <style>body{margin:0;background:var(--salt-palette-background-secondary)}</style>
 </head>
 <body class="salt-theme">
@@ -16,8 +16,14 @@
 const { PromptInput } = window.FusionDesignSystem_6db751;
 function App() {
   const [value, setValue] = React.useState("");
-  const [files, setFiles] = React.useState([{ name: "report.pdf" }]);
-  return <PromptInput
+  const [files, setFiles] = React.useState([
+    { name: "report.pdf", fileType: "pdf", description: "Uploaded from desktop" },
+    { name: "customer_churn_data.csv", fileType: "csv" },
+    { name: "regional_sales_model.xlsx", fileType: "xls", description: "Shared by finance" },
+    { name: "assets.zip", fileType: "zip" },
+    { name: "training_dataset", fileType: "data", description: "PII-safe, daily refresh" },
+  ]);
+  return <div style={{ width: 480 }}><PromptInput
     value={value}
     onChange={setValue}
     onSend={() => setValue("")}
@@ -28,7 +34,7 @@ function App() {
       { options: [{ label: "v1.0", value: "v1" }, { label: "v2.0", value: "v2" }], defaultValue: "v2", minWidth: 84 },
     ]}
     helperText="AI-generated responses may be inaccurate. Verify important information."
-  />;
+  /></div>;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>

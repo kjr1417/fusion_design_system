@@ -2,13 +2,14 @@ import React from "react";
 import { ChatIcon } from "./chatIcons.jsx";
 
 /**
- * Fusion PromptInput — the chat composer: an optional attachment-chip row,
- * an auto-height textarea, and a control row (attach button, up to two
- * Dropdowns for e.g. model/version, and an accented pill send button that
- * disables until there's text). Optional helper text below it, styled
- * like FormField's helper text. Pairs with ChatHeader and
+ * Fusion PromptInput — the chat composer: an optional AttachmentTileGroup
+ * staging row, an auto-height textarea, and a control row (attach button,
+ * up to two Dropdowns for e.g. model/version, and an accented pill send
+ * button that disables until there's text). Optional helper text below
+ * it, styled like FormField's helper text. Pairs with ChatHeader and
  * ConversationArea inside ChatLayout's central panel.
- * Requires FusionDesignSystem_6db751 (IconButton, Dropdown, Pill).
+ * Requires FusionDesignSystem_6db751 (IconButton, Dropdown,
+ * AttachmentTileGroup).
  */
 export function PromptInput({
   value = "",
@@ -23,16 +24,14 @@ export function PromptInput({
   disabled = false,
   style,
 }) {
-  const { IconButton, Dropdown, Pill } = window.FusionDesignSystem_6db751;
+  const { IconButton, Dropdown, AttachmentTileGroup } = window.FusionDesignSystem_6db751;
   const canSend = !disabled && value.trim().length > 0;
   return (
     <div style={{ width: "100%", ...style }}>
       <div style={{ border: "1px solid var(--salt-separable-primary-borderColor)", borderRadius: "var(--salt-palette-corner-soft, 24px)", background: "var(--salt-container-primary-background)", boxShadow: "var(--salt-shadow-lowest)", display: "flex", flexDirection: "column", padding: "var(--salt-spacing-100)", boxSizing: "border-box" }}>
         {attachments.length > 0 && (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--salt-spacing-75)", padding: "0 var(--salt-spacing-50)", marginBottom: "var(--salt-spacing-75)" }}>
-            {attachments.map((a, i) => (
-              <Pill key={i} onClose={onRemoveAttachment ? () => onRemoveAttachment(a, i) : undefined}>{a.name || a}</Pill>
-            ))}
+          <div style={{ padding: "0 var(--salt-spacing-50)", marginBottom: "var(--salt-spacing-100)" }}>
+            <AttachmentTileGroup items={attachments} onRemove={onRemoveAttachment} />
           </div>
         )}
         <textarea

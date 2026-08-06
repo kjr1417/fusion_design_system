@@ -1,0 +1,69 @@
+<!-- @dsCard group="Chat" viewport="900x420" name="Attachment Tile" subtitle="112x112 file tile + tile group with carousel overflow" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js?v=15"></script>
+<style>body{margin:0;background:var(--salt-palette-background-secondary)}</style>
+</head>
+<body class="salt-theme">
+<div id="root" style="padding:24px;box-sizing:border-box"></div>
+<script type="text/babel">
+const { AttachmentTile, AttachmentTileGroup } = window.FusionDesignSystem_6db751;
+function Section({ label, children }) {
+  return <div style={{ marginBottom: 32 }}>
+    <div style={{ fontSize: 12, fontWeight: "var(--salt-text-fontWeight-strong, 700)", color: "var(--salt-content-secondary-foreground)", textTransform: "uppercase", letterSpacing: ".03em", marginBottom: 12 }}>{label}</div>
+    {children}
+  </div>;
+}
+function App() {
+  const [group, setGroup] = React.useState([
+    { id: "1", title: "Q4-board-deck-summary-notes.pdf", description: "Uploaded from desktop", fileType: "pdf" },
+    { id: "2", title: "customer_churn_data.csv", fileType: "csv" },
+    { id: "3", title: "regional_sales_model.xlsx", description: "Shared by finance", fileType: "xls" },
+    { id: "4", title: "assets.zip", fileType: "zip" },
+    { id: "5", title: "training_dataset", description: "PII-safe, daily refresh", fileType: "data" },
+    { id: "6", title: "meeting_notes.docx", fileType: "doc" },
+    { id: "7", title: "roadmap.pdf", fileType: "pdf" },
+    { id: "8", title: "square-photo.jpg", imageUrl: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=400&h=400&fit=crop" },
+    { id: "9", title: "uploading-photo.jpg", loading: true },
+  ]);
+  return <div style={{ fontFamily: "var(--salt-text-fontFamily)", maxWidth: 820 }}>
+    <Section label="Single tile — with description">
+      <AttachmentTile title="Q4-board-deck-summary-notes.pdf" description="Uploaded from desktop" fileType="pdf" onRemove={() => {}} />
+    </Section>
+    <Section label="Single tile — no description, long truncating title">
+      <AttachmentTile title="regional-sales-projection-model-final-v3-reviewed.xlsx" fileType="xls" onRemove={() => {}} />
+    </Section>
+    <Section label="Type variants (csv, zip, data, doc)">
+      <div style={{ display: "flex", gap: "var(--salt-spacing-100)" }}>
+        <AttachmentTile title="customer_churn_data.csv" fileType="csv" />
+        <AttachmentTile title="assets.zip" fileType="zip" />
+        <AttachmentTile title="training_dataset" description="PII-safe, daily refresh" fileType="data" />
+        <AttachmentTile title="meeting_notes.docx" fileType="doc" />
+        <AttachmentTile title="uploading-report.pdf" fileType="pdf" loading onRemove={() => {}} />
+      </div>
+    </Section>
+    <Section label="Image attachment (thumbnail, no file-type tag) + loading state">
+      <div style={{ display: "flex", gap: "var(--salt-spacing-100)" }}>
+        <AttachmentTile title="wide-banner.png" imageUrl="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=100&fit=crop" onRemove={() => {}} />
+        <AttachmentTile title="tall-portrait.jpg" imageUrl="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=200&h=500&fit=crop" onRemove={() => {}} />
+        <AttachmentTile title="square-photo.jpg" imageUrl="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=400&h=400&fit=crop" onRemove={() => {}} />
+        <AttachmentTile title="uploading-photo.jpg" loading onRemove={() => {}} />
+      </div>
+    </Section>
+    <Section label="Attachment tile group (overflow — hover to reveal close, scroll for carousel arrows)">
+      <div style={{ maxWidth: 420 }}>
+        <AttachmentTileGroup items={group} maxItems={group.length} onRemove={(item, i) => setGroup((g) => g.filter((_, idx) => idx !== i))} />
+      </div>
+    </Section>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

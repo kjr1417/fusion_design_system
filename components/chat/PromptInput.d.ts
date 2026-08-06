@@ -2,6 +2,10 @@ import type { ReactNode } from "react";
 
 export interface PromptInputAttachment {
   name: string;
+  /** Falls back to `name` when absent — rendered as the AttachmentTile title. */
+  title?: string;
+  description?: string;
+  fileType?: string;
 }
 export interface PromptInputDropdown {
   options: { label: string; value: string }[];
@@ -11,9 +15,10 @@ export interface PromptInputDropdown {
 }
 
 /**
- * The chat composer: attachment chips, an auto-height textarea, an attach
- * button, up to a couple of Dropdowns (e.g. model/version), and an
- * accented pill send button disabled until there's text.
+ * The chat composer: an AttachmentTileGroup staging row, an auto-height
+ * textarea, an attach button, up to a couple of Dropdowns (e.g.
+ * model/version), and an accented pill send button disabled until
+ * there's text.
  */
 export interface PromptInputProps {
   value?: string;
