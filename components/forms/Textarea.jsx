@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export function Textarea({ rows = 3, disabled = false, validationState, placeholder, defaultValue = "", characterLimit, onChange, ...rest }) {
+export function Textarea({ rows = 3, disabled = false, validationState, placeholder, defaultValue = "", characterLimit, onChange, style, ...rest }) {
   const [focused, setFocused] = useState(false);
   const [count, setCount] = useState(String(rest.value ?? defaultValue ?? "").length);
   const cls = [
@@ -14,13 +14,13 @@ export function Textarea({ rows = 3, disabled = false, validationState, placehol
     onChange && onChange(e);
   };
   return (
-    <div className={cls} style={{ height: "auto", flexDirection: "column", alignItems: "stretch", padding: "var(--salt-spacing-50) var(--salt-spacing-100)", gap: "var(--salt-spacing-25)" }}>
+    <div className={cls} style={{ height: "auto", flexDirection: "column", alignItems: "stretch", padding: "var(--salt-spacing-50) var(--salt-spacing-100)", gap: "var(--salt-spacing-25)", ...style }}>
       <textarea
         className="saltInput-input"
         rows={rows}
         disabled={disabled}
         placeholder={placeholder}
-        defaultValue={defaultValue}
+        defaultValue={rest.value === undefined ? defaultValue : undefined}
         maxLength={characterLimit}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
