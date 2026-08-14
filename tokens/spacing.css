@@ -10,8 +10,13 @@
   --salt-spacing-300: 48px;
   --salt-spacing-350: 56px;
   --salt-spacing-400: 64px;
+  --salt-spacing-450: 72px;
   --salt-spacing-500: 80px;
   --salt-spacing-600: 96px;
+  --salt-spacing-700: 112px;
+  --salt-spacing-800: 128px;
+  --salt-spacing-900: 144px;
+  --salt-spacing-950: 152px;
 
   --salt-spacing-fixed-100: 1px;
   --salt-spacing-fixed-200: 2px;
@@ -26,5 +31,9 @@
   --salt-size-selectable: 18px;
   --salt-size-fixed-100: 1px;
   --salt-size-fixed-200: 2px;
+
+  /* CodeBlock max-height before internal scroll kicks in — pick per context (small: widget/card, large: full conversation area) */
+  --salt-codeblock-maxHeight-small: 400px;
+  --salt-codeblock-maxHeight-large: 700px;
 }
 

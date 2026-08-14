@@ -205,4 +205,10 @@
   --salt-category-4-foreground: var(--salt-color-gray-800);
   --salt-category-4-borderColor: var(--salt-color-gray-300);
   --salt-category-4-bold-background: var(--salt-color-gray-700);
+
+  /* Category 15: file-type tag fill (attachment tiles) */
+  --salt-category-15-background: #F2F5FA;
+  --salt-category-15-foreground: var(--salt-color-gray-800);
+  --salt-category-15-borderColor: var(--salt-color-gray-300);
+  --salt-category-15-bold-background: var(--salt-color-gray-700);
 }
