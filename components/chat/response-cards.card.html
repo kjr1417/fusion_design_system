@@ -1,0 +1,51 @@
+<!-- @dsCard group="Chat" viewport="640x560" name="Response Cards" subtitle="Inline-form card + selectable cards (max 2, 1 row) + left-aligned submit" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js?v=19"></script>
+<style>body{margin:0;padding:24px;box-sizing:border-box;background:var(--salt-container-primary-background)}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { Card, FormField, Input, SelectableCard, InlineButtons } = window.FusionDesignSystem_6db751;
+
+function App() {
+  const [source, setSource] = React.useState("api");
+  const [key, setKey] = React.useState("");
+  return <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-400)" }}>
+
+    <div>
+      <div style={{ fontSize: 12, color: "var(--salt-content-secondary-foreground)", marginBottom: "var(--salt-spacing-100)" }}>Card container for an inline form</div>
+      <Card variant="secondary" style={{ maxWidth: 420 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-150)" }}>
+          <FormField label="API key" necessity="required" helperText="Found in your integration settings.">
+            <Input value={key} onChange={(e) => setKey(e.target.value)} placeholder="sk-…" />
+          </FormField>
+          <InlineButtons direction="left-to-right" primaryAction={{ label: "Connect", onClick: () => {} }} secondaryActions={[{ label: "Cancel", onClick: () => {} }]} />
+        </div>
+      </Card>
+    </div>
+
+    <div>
+      <div style={{ fontSize: 12, color: "var(--salt-content-secondary-foreground)", marginBottom: "var(--salt-spacing-100)" }}>Selectable cards — max 2 per row, max 1 row — with a left-aligned submit action</div>
+      <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-150)", maxWidth: 480 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--salt-spacing-150)" }}>
+          <SelectableCard name="source" title="Governed dataset" description="Connect a dataset from the catalog" selected={source === "dataset"} onChange={() => setSource("dataset")} />
+          <SelectableCard name="source" title="External API" description="Call an API directly" selected={source === "api"} onChange={() => setSource("api")} />
+        </div>
+        <InlineButtons direction="left-to-right" primaryAction={{ label: "Continue", onClick: () => {} }} />
+      </div>
+    </div>
+
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

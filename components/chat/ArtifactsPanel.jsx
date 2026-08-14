@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ChatIcon } from "./chatIcons.jsx";
+import { ArtifactCard } from "./ArtifactCard.jsx";
 
 /**
  * Fusion ArtifactsPanel — the "Library" pattern: a right-anchored
@@ -21,7 +22,7 @@ export function ArtifactsPanel({
   onDownload,
   emptyStateText = "Artifacts you create in this conversation will appear here.",
 }) {
-  const { SidePanel, Button, IconButton } = window.FusionDesignSystem_6db751;
+  const { SidePanel, IconButton } = window.FusionDesignSystem_6db751;
   const [selected, setSelected] = useState(null);
 
   const closePanel = () => { setSelected(null); onClose && onClose(); };
@@ -49,17 +50,18 @@ export function ArtifactsPanel({
             <div style={{ padding: "var(--salt-spacing-300) 0", fontSize: 13, color: "var(--salt-content-secondary-foreground)", textAlign: "center" }}>{emptyStateText}</div>
           )}
           {artifacts.map((a, i) => (
-            <div key={a.id} style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-200)", padding: "var(--salt-spacing-150) 0", borderBottom: i < artifacts.length - 1 ? "1px solid var(--salt-separable-secondary-borderColor)" : "none" }}>
-              <div style={{ minWidth: 0, flex: 1 }}>
-                <div style={{ fontSize: 14, fontWeight: 600, color: "var(--salt-content-primary-foreground)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{a.title}</div>
-                <div style={{ fontSize: 13, color: "var(--salt-content-secondary-foreground)", marginTop: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{a.description}</div>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-75)", flexShrink: 0 }}>
-                <IconButton appearance="transparent" sentiment="neutral" aria-label={`Download ${a.title}`} title="Download" onClick={() => onDownload && onDownload(a)}>
-                  {<ChatIcon name="download" size={16} />}
-                </IconButton>
-                <Button appearance="transparent" sentiment="accented" onClick={() => setSelected(a)}>View</Button>
-              </div>
+            <div key={a.id} style={{ padding: "var(--salt-spacing-150) 0", borderBottom: i < artifacts.length - 1 ? "1px solid var(--salt-separable-secondary-borderColor)" : "none" }}>
+              <ArtifactCard
+                title={a.title}
+                description={a.description}
+                actionLabel="View"
+                onAction={() => setSelected(a)}
+                secondaryAction={
+                  <IconButton appearance="transparent" sentiment="neutral" aria-label={`Download ${a.title}`} title="Download" onClick={() => onDownload && onDownload(a)}>
+                    <ChatIcon name="download" size={16} />
+                  </IconButton>
+                }
+              />
             </div>
           ))}
         </div>

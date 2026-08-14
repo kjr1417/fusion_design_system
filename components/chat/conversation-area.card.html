@@ -5,26 +5,114 @@
 <link rel="stylesheet" href="../../styles.css">
 <link rel="stylesheet" href="../../salt-components.css">
 <link rel="stylesheet" href="./ConversationArea.css">
+<link rel="stylesheet" href="../data/FileResultsGrid.css">
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
-<script src="../../_ds_bundle.js"></script>
-<style>body{margin:0;background:var(--salt-container-primary-background)}</style>
+<script src="../../_ds_bundle.js?v=41"></script>
+<style>html,body{margin:0;height:100%;background:var(--salt-container-primary-background)}#root{height:100%}</style>
 </head>
 <body class="salt-theme">
 <div id="root"></div>
 <script type="text/babel">
 const { ConversationArea } = window.FusionDesignSystem_6db751;
 function App() {
-  const messages = [
-    { role: "user", text: "Triage the last 60 days of advisory-desk emails and produce a leadership-ready summary." },
+  const [messages, setMessages] = React.useState([
+    { role: "user", text: "Triage the last 60 days of advisory-desk emails and produce a leadership-ready summary. I want it broken out by theme, by urgency tier, and by desk owner so we can see where the backlog is concentrated, plus a short narrative at the top calling out anything that needs escalation before Friday's leadership sync.", timestamp: Date.now() - 1000 * 60 * 60, versionCount: 2, activeVersion: 2, attachments: [{ title: "advisory-desk-emails.zip", description: "60-day export", fileType: "zip" }, { title: "org-chart.pdf", description: "Desk owners", fileType: "pdf" }] },
     { role: "status", text: "Connecting to Microsoft Graph API…", done: true },
     { role: "status", text: "Clustering by theme — 8 themes identified…", done: true },
     { role: "status", text: "Flagging Platinum-tier urgencies — 12 flagged…", done: false },
-    { role: "typing", name: "Builder_Agent_v2" },
-  ];
-  return <div style={{ height: 520, display: "flex", flexDirection: "column" }}>
-    <ConversationArea messages={messages} />
+    { role: "user", text: "Try this against the sandbox agent first.", testMode: true, timestamp: Date.now() - 1000 * 60 * 9 },
+    { role: "agent", name: "Builder_Agent_v2", time: "4:46pm", text: "Sandbox run complete — 3 themes matched.", testMode: true },
+    { role: "status", text: "Re-running with the widened Platinum threshold…", done: true, testMode: true },
+    { role: "user", text: "Now try the same prompt but exclude the Account Access theme.", testMode: true, timestamp: Date.now() - 1000 * 60 * 8 },
+    { role: "agent", name: "Builder_Agent_v2", time: "4:47pm", text: "Excluded — backlog drops from 42 to 29 items across the remaining 7 themes.", testMode: true },
+    { role: "user", text: "What if we also fold Fee Disclosure into Onboarding Delays?", testMode: true, timestamp: Date.now() - 1000 * 60 * 7 },
+    { role: "agent", name: "Builder_Agent_v2", time: "4:47pm", text: "Merged — 6 themes remain, with the combined theme at 29 items.", testMode: true },
+    { role: "user", text: "Show me the sandbox output as a table instead of prose.", testMode: true, timestamp: Date.now() - 1000 * 60 * 6 },
+    { role: "agent", name: "Builder_Agent_v2", time: "4:48pm", text: "Table view rendered — 6 rows, sorted by item count descending.", testMode: true },
+    { role: "user", text: "Good. Try one more pass with a 24-hour SLA instead of 1 hour.", testMode: true, timestamp: Date.now() - 1000 * 60 * 5 },
+    { role: "agent", name: "Builder_Agent_v2", time: "4:50pm", text: "Sandbox run complete — 3 themes matched.", testMode: true },
+    { role: "user", text: "Here's a screenshot of the dashboard we're matching the layout to.", timestamp: Date.now() - 1000 * 60 * 30, attachments: [{ title: "dashboard.png", fileType: "png", imageUrl: "https://picsum.photos/seed/fusion/640/360" }] },
+    { role: "agent", name: "Builder_Agent_v2", time: "4:43pm", timestamp: Date.now() - 1000 * 60 * 20, blocks: [
+      { type: "h1", text: "Advisory Desk Email Summary" },
+      { type: "h2", text: "Overview" },
+      { type: "h3", text: "Scope" },
+      { type: "h4", text: "Method" },
+      { type: "body", text: "This summary covers **12 flagged** items across *8 themes*. See the ~~draft~~ final numbers below, or run `triage --recheck` to refresh. Full source: https://fusion.jpmc.com/reports/advisory-q3 — or read the [methodology notes](https://fusion.jpmc.com/docs/methodology) for details.", source: { platform: "Confluence", title: "Snowflake New Engineer Onboarding", description: "Step-by-step setup guide covering warehouse access requests, role provisioning, and the standard SQL style guide.", url: "#" } },
+      { type: "blockquote", text: "Escalate anything tagged Platinum before Friday's sync.", children: { text: "Per the desk-owner playbook, Platinum items page the on-call lead directly." } },
+      { type: "ol", items: [
+        { text: "Pull the 60-day export", children: [
+          { text: "Filter to advisory-desk mailboxes", children: [
+            { text: "Exclude auto-replies" },
+          ] },
+        ] },
+        { text: "Cluster by theme" },
+      ] },
+      { type: "ul", items: [
+        { text: "Platinum tier", children: [
+          { text: "Escalate same-day", children: [
+            { text: "Notify desk owner", children: [
+              { text: "Page on-call if unread after 1hr" },
+            ] },
+          ] },
+        ] },
+        { text: "Gold tier" },
+      ] },
+      { type: "disclaimer", text: "AI-generated summary — verify figures against the source export before distributing." },
+      { type: "status", status: "warning", statusTitle: "12 items need review", text: "These are tagged Platinum tier and page the on-call lead if unread after 1 hour." },
+      { type: "code", language: "tsx", code: "function triage(emails) {\n  return emails.filter(e => e.tier === \"platinum\");\n}" },
+      { type: "code", code: "npm install fusion-design-system" },
+      { type: "code", language: "diff", diffLines: [
+        { kind: "context", text: "function triage(emails) {" },
+        { kind: "remove", text: "  return emails.filter(e => e.urgent);" },
+        { kind: "add", text: "  return emails.filter(e => e.tier === \"platinum\");" },
+        { kind: "context", text: "}" },
+      ] },
+      { type: "image", imageSrc: "https://picsum.photos/seed/fusion-wide/900/380", imageAlt: "Weekly triage volume chart (wide)" },
+      { type: "image", imageSrc: "https://picsum.photos/seed/fusion-tall/420/720", imageAlt: "Desk owner breakdown (tall)" },
+      { type: "image", imageSrc: "https://picsum.photos/seed/fusion-square/560/560", imageAlt: "Theme distribution (square)" },
+      { type: "artifact", artifact: { eyebrow: "Report", title: "Advisory Desk Email Summary.pdf", description: "Generated from the 60-day mailbox export", items: [{ label: "Size", value: "2.1 MB" }, { label: "Created", value: "Aug 13, 2026" }], actionLabel: "View" } },
+      { type: "comparison", comparisonOptions: [
+        { label: "Option A — concise", text: "12 items flagged Platinum. Escalate before Friday's sync." },
+        { label: "Option B — detailed", text: "12 items across 8 themes are flagged Platinum tier. Per the desk-owner playbook, each pages the on-call lead if unread after 1 hour — escalate all 12 before Friday's leadership sync." },
+      ] },
+      { type: "expandable", summary: [{ type: "body", text: "**Overview:** 3 of 8 themes account for 70% of the backlog." }], details: [
+        { type: "ul", items: [
+          { text: "Account access issues — 42 emails" },
+          { text: "Fee disclosure questions — 18 emails" },
+          { text: "Onboarding delays — 11 emails" },
+        ] },
+      ] },
+      { type: "files", files: [
+        { id: 1, name: "advisory-desk-emails.zip", size: 84000000, type: "ZIP" },
+        { id: 2, name: "org-chart.pdf", size: 512000, type: "PDF" },
+      ], columns: [{ key: "type", label: "Type" }] },
+    ] },
+    { role: "typing", name: "Builder_Agent_v2", label: "Loading status content" },
+    { role: "user", text: "Great, apply the 24-hour SLA to the live report and send it to the desk leads.", timestamp: Date.now() - 1000 * 60 * 2 },
+    { role: "agent", name: "Builder_Agent_v2", time: "4:51pm", text: "Applied the 24-hour SLA to the live report and sent it to all 6 desk leads.", timestamp: Date.now() - 1000 * 60 },
+    { role: "user", text: "Also draft a short cover note summarizing what changed since the last report.", timestamp: Date.now() - 1000 * 30 },
+    { role: "agent", name: "Builder_Agent_v2", time: "4:52pm", text: "Draft ready: notes the SLA change, the Account Access exclusion, and the Fee Disclosure/Onboarding merge — 5 sentences.", timestamp: Date.now() - 1000 * 20 },
+    { role: "user", text: "Perfect. Schedule the same triage to run again next Friday morning.", timestamp: Date.now() - 1000 * 15 },
+    { role: "agent", name: "Builder_Agent_v2", time: "4:52pm", text: "Scheduled — next run is Friday, Aug 21 at 8:00am, same mailbox scope and thresholds.", timestamp: Date.now() - 1000 * 10 },
+  ]);
+  const submitEdit = (m, newText, i) => {
+    setMessages((prev) => prev.map((msg, idx) => idx === i ? { ...msg, text: newText, versionCount: (msg.versionCount || 1) + 1, activeVersion: (msg.versionCount || 1) + 1 } : msg));
+  };
+  const changeVersion = (m, v, i) => {
+    setMessages((prev) => prev.map((msg, idx) => idx === i ? { ...msg, activeVersion: v } : msg));
+  };
+  return <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+    <ConversationArea
+      messages={messages}
+      onCopyMessage={(m) => navigator.clipboard && navigator.clipboard.writeText(m.text)}
+      onSubmitEdit={submitEdit}
+      onChangeVersion={changeVersion}
+      onRetryMessage={() => {}}
+      onFeedback={(m, sentiment, i) => setMessages((prev) => prev.map((msg, idx) => idx === i ? { ...msg, feedback: sentiment } : msg))}
+      onDownloadMessage={() => {}}
+    />
   </div>;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
