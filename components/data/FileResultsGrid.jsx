@@ -23,12 +23,12 @@ function formatSize(size) {
  * Fusion FileResultsGrid — a full-width results table for uploaded/attached
  * files: File name (left) / Size (right, numeric) / Actions (right,
  * download + delete icon buttons). Left-aligned column headers regardless
- * of each column's data alignment; thin dividers only between header
- * cells, no cell borders in the body.
+ * of each column's data alignment; a bottom border under the header row
+ * and under each body row.
  * Requires FusionDesignSystem_6db751 (Table family, IconButton) plus
  * ./FileResultsGrid.css.
  */
-export function FileResultsGrid({ files = [], onDownload, onDelete, style }) {
+export function FileResultsGrid({ files = [], columns = [], actions = true, onDownload, onDelete, style }) {
   const { Table, TableHead, TableBody, TableRow, TableCell, IconButton } = window.FusionDesignSystem_6db751;
   if (!files.length) return null;
   return (
@@ -38,7 +38,8 @@ export function FileResultsGrid({ files = [], onDownload, onDelete, style }) {
           <TableRow>
             <TableCell header scope="col">File name</TableCell>
             <TableCell header scope="col">Size</TableCell>
-            <TableCell header scope="col">Actions</TableCell>
+            {columns.map((c) => <TableCell key={c.key} header scope="col">{c.label}</TableCell>)}
+            {actions && <TableCell header scope="col">Actions</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -46,16 +47,19 @@ export function FileResultsGrid({ files = [], onDownload, onDelete, style }) {
             <TableRow key={f.id}>
               <TableCell>{f.name}</TableCell>
               <TableCell align="right">{formatSize(f.size)}</TableCell>
-              <TableCell align="right">
-                <div style={{ display: "flex", justifyContent: "flex-end", gap: "var(--salt-spacing-50)" }}>
-                  <IconButton appearance="transparent" sentiment="neutral" aria-label={`Download ${f.name}`} title={`Download ${f.name}`} onClick={() => onDownload?.(f)}>
-                    <DownloadGlyph />
-                  </IconButton>
-                  <IconButton appearance="transparent" sentiment="neutral" aria-label={`Delete ${f.name}`} title={`Delete ${f.name}`} onClick={() => onDelete?.(f)}>
-                    <DeleteGlyph />
-                  </IconButton>
-                </div>
-              </TableCell>
+              {columns.map((c) => <TableCell key={c.key} align={c.align || "left"}>{f[c.key]}</TableCell>)}
+              {actions && (
+                <TableCell align="right">
+                  <div style={{ display: "flex", justifyContent: "flex-end", gap: "var(--salt-spacing-50)" }}>
+                    <IconButton appearance="transparent" sentiment="neutral" aria-label={`Download ${f.name}`} title={`Download ${f.name}`} onClick={() => onDownload?.(f)}>
+                      <DownloadGlyph />
+                    </IconButton>
+                    <IconButton appearance="transparent" sentiment="neutral" aria-label={`Delete ${f.name}`} title={`Delete ${f.name}`} onClick={() => onDelete?.(f)}>
+                      <DeleteGlyph />
+                    </IconButton>
+                  </div>
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>
