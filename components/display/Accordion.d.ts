@@ -37,5 +37,13 @@ export interface AccordionProps {
   allowMultiple?: boolean;
   /** Chevron placement in the header row. "start" (default) matches Salt; "end" right-aligns it so a leading icon + label can sit flush left. */
   chevronPosition?: "start" | "end";
+  /** Set false to remove the item top/bottom rule lines (e.g. when an outer container already provides a border). Default true. */
+  bordered?: boolean;
+  /** For an Accordion used as nested content inside a parent item: suppresses the top border on the first item only (it would double up against the parent item's own border), while any second+ item in this nested Accordion keeps its top border as a separator. Default false. */
+  nested?: boolean;
+  /** When true, the root and any open item stretch to fill their container (via flex) and the open item's content becomes independently scrollable (overflow-y: auto) instead of growing the page. Pair with a bounded `style.height`/`maxHeight` on the Accordion. Default false. */
+  fillHeight?: boolean;
+  /** Fired with the new open value (index, -1, or array in allowMultiple mode) whenever an item is toggled. */
+  onOpenChange?: (open: number | number[]) => void;
   style?: object;
 }

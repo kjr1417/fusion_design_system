@@ -12,8 +12,8 @@ export function TableHead({ variant = "primary", divider = "primary", sticky = f
   return <thead className={["saltTable-thead", `saltTable-thead-${variant}`, `saltTable-thead-divider-${divider}`, sticky ? "saltTable-thead-sticky" : ""].filter(Boolean).join(" ")}>{children}</thead>;
 }
 export function TableBody({ children }) { return <tbody>{children}</tbody>; }
-export function TableRow({ children }) { return <tr>{children}</tr>; }
-export function TableCell({ align = "left", header = false, scope, children }) {
+export function TableRow({ children, style }) { return <tr style={style}>{children}</tr>; }
+export function TableCell({ align = "left", header = false, scope, children, style }) {
   const Tag = header ? "th" : "td";
-  return <Tag scope={scope} className={`saltTable-${header ? "th" : "td"}-align-${align}`}>{children}</Tag>;
+  return <Tag scope={scope} className={`saltTable-${header ? "th" : "td"}-align-${align}`} style={style}>{children}</Tag>;
 }

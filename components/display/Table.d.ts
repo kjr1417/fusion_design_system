@@ -9,8 +9,8 @@ export function TableHead(props: TableHeadProps): JSX.Element;
 interface TableBodyProps { children?: React.ReactNode; }
 export function TableBody(props: TableBodyProps): JSX.Element;
 
-interface TableRowProps { children?: React.ReactNode; }
+interface TableRowProps { children?: React.ReactNode; style?: React.CSSProperties; }
 export function TableRow(props: TableRowProps): JSX.Element;
 
-interface TableCellProps { align?: "left" | "right"; header?: boolean; scope?: string; children?: React.ReactNode; }
+interface TableCellProps { align?: "left" | "right"; header?: boolean; scope?: string; children?: React.ReactNode; style?: React.CSSProperties; }
 export function TableCell(props: TableCellProps): JSX.Element;

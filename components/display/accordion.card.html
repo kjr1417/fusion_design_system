@@ -1,0 +1,97 @@
+<!-- @dsCard group="Components" viewport="640x760" name="Accordion Patterns" subtitle="Simple list, static list w/ tags, nested (collapsed), source list" -->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../salt-components.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+<script src="../../_ds_bundle.js?v=39"></script>
+<style>body{margin:0;padding:24px;box-sizing:border-box;background:var(--salt-container-primary-background)}</style>
+</head>
+<body class="salt-theme">
+<div id="root"></div>
+<script type="text/babel">
+const { Accordion, StaticList, Tag, Link, ChatIcon } = window.FusionDesignSystem_6db751;
+
+function Row({ title, description, tags }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-25, 4px)", paddingBottom: "var(--salt-spacing-150)" }}>
+      <div style={{ fontWeight: "var(--salt-text-fontWeight-strong)", fontSize: 14 }}>{title}</div>
+      {description && <div style={{ fontSize: 13, color: "var(--salt-content-secondary-foreground)" }}>{description}</div>}
+      {tags && tags.length > 0 && <div style={{ display: "flex", gap: "var(--salt-spacing-50)", marginTop: "var(--salt-spacing-50)" }}>{tags.map((t, i) => <Tag key={i} color="neutral">{t}</Tag>)}</div>}
+    </div>
+  );
+}
+
+function SourceRow({ title, href, description, platform }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-25, 4px)", paddingBottom: "var(--salt-spacing-150)" }}>
+      <Link href={href} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: "var(--salt-spacing-50)", width: "fit-content" }}>{title}<ChatIcon name="tear-out" size={11} /></Link>
+      {description && <div style={{ fontSize: 13, color: "var(--salt-content-secondary-foreground)", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{description}</div>}
+      {platform && <div><Tag color="neutral">{platform}</Tag></div>}
+    </div>
+  );
+}
+
+function App() {
+  return <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-400)" }}>
+
+    <div>
+      <div style={{ fontSize: 12, color: "var(--salt-content-secondary-foreground)", marginBottom: "var(--salt-spacing-100)" }}>Simple list</div>
+      <Accordion items={[
+        { title: "Steps taken", content: (
+          <ul style={{ margin: 0, paddingLeft: 18 }}>
+            <li>Pulled the 60-day export</li>
+            <li>Filtered to advisory-desk mailboxes</li>
+            <li>Clustered by theme</li>
+          </ul>
+        ) },
+      ]} />
+    </div>
+
+    <div>
+      <div style={{ fontSize: 12, color: "var(--salt-content-secondary-foreground)", marginBottom: "var(--salt-spacing-100)" }}>Static list — descriptions + optional metadata tags</div>
+      <Accordion items={[
+        { title: "Themes identified", content: (
+          <div>
+            <Row title="Account access issues" description="Password resets and lockouts across retail advisory desks." tags={["Platinum", "42 emails"]} />
+            <Row title="Fee disclosure questions" description="Clients asking about advisory fee schedules." tags={["Gold"]} />
+            <Row title="Onboarding delays" description="New account setup taking longer than SLA." />
+          </div>
+        ) },
+      ]} />
+    </div>
+
+    <div>
+      <div style={{ fontSize: 12, color: "var(--salt-content-secondary-foreground)", marginBottom: "var(--salt-spacing-100)" }}>Nested accordions (collapsed by default) — additional context</div>
+      <Accordion items={[
+        { title: "Additional context", content: (
+          <Accordion defaultOpen={-1} nested items={[
+            { title: "Methodology", content: <div style={{ fontSize: 13 }}>Emails were clustered using theme-tagged subject lines and body embeddings.</div> },
+            { title: "Data sources", content: <div style={{ fontSize: 13 }}>Microsoft Graph API export, 60-day trailing window.</div> },
+          ]} />
+        ) },
+      ]} />
+    </div>
+
+    <div>
+      <div style={{ fontSize: 12, color: "var(--salt-content-secondary-foreground)", marginBottom: "var(--salt-spacing-100)" }}>Source list — page title + tear-out link, platform tag, 2-line description (collapsed by default)</div>
+      <Accordion defaultOpen={-1} items={[
+        { title: "Sources", content: (
+          <div>
+            <SourceRow title="Snowflake New Engineer Onboarding" href="#" platform="Confluence" description="Step-by-step setup guide covering warehouse access requests, role provisioning, and the standard SQL style guide new engineers should follow before their first PR." />
+            <SourceRow title="Advisory fee schedule Q3.pdf" href="#" platform="SharePoint" description="Internal policy doc, last updated August 2026." />
+            <SourceRow title="Desk owner org chart" href="#" platform="Workday" description="Mapping of desks to escalation contacts." />
+          </div>
+        ) },
+      ]} />
+    </div>
+
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

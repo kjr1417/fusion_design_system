@@ -17,30 +17,40 @@ const ChevronUp = () => (
   </svg>
 );
 
-export function Accordion({ items = [], defaultOpen = 0, variant = "boxed", allowMultiple = false, chevronPosition = "start", style }) {
+export function Accordion({ items = [], defaultOpen = 0, variant = "boxed", allowMultiple = false, chevronPosition = "start", bordered = true, nested = false, fillHeight = false, onOpenChange, style }) {
   const [open, setOpen] = useState(() => {
     if (allowMultiple) return Array.isArray(defaultOpen) ? defaultOpen : (defaultOpen === -1 ? [] : [defaultOpen]);
     return defaultOpen;
   });
   const isOpen = (i) => (allowMultiple ? open.includes(i) : open === i);
   const toggle = (i) => {
-    if (allowMultiple) setOpen((o) => (o.includes(i) ? o.filter((x) => x !== i) : [...o, i]));
-    else setOpen(open === i ? -1 : i);
+    if (allowMultiple) setOpen((o) => {
+      const next = o.includes(i) ? o.filter((x) => x !== i) : [...o, i];
+      onOpenChange && onOpenChange(next);
+      return next;
+    });
+    else setOpen((o) => {
+      const next = o === i ? -1 : i;
+      onOpenChange && onOpenChange(next);
+      return next;
+    });
   };
   const boxed = variant === "boxed";
   const chevronEnd = chevronPosition === "end";
   const contentIndent = chevronEnd ? "var(--salt-spacing-200)" : "calc(var(--salt-spacing-200) + 12px)";
   return (
-    <div style={style}>
+    <div style={{ ...(fillHeight ? { display: "flex", flexDirection: "column", minHeight: 0 } : {}), ...style }}>
       {items.map((it, i) => {
         const collapsible = it.content != null && it.collapsible !== false;
         const errored = it.hasError && !isOpen(i);
+        const stretch = fillHeight && isOpen(i);
         return (
         <div key={i} style={{
-          borderTop: errored ? "1px solid var(--salt-palette-negative)" : "1px solid var(--salt-color-gray-200)",
+          borderTop: errored ? "1px solid var(--salt-palette-negative)" : (bordered && !(nested && i === 0) ? "1px solid var(--salt-color-gray-200)" : "none"),
           borderRight: "none", borderLeft: "none",
-          borderBottom: !boxed && i === items.length - 1 ? "1px solid var(--salt-color-gray-200)" : "none",
+          borderBottom: !boxed && i === items.length - 1 && bordered ? "1px solid var(--salt-color-gray-200)" : "none",
           background: errored ? "var(--salt-palette-negative-weakest)" : undefined,
+          ...(stretch ? { display: "flex", flexDirection: "column", minHeight: 0, flex: "1 1 auto", overflow: "hidden" } : {}),
         }}>
           <button
             onClick={() => { if (collapsible) toggle(i); it.onHeaderClick && it.onHeaderClick(); }}
@@ -48,7 +58,7 @@ export function Accordion({ items = [], defaultOpen = 0, variant = "boxed", allo
             aria-invalid={it.hasError || undefined}
             style={{
               all: "unset", cursor: collapsible ? "pointer" : "default", width: "100%", boxSizing: "border-box",
-              minHeight: 36,
+              minHeight: 36, flexShrink: 0,
               display: "flex", gap: "var(--salt-spacing-100)", alignItems: "center",
               justifyContent: chevronEnd ? "space-between" : "flex-start",
               padding: "var(--salt-spacing-50) var(--salt-spacing-100)",
@@ -71,6 +81,7 @@ export function Accordion({ items = [], defaultOpen = 0, variant = "boxed", allo
               paddingLeft: contentIndent,
               paddingRight: "var(--salt-spacing-100)",
               color: "var(--salt-content-secondary-foreground)", fontSize: "var(--salt-text-fontSize)",
+              ...(stretch ? { flex: "1 1 auto", minHeight: 0, overflowY: "auto" } : {}),
               ...it.contentStyle,
             }}>
               {it.content}

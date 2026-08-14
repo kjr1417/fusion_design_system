@@ -1,6 +1,8 @@
 import React from "react";
 
 const STYLES = {
+  display1: { fontFamily: "var(--salt-text-display1-fontFamily)", fontWeight: "var(--salt-text-display1-fontWeight)", fontSize: "var(--salt-text-display1-fontSize)", lineHeight: "var(--salt-text-display1-lineHeight)" },
+  display2: { fontFamily: "var(--salt-text-display2-fontFamily)", fontWeight: "var(--salt-text-display2-fontWeight)", fontSize: "var(--salt-text-display2-fontSize)", lineHeight: "var(--salt-text-display2-lineHeight)" },
   h1: { fontFamily: "var(--salt-text-h1-fontFamily)", fontWeight: "var(--salt-text-h1-fontWeight)", fontSize: "var(--salt-text-h1-fontSize)", lineHeight: "var(--salt-text-h1-lineHeight)" },
   h2: { fontFamily: "var(--salt-text-h2-fontFamily)", fontWeight: "var(--salt-text-h2-fontWeight)", fontSize: "var(--salt-text-h2-fontSize)", lineHeight: "var(--salt-text-h2-lineHeight)" },
   h3: { fontFamily: "var(--salt-text-h3-fontFamily)", fontWeight: "var(--salt-text-h3-fontWeight)", fontSize: "var(--salt-text-h3-fontSize)", lineHeight: "var(--salt-text-h3-lineHeight)" },
@@ -8,7 +10,7 @@ const STYLES = {
   body: { fontFamily: "var(--salt-text-fontFamily)", fontWeight: "var(--salt-text-fontWeight)", fontSize: "var(--salt-text-fontSize)", lineHeight: "var(--salt-text-lineHeight)" },
   label: { fontFamily: "var(--salt-text-label-fontFamily)", fontWeight: "var(--salt-text-label-fontWeight)", fontSize: "var(--salt-text-label-fontSize)", lineHeight: "var(--salt-text-label-lineHeight)" },
 };
-const TAG = { h1: "h1", h2: "h2", h3: "h3", h4: "h4", body: "p", label: "span" };
+const TAG = { display1: "h1", display2: "h1", h1: "h1", h2: "h2", h3: "h3", h4: "h4", body: "p", label: "span" };
 const COLOR = {
   primary: "var(--salt-content-primary-foreground)",
   secondary: "var(--salt-content-secondary-foreground)",
@@ -27,3 +29,5 @@ export const H1 = (p) => <Text variant="h1" {...p} />;
 export const H2 = (p) => <Text variant="h2" {...p} />;
 export const H3 = (p) => <Text variant="h3" {...p} />;
 export const H4 = (p) => <Text variant="h4" {...p} />;
+export const Display1 = (p) => <Text variant="display1" {...p} />;
+export const Display2 = (p) => <Text variant="display2" {...p} />;

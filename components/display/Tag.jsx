@@ -5,14 +5,15 @@ const CATEGORY = {
   positive: "saltTag-category-2",
   negative: "saltTag-category-3",
   neutral: "saltTag-category-4",
+  file: "saltTag-category-15",
 };
 
-export function Tag({ children, color = "neutral", variant = "primary", bordered = false }) {
+export function Tag({ children, color = "neutral", variant = "primary", bordered = false, style }) {
   const cls = [
     "saltTag",
     `saltTag-${variant}`,
     bordered ? "saltTag-bordered" : "",
     CATEGORY[color] || CATEGORY.neutral,
   ].filter(Boolean).join(" ");
-  return <span className={cls}>{children}</span>;
+  return <span className={cls} style={style}>{children}</span>;
 }
