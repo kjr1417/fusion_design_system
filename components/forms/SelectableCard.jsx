@@ -49,19 +49,20 @@ export function SelectableCard({
         ...style,
       }}
     >
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "var(--salt-spacing-50)" }}>
-        {icon && <span style={{ color: "var(--salt-palette-accent)", flex: "none" }}>{icon}</span>}
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "var(--salt-spacing-100)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-75)", minWidth: 0 }}>
+          {icon && <span style={{ color: "var(--salt-palette-accent)", flex: "none", display: "inline-flex" }}>{icon}</span>}
+          <span style={{ fontFamily: "var(--salt-text-fontFamily)", fontWeight: "var(--salt-text-fontWeight-strong)", fontSize: "var(--salt-text-fontSize)", color: "var(--salt-content-primary-foreground)", minWidth: 0 }}>{title}</span>
+        </div>
         <span style={{
           flex: "none", width: 16, height: 16, borderRadius: multiple ? "var(--salt-palette-corner-weak)" : "50%",
           border: "1.5px solid " + (selected ? "var(--salt-palette-accent)" : "var(--salt-color-gray-400)"),
           background: selected ? "var(--salt-palette-accent)" : "transparent",
           display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--salt-color-white)",
-          marginLeft: "auto",
         }}>
           {selected && <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 6.2 5 8.7l4.5-5"></path></svg>}
         </span>
       </div>
-      <span style={{ fontFamily: "var(--salt-text-fontFamily)", fontWeight: "var(--salt-text-fontWeight-strong)", fontSize: "var(--salt-text-fontSize)", color: "var(--salt-content-primary-foreground)" }}>{title}</span>
       {description && <span style={{ fontSize: "var(--salt-text-label-fontSize)", lineHeight: "var(--salt-text-label-lineHeight)", color: "var(--salt-content-secondary-foreground)" }}>{description}</span>}
     </div>
   );

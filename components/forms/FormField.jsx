@@ -33,8 +33,8 @@ export function FormField({
         <div style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-75)" }}>
           <label htmlFor={isSingleElement ? fieldId : undefined} style={{
             display: "block",
-            flex: "0 1 auto",
-            minWidth: 0,
+            flex: toggletip ? "0 1 auto" : "0 0 auto",
+            minWidth: toggletip ? 0 : "max-content",
             whiteSpace: "normal",
             overflowWrap: "break-word",
             fontFamily: "var(--salt-text-label-fontFamily)",
