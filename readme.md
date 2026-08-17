@@ -79,7 +79,7 @@ Location: `components/<group>/<Name>.jsx` + `.d.ts` + `.prompt.md`. 120+ compone
 - **Data** — `FileResultsGrid`, `StaticList`, `StaticListGroup`
 - **Navigation** — `Breadcrumbs`, `Stepper`, `NavigationItem`, `ProgressTracker`, `GlobalNav`, `AppHeader`, `PageHeader`, `SubHeader`, `VerticalNavigation`, `NotificationCenter`, `UserPanel`
 - **Overlays** — `Dialog`, `Drawer`, `SidePanel`, `SidePanelHeader`, `Tooltip`
-- **Chat** — `ChatHeader`, `ChatHistoryPanel`, `ArtifactsPanel`, `ArtifactCard`, `AnswerComparison`, `PromptInput`, `PromptInputPlanCard`, `ConversationArea`, `AttachmentTile`, `AttachmentTileGroup`
+- **Chat** — `ChatHeader`, `ChatHistoryPanel`, `ArtifactsPanel`, `ArtifactCard`, `InlineFormCard`, `AnswerComparison`, `PromptInput`, `PromptInputPlanCard`, `ConversationArea`, `AttachmentTile`, `AttachmentTileGroup`
 
 `Button`, `IconButton`, `Link`, `Pill`, `Card`, `Divider`, `Tabs`, `Switch`, `Checkbox`, `RadioButton`, `ToggleButtonGroup`, `Tag`, `Banner`, `Table`, `Menu` render using CSS classes copied **verbatim** from a real salt-ds CSS extraction (`salt-components.css`) — not approximated. The rest (`Input`, `Badge`, `Panel`, `FormField`, `Avatar`, `Accordion`, `List`, `LinkCard`, `Dropdown`, `Slider`, `Textarea`, `Spinner`, `ProgressBar`, `StatusBadge`, `Breadcrumbs`, `Stepper`, `Dialog`, `Drawer`, `Tooltip`, `OmniInput`, `ContentCard`, `Carousel`) are hand-authored the same token-driven way, since no verbatim source was available for them. A few Salt families with no counterpart yet (ComboBox, Popover, DatePicker, FileDropZone, Tree, Toolbar) can be added on request.
 
