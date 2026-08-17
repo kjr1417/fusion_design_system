@@ -31,8 +31,10 @@ export interface AccordionItem {
 
 export interface AccordionProps {
   items: AccordionItem[];
-  /** Index of the item open by default. In allowMultiple mode also accepts an array of indices to open several at once. -1 / [] opens none. */
+  /** Index of the item open by default. In allowMultiple mode also accepts an array of indices to open several at once. -1 / [] opens none. Ignored once `open` is passed. */
   defaultOpen?: number | number[];
+  /** Controlled open index (or array of indices in allowMultiple mode). Omit to let the Accordion track it internally from `defaultOpen`. */
+  open?: number | number[];
   variant?: "boxed" | "inline";
   allowMultiple?: boolean;
   /** Chevron placement in the header row. "start" (default) matches Salt; "end" right-aligns it so a leading icon + label can sit flush left. */

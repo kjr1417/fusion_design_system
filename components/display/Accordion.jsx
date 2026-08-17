@@ -17,23 +17,23 @@ const ChevronUp = () => (
   </svg>
 );
 
-export function Accordion({ items = [], defaultOpen = 0, variant = "boxed", allowMultiple = false, chevronPosition = "start", bordered = true, nested = false, fillHeight = false, onOpenChange, style }) {
-  const [open, setOpen] = useState(() => {
+export function Accordion({ items = [], defaultOpen = 0, open: openProp, variant = "boxed", allowMultiple = false, chevronPosition = "start", bordered = true, nested = false, fillHeight = false, onOpenChange, style }) {
+  const [openState, setOpenState] = useState(() => {
     if (allowMultiple) return Array.isArray(defaultOpen) ? defaultOpen : (defaultOpen === -1 ? [] : [defaultOpen]);
     return defaultOpen;
   });
+  const open = openProp !== undefined ? openProp : openState;
   const isOpen = (i) => (allowMultiple ? open.includes(i) : open === i);
   const toggle = (i) => {
-    if (allowMultiple) setOpen((o) => {
-      const next = o.includes(i) ? o.filter((x) => x !== i) : [...o, i];
+    if (allowMultiple) {
+      const next = open.includes(i) ? open.filter((x) => x !== i) : [...open, i];
+      if (openProp === undefined) setOpenState(next);
       onOpenChange && onOpenChange(next);
-      return next;
-    });
-    else setOpen((o) => {
-      const next = o === i ? -1 : i;
+    } else {
+      const next = open === i ? -1 : i;
+      if (openProp === undefined) setOpenState(next);
       onOpenChange && onOpenChange(next);
-      return next;
-    });
+    }
   };
   const boxed = variant === "boxed";
   const chevronEnd = chevronPosition === "end";
