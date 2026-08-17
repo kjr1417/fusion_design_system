@@ -7,7 +7,7 @@ export interface ResponseListItem {
 }
 export interface ResponseBlockSpec {
   /** h1-h4 use fixed 32/42, 24/32, 18/24, 14/18 px sizes with 8px top+bottom (--salt-spacing-50); every other type uses 16px bottom (--salt-spacing-100) only. Inline text (`text`) supports **bold**, *italic*, ~~strike~~, `code`, [anchor](url), and bare https:// URLs. */
-  type: "h1" | "h2" | "h3" | "h4" | "body" | "blockquote" | "ol" | "ul" | "disclaimer" | "files" | "status" | "code" | "image" | "artifact" | "comparison" | "expandable";
+  type: "h1" | "h2" | "h3" | "h4" | "body" | "blockquote" | "ol" | "ul" | "disclaimer" | "files" | "status" | "code" | "image" | "artifact" | "form" | "comparison" | "expandable";
   /** h1-h4, body, blockquote, disclaimer. */
   text?: string;
   /** status only — info/success/warning/error, rendered via StatusMessage. `text` becomes its body line. */
@@ -26,17 +26,21 @@ export interface ResponseBlockSpec {
   imageSrc?: string;
   /** image only — alt text / Expand dialog title. */
   imageAlt?: string;
-  /** artifact only — rendered via ArtifactCard. */
+  /** artifact only — rendered via ArtifactCard (bordered, standalone). */
   artifact?: import("./ArtifactCard.d.ts").ArtifactCardProps;
+  /** form only — rendered via InlineFormCard. */
+  form?: import("./InlineFormCard.d.ts").InlineFormCardProps;
   /** comparison only — two (or more) candidate responses rendered via AnswerComparison. */
   comparisonOptions?: import("./AnswerComparison.d.ts").AnswerComparisonOption[];
-  /** expandable only — always-shown summary blocks (e.g. an AI overview). */
+  /** expandable only — always-shown summary blocks, under a sparkle-icon "Overview" eyebrow (label configurable via `summaryLabel`) matching the Test Mode accordion's AI-generated summary styling. */
   summary?: ResponseBlockSpec[];
+  /** expandable only — default "Overview". */
+  summaryLabel?: string;
   /** expandable only — additional blocks revealed by the "View more" ghost button. */
   details?: ResponseBlockSpec[];
-  /** expandable only — default "View more". */
+  /** expandable only — default "View more" (with a leading expand-all icon). */
   expandLabel?: string;
-  /** expandable only — default "View less". */
+  /** expandable only — default "View less" (with a leading collapse-all icon). */
   collapseLabel?: string;
   /** body only — attributes this paragraph to a source: an inline Tag (the platform name) appended after the text. Hover reveals a tear-out icon + tooltip (source title + description); click opens `url` in a new tab. */
   source?: { platform: string; title: string; description?: string; url: string };
@@ -61,8 +65,11 @@ export interface ConversationMessage {
   time?: string;
   /** Status rows only — shows a check instead of the pending spinner. */
   done?: boolean;
-  /** Typing rows only — label shown after the three dots, e.g. "Loading status content". Static or updated over time by the host for a dynamic status. */
+  /** Typing rows only — static label shown after the three dots. Ignored when `labels` is set. */
   label?: string;
+  /** Typing rows only — cycles through these after the three dots (every `labelIntervalMs`, default 2200) instead of one static line, so the indicator narrates what's actually happening. */
+  labels?: string[];
+  labelIntervalMs?: number;
   /** User messages only — renders as an AttachmentTileGroup carousel above the bubble, or, when it's a single photo, a large aspect-ratio-preserved preview (max-height 320px, max-width 100% of the bubble column). */
   attachments?: AttachmentGroupItem[];
   /** User messages only — a Date, ISO string, or epoch ms. Shown (Mmm DD) in the hover toolbar, with the full Mmm DD, YYYY HH:MM:SS AM/PM timestamp as its tooltip. */
@@ -73,8 +80,8 @@ export interface ConversationMessage {
   activeVersion?: number;
   /** Any role — marks this message as having occurred during a Test Mode session. Contiguous testMode messages are grouped into a single collapsed "Test Mode — N messages" Accordion. */
   testMode?: boolean;
-  /** Agent messages only — current feedback state, "up"/"down"/undefined. Drives the Helpful/Not Helpful button highlight in the left-aligned action strip. */
-  feedback?: "up" | "down";
+  /** Any testMode message in a run — the AI-generated summary shown when the run's Accordion is first expanded, before the user clicks "View Full Conversation". If none of a run's messages set this, a generic message-count fallback is used. */
+  testSummary?: string;
   /** Agent messages only — current feedback state, "up"/"down"/undefined. Drives the Helpful/Not Helpful button highlight in the left-aligned action strip. */
   feedback?: "up" | "down";
 }

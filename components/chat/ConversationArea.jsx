@@ -5,6 +5,7 @@ import { FileResultsGrid } from "../data/FileResultsGrid.jsx";
 import { CodeBlock } from "../display/CodeBlock.jsx";
 import { ImagePreview } from "../display/ImagePreview.jsx";
 import { ArtifactCard } from "./ArtifactCard.jsx";
+import { InlineFormCard } from "./InlineFormCard.jsx";
 import { AnswerComparison } from "./AnswerComparison.jsx";
 
 const CheckIcon = () => (
@@ -146,9 +147,13 @@ function ExpandableBlock({ block, onSelectComparisonOption }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div>
+      <div style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-75)", fontSize: 11, fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase", color: "var(--salt-content-secondary-foreground)", marginBottom: "var(--salt-spacing-75)" }}>
+        <SparkleIcon size={12} />{block.summaryLabel || "Overview"}
+      </div>
       {block.summary && <ResponseContent blocks={block.summary} onSelectComparisonOption={onSelectComparisonOption} />}
       {expanded && block.details && <ResponseContent blocks={block.details} onSelectComparisonOption={onSelectComparisonOption} />}
-      <Button appearance="transparent" sentiment="accented" onClick={() => setExpanded((v) => !v)} style={{ paddingLeft: 0, paddingRight: 0 }}>
+      <Button appearance="transparent" sentiment="accented" onClick={() => setExpanded((v) => !v)}>
+        {expanded ? <CollapseAllIcon size={12} /> : <ExpandAllIcon size={12} />}
         {expanded ? (block.collapseLabel || "View less") : (block.expandLabel || "View more")}
       </Button>
     </div>
@@ -201,7 +206,8 @@ function ResponseBlock({ block, onSelectComparisonOption, allImageBlocks }) {
       const idx = (allImageBlocks || []).indexOf(block);
       return <ImagePreview src={block.imageSrc} alt={block.imageAlt} images={images} index={idx} />;
     }
-    case "artifact": return <ArtifactCard {...block.artifact} />;
+    case "artifact": return <ArtifactCard bordered {...block.artifact} />;
+    case "form": return <InlineFormCard {...block.form} />;
     case "comparison": return <AnswerComparison options={block.comparisonOptions} onSelect={(i) => onSelectComparisonOption && onSelectComparisonOption(block, i)} renderBlocks={(blocks) => <ResponseContent blocks={blocks} onSelectComparisonOption={onSelectComparisonOption} />} />;
     case "expandable": return <ExpandableBlock block={block} onSelectComparisonOption={onSelectComparisonOption} />;
     case "body": return <div style={{ fontSize: 14, lineHeight: "18px" }}>{parseInline(block.text)}{block.source && <> <InlineSourceTag source={block.source} /></>}</div>;
@@ -382,23 +388,56 @@ function MessageRow({ m, i, onCopyMessage, onSubmitEdit, onChangeVersion, onSele
       <div style={{ fontSize: 12, color: "var(--salt-content-secondary-foreground)", marginBottom: "var(--salt-spacing-50)" }}>{m.name}</div>
       <div style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-100)" }}>
         <div className="ca-typing"><span></span><span></span><span></span></div>
-        {m.label && <span style={{ fontSize: 12, color: "var(--salt-content-secondary-foreground)" }}>{m.label}</span>}
+        <TypingLabel label={m.label} labels={m.labels} intervalMs={m.labelIntervalMs} />
       </div>
     </div>
   );
   return null;
 }
 
+function TypingLabel({ label, labels, intervalMs = 2200 }) {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (!labels || labels.length < 2) return;
+    const id = setInterval(() => setI((x) => (x + 1) % labels.length), intervalMs);
+    return () => clearInterval(id);
+  }, [labels, intervalMs]);
+  const text = labels && labels.length ? labels[i] : label;
+  if (!text) return null;
+  return <span key={labels ? i : text} className="ca-typing-label" style={{ fontSize: 12, color: "var(--salt-content-secondary-foreground)" }}>{text}</span>;
+}
+
 const TEST_GRADIENT = "linear-gradient(135deg, var(--salt-color-blue-500), var(--salt-color-purple-500), var(--salt-color-teal-500))";
+const SparkleIcon = ({ size = 14 }) => (
+  <svg viewBox="0 0 12 12" width={size} height={size} fill="var(--salt-palette-accent)" aria-hidden="true" style={{ flexShrink: 0 }}>
+    <path d="M8.8182 1.81818L9.50002 0L10.1818 1.81818L12 2.50006L10.1818 3.18187L9.49998 5L8.81818 3.18176L7 2.49994L8.8182 1.81818Z" />
+    <path fillRule="evenodd" clipRule="evenodd" d="M5.5 1L7 5L11 6.5L7 8L5.5 12L4 8L0 6.5L4 5L5.5 1ZM6.22327 5.77673L8.152 6.5L6.22327 7.22327L5.5 9.152L4.77673 7.22327L2.848 6.5L4.77673 5.77673L5.5 3.848L6.22327 5.77673Z" />
+  </svg>
+);
+const ExpandAllIcon = ({ size = 14 }) => (
+  <svg viewBox="0 0 12 12" width={size} height={size} fill="currentColor" aria-hidden="true" style={{ flexShrink: 0 }}>
+    <path d="M6 0L2 4L3 5L6 2L9 5L10 4L6 0Z" />
+    <path d="M6 12L2 8L3 7L6 10L9 7L10 8L6 12Z" />
+  </svg>
+);
+const CollapseAllIcon = ({ size = 14 }) => (
+  <svg viewBox="0 0 12 12" width={size} height={size} fill="currentColor" aria-hidden="true" style={{ flexShrink: 0 }}>
+    <path d="M6 6.5L2 10.5L3 11.5L6 8.5L9 11.5L10 10.5L6 6.5Z" />
+    <path d="M6 5.5L2 1.5L3 0.5L6 3.5L9 0.5L10 1.5L6 5.5Z" />
+  </svg>
+);
 
 function TestModeGroup({ messages: groupMessages, startIndex, rowProps, viewportHeight }) {
-  const { Accordion } = window.FusionDesignSystem_6db751;
-  const [isOpen, setIsOpen] = React.useState(false);
+  const { Accordion, Button } = window.FusionDesignSystem_6db751;
+  const [openIndex, setOpenIndex] = React.useState(-1);
+  const [showSummary, setShowSummary] = React.useState(true);
   const [boxHeight, setBoxHeight] = React.useState(null);
   const [released, setReleased] = React.useState(false);
   const rootRef = React.useRef(null);
   const rafRef = React.useRef(null);
   const count = groupMessages.length;
+  const isOpen = openIndex !== -1;
+  const summary = groupMessages.find((m) => m.testSummary)?.testSummary || `${count} message${count === 1 ? "" : "s"} exchanged while testing this prompt.`;
 
   React.useEffect(() => {
     if (!isOpen) { setBoxHeight(null); setReleased(false); return; }
@@ -428,23 +467,35 @@ function TestModeGroup({ messages: groupMessages, startIndex, rowProps, viewport
     return () => { sp.removeEventListener("scroll", onScroll); if (rafRef.current) cancelAnimationFrame(rafRef.current); };
   }, [isOpen, viewportHeight]);
 
+  const toggleView = (e) => {
+    e.stopPropagation();
+    setShowSummary((s) => !s);
+    setOpenIndex(0);
+  };
+
   const collapsedFill = "linear-gradient(135deg, color-mix(in srgb, var(--salt-color-blue-500) 15%, transparent), color-mix(in srgb, var(--salt-color-purple-500) 15%, transparent), color-mix(in srgb, var(--salt-color-teal-500) 15%, transparent)), var(--salt-palette-background-secondary)";
   const effectiveMax = isOpen ? (boxHeight ?? viewportHeight ?? undefined) : undefined;
   return (
     <div ref={rootRef} style={{ paddingLeft: "var(--salt-spacing-200)", paddingRight: "var(--salt-spacing-200)", boxSizing: "border-box", position: (isOpen && !released) ? "sticky" : "static", top: 0, zIndex: 2, display: "flex", flexDirection: "column", minHeight: 0, maxHeight: effectiveMax }}>
       <div style={{ padding: 2, borderRadius: "calc(var(--salt-palette-corner-soft, 24px) + 2px)", background: TEST_GRADIENT, boxSizing: "border-box", display: "flex", flexDirection: "column", minHeight: 0, overflow: "hidden" }}>
-        <div style={{ background: isOpen ? "var(--salt-palette-background-secondary)" : collapsedFill, borderRadius: "var(--salt-palette-corner-soft, 24px)", overflow: "hidden", boxSizing: "border-box", padding: 4, display: "flex", flexDirection: "column", minHeight: 0 }}>
+        <div style={{ background: isOpen ? "var(--salt-palette-background-secondary)" : collapsedFill, borderRadius: "var(--salt-palette-corner-soft, 24px)", overflow: "hidden", boxSizing: "border-box", padding: 4, display: "flex", flexDirection: "column", minHeight: 0, position: "relative" }}>
           <Accordion
             variant="inline"
             bordered={false}
             fillHeight
             style={{ flex: "1 1 auto", minHeight: 0 }}
-            onOpenChange={(v) => setIsOpen(v !== -1)}
-            defaultOpen={-1}
+            open={openIndex}
+            onOpenChange={(v) => setOpenIndex(v)}
             items={[{
               title: `Test Mode — ${count} message${count === 1 ? "" : "s"}`,
-              contentStyle: { paddingLeft: 0, paddingRight: 0, paddingTop: 0 },
-              content: (
+              headerStyle: { paddingRight: 184 },
+              contentStyle: { paddingLeft: 0, paddingRight: 0 },
+              content: showSummary ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-75)", paddingLeft: "var(--salt-spacing-200)", paddingRight: "var(--salt-spacing-200)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-75)", fontSize: 11, fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase", color: "var(--salt-content-secondary-foreground)" }}><SparkleIcon size={12} />AI-generated Summary</div>
+                  <div style={{ fontSize: 14, lineHeight: "18px", color: "var(--salt-content-primary-foreground)" }}>{summary}</div>
+                </div>
+              ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-450)" }}>
                   {groupMessages.map((m, gi) => (
                     <MessageRow key={gi} m={m} i={startIndex + gi} {...rowProps} agentPad={{}} />
@@ -453,6 +504,11 @@ function TestModeGroup({ messages: groupMessages, startIndex, rowProps, viewport
               ),
             }]}
           />
+          <div style={{ position: "absolute", top: 0, right: "var(--salt-spacing-150)", height: 44, display: "flex", alignItems: "center", zIndex: 1 }}>
+            <Button appearance="transparent" sentiment="accented" onClick={toggleView} style={{ whiteSpace: "nowrap" }}>
+              {showSummary ? "View Full Conversation" : "View AI-generated Summary"}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
@@ -498,12 +554,14 @@ function groupTestModeRuns(messages) {
  * warning/error — for inline status lines inside a response), and
  * code (renders a CodeBlock — plain code, or a diff view via
  * `diffLines`), image (renders an ImagePreview — hover Copy/Expand
- * toolbar, Expand opens a Dialog), and artifact (renders an
- * ArtifactCard — eyebrow, title, description, metadata StaticList, and
- * a right-aligned action button; identical layout to ArtifactsPanel's
- * Library rows), and comparison (renders an AnswerComparison — two or
- * more candidate responses side by side, each with a "Use this"
- * button; wire `onSelectComparisonOption`), and expandable (always
+ * toolbar, Expand opens a Dialog), artifact (renders a bordered
+ * ArtifactCard — eyebrow, title, description, metadata StaticListGroup, and
+ * right-aligned Download/View actions; same anatomy as ArtifactsPanel's
+ * Library rows, minus the border), form (renders an InlineFormCard — a
+ * chat-native, possibly multi-step, form with a ComboBoxMetadataOverlay
+ * field, a FileUpload pattern, and Skip/Next actions), and comparison (renders an AnswerComparison — an
+ * even split of one Card per option, each with a "Choose Option A"-style
+ * button; collapses to Tabs on narrow widths; wire `onSelectComparisonOption`), and expandable (always
  * shows `summary` blocks — e.g. an AI overview — plus a "View more"/
  * "View less" ghost button revealing `details` blocks) — every block's inline text supports **bold**, *italic*,
  * ~~strike~~, `code` (marble/#F5F7F8 background, 8px/spacing-50 left+
@@ -529,13 +587,20 @@ function groupTestModeRuns(messages) {
  * (date, Copy, Edit sit at the right); `onChangeVersion(message,
  * newVersion, index)` fires on either arrow — swap in that version's
  * text/attachments/trailing responses.
- * Pass `label` on a "typing" message to show text after the three
- * dots (e.g. "Loading status content") — static or updated by the
- * host as the underlying work progresses.
+ * Pass `label` on a "typing" message for static text after the three
+ * dots, or `labels` (an array) to cycle through several — surfacing what's
+ * actually happening (e.g. "Reading the mailbox export…", "Cross-
+ * referencing desk leads…") instead of one static line; cycles every
+ * `labelIntervalMs` (default 2200ms) with a small fade-in per line.
  * Pass `testMode: true` on a run of contiguous messages to group them
  * into a single collapsed "Test Mode — N messages" Accordion (gradient-
  * bordered, matching PromptInput's Test Mode styling) instead of
- * rendering them inline.
+ * rendering them inline. On first expansion it shows an AI-generated
+ * summary (from `testSummary` on any message in the run, or a generic
+ * fallback) rather than the raw messages; a "View Full Conversation"
+ * link — always visible in the header, collapsed or expanded — swaps to
+ * the full message list and back ("View AI-generated Summary"),
+ * expanding the accordion if it was collapsed.
  * Agent messages get their own hover-only, left-aligned action strip
  * (mirroring the user bubble's toolbar): Retry, Helpful/Not Helpful
  * (highlighted per `m.feedback`), Copy, Download, and a date stamp
@@ -546,6 +611,7 @@ function groupTestModeRuns(messages) {
  * StatusMessage, Accordion, and ../display/CodeBlock.jsx for "code" blocks,
  * ../display/ImagePreview.jsx (and its Dialog dependency) for "image" blocks,
  * ../chat/ArtifactCard.jsx for "artifact" blocks,
+ * ../chat/InlineFormCard.jsx for "form" blocks,
  * ../chat/AnswerComparison.jsx for "comparison" blocks,
  * Button, Tag, Textarea, Table family), ./ConversationArea.css
  * (typing-dot keyframes), and ./FileResultsGrid.css (for "files"

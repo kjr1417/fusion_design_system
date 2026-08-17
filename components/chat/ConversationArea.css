@@ -3,3 +3,5 @@
 .ca-typing span{width:7px;height:7px;border-radius:999px;background:var(--salt-content-secondary-foreground);animation:ca-typing-dot 1.2s infinite}
 .ca-typing span:nth-child(2){animation-delay:.2s}
 .ca-typing span:nth-child(3){animation-delay:.4s}
+@keyframes ca-typing-label-fade{0%{opacity:0;transform:translateY(2px)}100%{opacity:1;transform:translateY(0)}}
+.ca-typing-label{animation:ca-typing-label-fade .25s ease}
