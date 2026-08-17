@@ -524,6 +524,11 @@ function groupTestModeRuns(messages) {
       const run = [];
       while (i < messages.length && messages[i].testMode) { run.push(messages[i]); i++; }
       groups.push({ type: "test", messages: run, startIndex: start });
+    } else if (messages[i].role === "status") {
+      const start = i;
+      const run = [];
+      while (i < messages.length && messages[i].role === "status" && !messages[i].testMode) { run.push(messages[i]); i++; }
+      groups.push({ type: "status", messages: run, startIndex: start });
     } else {
       groups.push({ type: "single", message: messages[i], index: i });
       i++;
@@ -592,6 +597,9 @@ function groupTestModeRuns(messages) {
  * actually happening (e.g. "Reading the mailbox export…", "Cross-
  * referencing desk leads…") instead of one static line; cycles every
  * `labelIntervalMs` (default 2200ms) with a small fade-in per line.
+ * Consecutive status rows (a build-progress checklist, not separate
+ * prompts) render tightly grouped with a small internal gap instead of
+ * the normal inter-message spacing.
  * Pass `testMode: true` on a run of contiguous messages to group them
  * into a single collapsed "Test Mode — N messages" Accordion (gradient-
  * bordered, matching PromptInput's Test Mode styling) instead of
@@ -644,6 +652,11 @@ export function ConversationArea({ messages = [], emptyState, onCopyMessage, onS
         {messages.length === 0 && emptyState}
         {groups.map((g, gi) => {
           if (g.type === "test") return <TestModeGroup key={gi} messages={g.messages} startIndex={g.startIndex} rowProps={rowProps} viewportHeight={viewportHeight} />;
+          if (g.type === "status") return (
+            <div key={gi} style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-100)" }}>
+              {g.messages.map((m, gj) => <MessageRow key={gj} m={m} i={g.startIndex + gj} {...rowProps} agentPad={agentPad} />)}
+            </div>
+          );
           return <MessageRow key={gi} m={g.message} i={g.index} {...rowProps} agentPad={agentPad} />;
         })}
       </div>
