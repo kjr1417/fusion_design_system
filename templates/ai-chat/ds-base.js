@@ -3,7 +3,7 @@
 // the project root, '../_ds/<folder>' one level down) — one line to edit.
 (() => {
   const base = '../..';
-  for (const p of ["styles.css","salt-components.css"]) {
+  for (const p of ["styles.css","salt-components.css","components/chat/ConversationArea.css","components/data/FileResultsGrid.css","components/forms/FileUpload.css"]) {
     const l = document.createElement('link');
     l.rel = 'stylesheet'; l.href = base + '/' + p;
     document.head.appendChild(l);

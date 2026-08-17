@@ -7,192 +7,100 @@
 </head>
 <body>
 <x-dc>
-<!-- @template name="AI Chat" description="Full Fusion conversational surface: chat-history sidebar, streaming agent replies, clarifying-question cards with radio options and free-text, live status/tool-use updates, typing/loading states, and an OmniInput composer — reusing the dashboard header + sidebar shell." -->
+<!-- @template name="AI Chat" description="Full Fusion conversational surface built from the real Chat componentry: ChatHistoryPanel sidebar, ChatHeader, ConversationArea (rich response blocks — code, diffs, images, artifacts, comparisons, inline forms, expandables, Test Mode), a clarifying-question card, PromptInput composer, and an ArtifactsPanel library." -->
 <helmet>
 <script src="./ds-base.js"></script>
 <style>
-  *{box-sizing:border-box}
-  a{color:var(--salt-content-accent-foreground);text-decoration:none}
-  a:hover{color:var(--salt-color-blue-700)}
-  .chat-header-search .saltInput{width:100%!important}
-  .chat-side .saltButton{width:100%;justify-content:center;font-size:16px;font-weight:700}
-  .chat-item{display:flex;align-items:center;width:100%;text-align:left;border:none;background:transparent;cursor:pointer;font-family:inherit;font-size:16px;font-weight:600;color:var(--salt-content-primary-foreground);padding:12px 16px;border-radius:10px;position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .chat-item:hover{background:var(--salt-actionable-subtle-background-hover)}
-  .chat-item-active{background:color-mix(in srgb,var(--salt-palette-accent) 12%,transparent);font-weight:800}
-  .chat-item-active::before{content:"";position:absolute;left:3px;top:9px;bottom:9px;width:5px;border-radius:3px;background:var(--salt-palette-accent)}
-  .chat-scroll{flex:1;min-height:0;overflow-y:auto;padding:36px 24px}
-  .chat-col{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:26px}
-  .msg-user{align-self:flex-end;max-width:82%;background:var(--salt-color-gray-100);border-radius:18px;padding:14px 20px;font-size:17px;line-height:1.55;text-wrap:pretty}
-  .msg-agent{align-self:stretch;font-size:17px;line-height:1.65;text-wrap:pretty}
-  .msg-meta{font-size:14px;color:var(--salt-content-secondary-foreground);margin-bottom:8px}
-  .status-row{display:flex;align-items:center;gap:12px;font-size:16px;color:var(--salt-content-secondary-foreground)}
-  .status-row-done{color:var(--salt-content-primary-foreground)}
-  .chat-qcard{border:1px solid var(--salt-container-primary-borderColor);border-left:5px solid var(--salt-palette-accent);border-radius:18px;padding:28px 32px;box-shadow:var(--salt-overlayable-shadow);background:var(--salt-container-primary-background)}
-  .chat-opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;border:none;background:transparent;cursor:pointer;font-family:inherit;font-size:17px;color:var(--salt-content-primary-foreground);padding:11px 6px;border-radius:8px}
-  .chat-opt:hover{background:var(--salt-actionable-subtle-background-hover)}
-  .chat-radio{width:20px;height:20px;border-radius:999px;border:2px solid var(--salt-color-gray-400);flex-shrink:0}
-  .chat-opt:hover .chat-radio{border-color:var(--salt-palette-accent);box-shadow:inset 0 0 0 3px var(--salt-container-primary-background),inset 0 0 0 6px var(--salt-palette-accent)}
-  .chat-custom{width:100%;margin-top:14px;padding:14px 18px;border:1px solid var(--salt-color-gray-300);border-radius:12px;font-family:inherit;font-size:16px;background:var(--salt-container-primary-background);color:var(--salt-content-primary-foreground)}
-  .chat-custom::placeholder{color:var(--salt-content-secondary-foreground)}
-  .chat-custom:focus{outline:none;border-color:var(--salt-palette-accent)}
-  @keyframes chatdot{0%,60%,100%{opacity:.25;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
-  .typing{display:inline-flex;gap:5px;align-items:center;padding:4px 0}
-  .typing span{width:8px;height:8px;border-radius:999px;background:var(--salt-content-secondary-foreground);animation:chatdot 1.2s infinite}
-  .typing span:nth-child(2){animation-delay:.2s}
-  .typing span:nth-child(3){animation-delay:.4s}
-  .chat-composer .fusionOmni{max-width:820px}
+html,body{margin:0;overflow:hidden}
+*{box-sizing:border-box}
+a{color:var(--salt-content-accent-foreground);text-decoration:none}
+a:hover{color:var(--salt-color-blue-700)}
 </style>
 </helmet>
-<div class="salt-theme salt-density-low" style="min-height:100vh;height:100vh;background:var(--salt-palette-background-secondary);font-family:var(--salt-text-fontFamily);color:var(--salt-content-primary-foreground);display:flex;flex-direction:column">
-
-  <x-import component-from-global-scope="FusionDesignSystem_5ec875.GlobalNav" hint-size="100%,68px" style="flex-shrink:0"></x-import>
-
-  <div style="display:flex;flex:1;min-height:0">
-
-    <aside class="chat-side" style="width:280px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;padding:24px 20px;min-height:0">
-      <div style="margin-bottom:12px">
-        <x-import component-from-global-scope="FusionDesignSystem_5ec875.Button" appearance="bordered" sentiment="neutral" onClick="{{ newChat }}" hint-size="100%,44px"><span style="display:inline-flex;align-items:center;gap:8px">{{ plusIcon }} New Chat</span></x-import>
-      </div>
-      <div style="flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:4px">
-        <sc-for list="{{ chats }}" as="c" hint-placeholder-count="10">
-          <button class="chat-item {{ c.activeClass }}" onClick="{{ c.onClick }}">{{ c.title }}</button>
-        </sc-for>
-      </div>
-      <x-import component-from-global-scope="FusionDesignSystem_5ec875.IconButton" appearance="transparent" sentiment="neutral" aria-label="Collapse sidebar" hint-size="40px,40px">{{ collapseIcon }}</x-import>
-    </aside>
-
-    <main style="flex:1;min-width:0;display:flex;flex-direction:column;background:var(--salt-container-primary-background);border-top-left-radius:24px;box-shadow:0 0 24px rgba(16,24,32,.13);position:relative;z-index:2;min-height:0">
-
-      <div class="chat-scroll" ref="{{ msgRef }}">
-        <div class="chat-col">
-          <sc-for list="{{ view }}" as="m" hint-placeholder-count="3">
-
-            <sc-if value="{{ m.isUser }}" hint-placeholder-val="{{ true }}">
-              <div class="msg-user">{{ m.text }}</div>
-            </sc-if>
-
-            <sc-if value="{{ m.isAgent }}">
-              <div class="msg-agent"><div class="msg-meta">{{ m.name }} · {{ m.time }}</div><div>{{ m.text }}</div></div>
-            </sc-if>
-
-            <sc-if value="{{ m.isStatus }}">
-              <div class="status-row {{ m.doneClass }}">
-                <sc-if value="{{ m.pending }}"><x-import component-from-global-scope="FusionDesignSystem_5ec875.Spinner" size="{{ 16 }}" hint-size="16px,16px"></x-import></sc-if>
-                <sc-if value="{{ m.done }}"><span style="color:var(--salt-color-green-600);display:inline-flex">{{ m.icon }}</span></sc-if>
-                <span>{{ m.text }}</span>
-              </div>
-            </sc-if>
-
-            <sc-if value="{{ m.isTyping }}">
-              <div class="msg-agent"><div class="msg-meta">{{ agentName }}</div><div class="typing"><span></span><span></span><span></span></div></div>
-            </sc-if>
-
-            <sc-if value="{{ m.isQuestion }}">
-              <div class="chat-qcard">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
-                  <span style="font-size:14px;font-weight:700;color:var(--salt-content-secondary-foreground)">{{ m.stepLabel }}</span>
-                  <sc-if value="{{ m.canSkip }}"><a href="#" onClick="{{ m.onSkip }}" style="font-size:14px;font-weight:800;letter-spacing:.05em">SKIP</a></sc-if>
-                </div>
-                <h3 style="margin:0 0 16px;font-size:24px;font-weight:800;letter-spacing:-.01em">{{ m.title }}</h3>
-                <sc-if value="{{ m.answered }}">
-                  <div style="display:inline-flex;align-items:center;gap:8px;font-size:16px;color:var(--salt-content-secondary-foreground)">{{ m.checkIcon }}{{ m.chosen }}</div>
-                </sc-if>
-                <sc-if value="{{ m.open }}">
-                  <div style="display:flex;flex-direction:column;gap:2px">
-                    <sc-for list="{{ m.options }}" as="opt" hint-placeholder-count="4">
-                      <button class="chat-opt" onClick="{{ opt.onSelect }}"><span class="chat-radio"></span>{{ opt.label }}</button>
-                    </sc-for>
-                  </div>
-                  <input class="chat-custom" value="{{ custom }}" onInput="{{ onCustomInput }}" onKeyDown="{{ m.onCustomKey }}" placeholder="Or type your own answer…">
-                </sc-if>
-              </div>
-            </sc-if>
-
-          </sc-for>
-        </div>
-      </div>
-
-      <div class="chat-composer" style="border-top:1px solid var(--salt-separable-secondary-borderColor);padding:20px 24px;flex-shrink:0">
-        <div style="max-width:820px;margin:0 auto">
-          <x-import component-from-global-scope="FusionDesignSystem_5ec875.OmniInput" placeholders="{{ composerPlaceholders }}" modes="{{ composerModes }}" suggestions="{{ emptyArr }}" onSend="{{ onSend }}" hint-size="100%,150px" style="width:100%"></x-import>
-        </div>
-      </div>
-
-    </main>
-  </div>
+<div class="salt-theme salt-density-low" style="height:100vh;overflow:hidden;background:var(--salt-palette-background-secondary);font-family:var(--salt-text-fontFamily);color:var(--salt-content-primary-foreground);display:flex;flex-direction:column">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.GlobalNav" hint-size="100%,68px" style="flex-shrink:0"></x-import>
+<div style="display:flex;flex:1;min-height:0;position:relative">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.ChatHistoryPanel" groups="{{ historyGroups }}" onNewChat="{{ newChat }}" collapsed="{{ sidebarCollapsed }}" onCollapsedChange="{{ onSidebarCollapsedChange }}" hint-size="300px,100%" style="flex-shrink:0"></x-import>
+<main style="flex:1;min-width:0;display:flex;flex-direction:column;background:var(--salt-container-primary-background);border-top-left-radius:24px;box-shadow:0 0 24px rgba(16,24,32,.13);position:relative;z-index:2;min-height:0;overflow:hidden">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.ChatHeader" title="{{ chatTitle }}" onTitleChange="{{ onTitleChange }}" onOpenLibrary="{{ openLibrary }}" onDownload="{{ downloadChat }}" hint-size="100%,44px" style="flex-shrink:0;position:relative;z-index:2;padding:0 24px;border-bottom:1px solid var(--salt-separable-secondary-borderColor);background:var(--salt-container-primary-background)"></x-import>
+<div style="flex:1 1 auto;min-height:0;display:flex;flex-direction:column;overflow:hidden;padding:0 24px">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.ConversationArea" messages="{{ messages }}" onCopyMessage="{{ onCopyMessage }}" onSubmitEdit="{{ onSubmitEdit }}" onChangeVersion="{{ onChangeVersion }}" onSelectComparisonOption="{{ onSelectComparisonOption }}" onRetryMessage="{{ onRetryMessage }}" onFeedback="{{ onFeedback }}" onDownloadMessage="{{ onDownloadMessage }}" hint-size="100%,100%" style="flex:1 1 auto;min-height:0;width:100%;max-width:820px;margin:0 auto;display:flex;flex-direction:column"></x-import>
+</div>
+<div style="flex-shrink:0;max-height:min(60vh,420px);overflow-y:auto;position:relative;z-index:2;padding:20px 24px;background:var(--salt-container-primary-background);box-shadow:0 -8px 16px -12px rgba(16,24,32,.16)">
+<div style="max-width:820px;margin:0 auto">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.PromptInput" value="{{ draft }}" onChange="{{ onDraftChange }}" onSend="{{ onSend }}" helperText="{{ composerHelperText }}" hint-size="100%,150px" style="width:100%" overlay="{{ requirementsOverlay }}"></x-import>
+</div>
+</div>
+</main>
+<x-import component-from-global-scope="FusionDesignSystem_6db751.ArtifactsPanel" open="{{ libraryOpen }}" onClose="{{ closeLibrary }}" artifacts="{{ artifacts }}" onDownloadAll="{{ downloadAllArtifacts }}" onDownload="{{ downloadArtifact }}" hint-size="0px,0px"></x-import>
+</div>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:800},&quot;agentName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Builder_Agent_v2&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Agent&quot;},&quot;enableClarifyingQuestions&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;}}">
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.msgRef = React.createRef();
+    const skipQuestions = props && props.enableClarifyingQuestions === false;
+    const messages = [
+      { role: 'user', text: "Triage the last 60 days of advisory-desk emails — cluster by theme, flag Platinum-tier urgencies, and produce a leadership-ready summary report.", attachments: [{ title: 'advisory-desk-emails.zip', description: '60-day export', fileType: 'zip' }] },
+      { role: 'agent', name: this.agentNameFor(props), time: this.now(), text: skipQuestions ? 'On it — spinning up the triage workflow now.' : 'I have a few questions before I start building —' },
+    ];
     this.state = {
-      chats: [
-        'Help me write a risk report', 'Summarize the Q4 board deck', 'Generate Python code for ETL',
-        'What are the compliance rules', 'Draft an email to the desk lead', 'Explain the difference in models',
-        'Create a SQL query to join', 'Review this Java code for bugs', 'What are best practices for RAG',
-        'Help me prepare for the audit',
-      ],
+      sidebarCollapsed: false,
+      libraryOpen: false,
       activeChat: 0,
-      messages: this.initialMessages(),
-      step: 0,
-      custom: '',
+      chats: ['Advisory desk triage', 'Q4 board deck summary', 'Python ETL script', 'Compliance rules Q&A', 'Draft email to desk lead', 'Model comparison notes', 'SQL join query', 'Java code review', 'RAG best practices', 'Audit prep checklist'],
+      messages,
+      pendingQuestion: !skipQuestions,
+      requirementStep: 0,
+      requirementAnswers: [],
+      requirementContext: '',
+      draft: '',
     };
   }
 
-  dsIcon(name, size = 20) {
-    const url = `url(../../assets/icons/${name}.svg)`;
-    return React.createElement('span', { style: { display: 'inline-block', width: size, height: size, flexShrink: 0, background: 'currentColor', WebkitMask: `${url} center/contain no-repeat`, mask: `${url} center/contain no-repeat` } });
+  componentDidMount() {
+    if (this.props && this.props.enableClarifyingQuestions === false) setTimeout(() => this.startBuild(), 400);
   }
 
-  agentName() { return this.props.agentName || 'Builder_Agent_v2'; }
+  agentNameFor(props) { return (props && props.agentName) || 'Builder_Agent_v2'; }
+  agentName() { return this.agentNameFor(this.props); }
   now() { const d = new Date(); let h = d.getHours(); const m = d.getMinutes(); const ap = h >= 12 ? 'pm' : 'am'; h = h % 12 || 12; return h + ':' + (m < 10 ? '0' + m : m) + ap; }
 
-  getFlow() {
+  flow() {
     return [
-      { title: 'Where is your client email data stored?', options: [
-        'Microsoft Outlook / Exchange — connect via Microsoft Graph API',
-        'Gmail / Google Workspace — authorize via Gmail API',
-        "I'll upload an export (CSV, JSON, or .pst) of the last 60 days",
-        'Our CRM already has email history pulled in (Salesforce, Dynamics)',
+      { text: 'Where is your client email data stored?', type: 'single-select', options: [
+        { label: 'Microsoft Outlook / Exchange — connect via Microsoft Graph API', value: 'outlook' },
+        { label: 'Gmail / Google Workspace — authorize via Gmail API', value: 'gmail' },
+        { label: "Upload an export (CSV, JSON, or .pst) of the last 60 days", value: 'upload' },
+        { label: 'Our CRM already has email history pulled in (Salesforce, Dynamics)', value: 'crm' },
       ] },
-      { title: 'How should Platinum-tier urgencies be flagged?', options: [
-        'Send an email alert to the desk lead',
-        'Post to #advisory-ops in Slack / Teams',
-        'Roll them into a daily 8am digest',
-        'Create a follow-up task in our CRM',
+      { text: 'How should Platinum-tier urgencies be flagged?', description: 'This determines how the desk lead is notified once triage completes.', type: 'single-select', options: [
+        { label: 'Send an email alert to the desk lead', value: 'email' },
+        { label: 'Post to #advisory-ops in Slack / Teams', value: 'slack' },
+        { label: 'Roll them into a daily 8am digest', value: 'digest' },
+        { label: 'Create a follow-up task in our CRM', value: 'crm-task' },
       ] },
     ];
   }
 
-  initialMessages() {
-    const base = [
-      { role: 'user', text: 'Triage the last 60 days of advisory-desk emails — cluster by theme, flag Platinum-tier urgencies, and produce a leadership-ready summary report.' },
-    ];
-    if (this.props && this.props.enableClarifyingQuestions === false) {
-      base.push({ role: 'agent', name: this.agentName(), time: this.now(), text: 'On it — spinning up the triage workflow now.' });
-    } else {
-      base.push({ role: 'agent', name: this.agentName(), time: '4:43pm', text: 'I have a few questions before I start building —' });
-      base.push({ role: 'question', qi: 0 });
-    }
-    return base;
-  }
-
-  componentDidUpdate() {
-    const el = this.msgRef.current;
-    if (el) el.scrollTop = el.scrollHeight;
-  }
-
-  answer(qi, label) {
+  submitRequirements() {
+    const flow = this.flow();
+    const answers = this.state.requirementAnswers;
     this.setState((s) => {
-      const messages = s.messages.map((m) => (m.role === 'question' && m.qi === qi) ? { ...m, answered: true, chosen: label } : m);
-      messages.push({ role: 'user', text: label });
-      const flow = this.getFlow();
-      if (qi + 1 < flow.length) { messages.push({ role: 'question', qi: qi + 1 }); }
-      else { setTimeout(() => this.startBuild(), 450); }
-      return { messages: [...messages], custom: '', step: qi + 1 };
+      const messages = [...s.messages];
+      flow.forEach((q, i) => {
+        const a = answers[i];
+        const label = Array.isArray(a) ? a.map((v) => (q.options.find((o) => o.value === v) || {}).label || v).join(', ') : (q.options.find((o) => o.value === a) || {}).label || a;
+        if (label) messages.push({ role: 'user', text: label });
+      });
+      return { messages, pendingQuestion: null, requirementStep: 0, requirementAnswers: [] };
     });
+    setTimeout(() => this.startBuild(), 400);
+  }
+  skipQuestions() {
+    this.setState({ pendingQuestion: null, requirementStep: 0, requirementAnswers: [] });
+    setTimeout(() => this.startBuild(), 400);
   }
 
   startBuild() {
@@ -206,105 +114,166 @@ class Component extends DCLogic {
     let idx = 0;
     const addNext = () => {
       this.setState((s) => {
-        const messages = s.messages.map((m) => m.role === 'status' ? { ...m, done: true } : m);
+        const messages = s.messages.map((m) => (m.role === 'status' ? { ...m, done: true } : m));
         if (idx < steps.length) messages.push({ role: 'status', text: steps[idx], done: false });
-        return { messages: [...messages] };
+        return { messages };
       });
       idx++;
-      if (idx <= steps.length) setTimeout(addNext, 1150);
-      else setTimeout(() => this.finishBuild(), 350);
+      if (idx <= steps.length) setTimeout(addNext, 1000);
+      else setTimeout(() => this.finishBuild(), 400);
     };
     addNext();
   }
 
   finishBuild() {
     this.setState((s) => {
-      const messages = s.messages.map((m) => m.role === 'status' ? { ...m, done: true } : m);
-      messages.push({ role: 'agent', name: this.agentName(), time: this.now(), text: 'Done. I triaged 1,240 advisory-desk emails into 8 themes and flagged 12 Platinum-tier urgencies. Top themes: fee queries (31%), settlement delays (18%), and onboarding friction (14%). The leadership summary is ready — want me to export it as a PDF or post it to #advisory-ops?' });
-      return { messages: [...messages] };
+      const messages = s.messages.map((m) => (m.role === 'status' ? { ...m, done: true } : m));
+      messages.push({ role: 'agent', name: this.agentName(), time: this.now(), blocks: this.richAnswerBlocks() });
+      messages.push({ role: 'user', text: 'Try this against the sandbox agent first.', testMode: true, testSummary: 'Ran 3 sandbox iterations narrowing the SLA threshold and excluding Account Access. Final result: 7 themes, 29 items.' });
+      messages.push({ role: 'agent', name: this.agentName(), time: this.now(), text: 'Sandbox run complete — 3 themes matched.', testMode: true });
+      messages.push({ role: 'status', text: 'Re-running with the widened threshold…', done: true, testMode: true });
+      messages.push({ role: 'agent', name: this.agentName(), time: this.now(), text: 'Excluded Account Access — backlog drops to 29 items across 7 themes.', testMode: true });
+      return { messages };
     });
   }
 
-  cannedReply(t) {
-    const clean = t.trim().replace(/\s+/g, ' ');
-    const short = clean.length > 64 ? clean.slice(0, 64) + '…' : clean;
-    return 'Got it — I\u2019ll work on \u201C' + short + '\u201D. Let me line up the right tools and data sources, then I\u2019ll walk you through the plan.';
+  richAnswerBlocks() {
+    return [
+      { type: 'h1', text: 'Advisory Desk Email Summary' },
+      { type: 'h2', text: 'Overview' },
+      { type: 'body', text: 'Triaged **1,240 emails** from the last 60 days into *8 themes*, with 12 items flagged Platinum tier.', source: { platform: 'Confluence', title: 'Advisory Desk Playbook', description: 'Escalation rules and SLA thresholds for Platinum-tier items.', url: '#' } },
+      { type: 'blockquote', text: "Escalate anything tagged Platinum before Friday's sync.", children: { text: 'Per the desk-owner playbook, Platinum items page the on-call lead directly.' } },
+      { type: 'ol', items: [
+        { text: 'Pull the 60-day export', children: [{ text: 'Filter to advisory-desk mailboxes' }] },
+        { text: 'Cluster by theme' },
+        { text: 'Flag Platinum-tier urgencies' },
+      ] },
+      { type: 'disclaimer', text: 'AI-generated summary — verify figures against the source export before distributing.' },
+      { type: 'status', status: 'warning', statusTitle: '12 items need review', text: 'Tagged Platinum tier — pages the on-call lead if unread after 1 hour.' },
+      { type: 'code', language: 'python', code: 'def triage(emails):\n    return [e for e in emails if e.tier == "platinum"]' },
+      { type: 'code', language: 'diff', diffLines: [
+        { kind: 'context', text: 'def triage(emails):' },
+        { kind: 'remove', text: '    return [e for e in emails if e.urgent]' },
+        { kind: 'add', text: '    return [e for e in emails if e.tier == "platinum"]' },
+      ] },
+      { type: 'image', imageSrc: 'https://picsum.photos/seed/aichat-wide/900/380', imageAlt: 'Weekly triage volume' },
+      { type: 'image', imageSrc: 'https://picsum.photos/seed/aichat-square/560/560', imageAlt: 'Theme distribution' },
+      { type: 'artifact', artifact: { eyebrow: 'Report', title: 'Advisory Desk Email Summary.pdf', description: 'Generated from the 60-day mailbox export', items: [{ label: 'Size', value: '2.1 MB' }, { label: 'Created', value: 'Aug 17, 2026' }], actionLabel: 'View', onDownload: () => {} } },
+      { type: 'comparison', comparisonOptions: [
+        { label: 'Option A — concise', text: "12 items flagged Platinum. Escalate before Friday's sync." },
+        { label: 'Option B — detailed', text: "12 items across 8 themes are flagged Platinum tier — escalate all 12 before Friday's leadership sync." },
+      ] },
+      { type: 'form', form: { steps: [{ title: 'Route this report', description: 'Choose up to three teams who should review this before it goes out.', fieldLabel: 'Reviewing teams', fieldPlaceholder: 'Search teams…', options: [
+        { value: 'risk', label: 'Risk Analytics', metadata: [{ label: 'Members', value: '14' }] },
+        { value: 'markets', label: 'Markets Tech', metadata: [{ label: 'Members', value: '22' }] },
+        { value: 'cdao', label: 'CDAO Data Eng.', metadata: [{ label: 'Members', value: '9' }] },
+      ] }] } },
+      { type: 'expandable', summary: [{ type: 'body', text: '3 of 8 themes account for 70% of the backlog.' }], details: [
+        { type: 'ul', items: [
+          { text: 'Account access issues — 42 emails' },
+          { text: 'Fee disclosure questions — 18 emails' },
+          { text: 'Onboarding delays — 11 emails' },
+        ] },
+      ] },
+      { type: 'files', files: [
+        { id: 1, name: 'advisory-desk-emails.zip', size: 84000000, type: 'ZIP' },
+        { id: 2, name: 'org-chart.pdf', size: 512000, type: 'PDF' },
+      ], columns: [{ key: 'type', label: 'Type' }] },
+    ];
   }
 
-  sendMessage(t) {
-    if (!t || !t.trim()) return;
-    this.setState((s) => ({ messages: [...s.messages, { role: 'user', text: t }, { role: 'typing' }] }));
+  sendMessage(text) {
+    const t = (text || '').trim();
+    if (!t) return;
+    this.setState((s) => ({ messages: [...s.messages, { role: 'user', text: t }, { role: 'typing', name: this.agentName(), labels: ['Reviewing your request…', 'Checking the latest report…', 'Drafting a reply…'] }], draft: '' }));
     setTimeout(() => {
       this.setState((s) => {
         const messages = s.messages.filter((m) => m.role !== 'typing');
-        messages.push({ role: 'agent', name: this.agentName(), time: this.now(), text: this.cannedReply(t) });
+        const clean = t.replace(/\s+/g, ' ');
+        const short = clean.length > 64 ? clean.slice(0, 64) + '…' : clean;
+        messages.push({ role: 'agent', name: this.agentName(), time: this.now(), text: 'Got it — I\u2019ll work on \u201C' + short + '\u201D. Let me line up the right tools and data sources, then I\u2019ll walk you through the plan.' });
         return { messages };
       });
-    }, 1500);
+    }, 1600);
   }
 
   newChat() {
-    this.setState({ activeChat: -1, custom: '', step: 0, messages: [
+    this.setState({ activeChat: -1, pendingQuestion: null, draft: '', messages: [
       { role: 'agent', name: this.agentName(), time: this.now(), text: 'New chat started. What would you like to build, analyze, or discover today?' },
     ] });
   }
 
-  seedFor(i) {
-    if (i === 0) return this.initialMessages();
+  selectChat(i) {
     const title = this.state.chats[i];
-    return [
+    this.setState({ activeChat: i, pendingQuestion: null, draft: '', messages: [
       { role: 'user', text: title },
       { role: 'agent', name: this.agentName(), time: this.now(), text: 'Sure — here\u2019s a starting point for \u201C' + title + '\u201D. Ask me to go deeper on any part, or send a follow-up below.' },
+    ] });
+  }
+
+  editMessage(i, text) { this.setState((s) => ({ messages: s.messages.map((m, idx) => idx === i ? { ...m, text } : m) })); }
+  copyMessage(m) { if (typeof navigator !== 'undefined' && navigator.clipboard && m.text) navigator.clipboard.writeText(m.text); }
+  setFeedback(i, sentiment) { this.setState((s) => ({ messages: s.messages.map((m, idx) => idx === i ? { ...m, feedback: sentiment } : m) })); }
+
+  artifacts() {
+    return [
+      { id: '1', title: 'Advisory Desk Email Summary.pdf', description: 'Leadership-ready recap of the 60-day mailbox export.' },
+      { id: '2', title: 'org-chart.pdf', description: 'Desk owners referenced in the escalation flow.' },
     ];
   }
 
-  selectChat(i) { this.setState({ activeChat: i, custom: '', step: 0, messages: this.seedFor(i) }); }
+  requirementsOverlay() {
+    const S = this.state;
+    if (!S.pendingQuestion || !window.FusionDesignSystem_6db751) return undefined;
+    const { PromptInputPlanCard } = window.FusionDesignSystem_6db751;
+    const flow = this.flow();
+    const step = S.requirementStep;
+    const isLast = step === flow.length - 1;
+    return React.createElement(PromptInputPlanCard, {
+      variant: 'requirements',
+      questions: flow,
+      activeStep: step,
+      answers: S.requirementAnswers,
+      onAnswerChange: (i, v) => this.setState((s) => { const next = [...s.requirementAnswers]; next[i] = v; return { requirementAnswers: next }; }),
+      additionalContext: { value: S.requirementContext, onChange: (e) => this.setState({ requirementContext: e.target.value }) },
+      primaryAction: { label: isLast ? 'Submit' : 'Next', onClick: () => { if (isLast) this.submitRequirements(); else this.setState((s) => ({ requirementStep: Math.min(flow.length - 1, s.requirementStep + 1) })); } },
+      tertiaryActions: [{ label: 'Close', onClick: () => this.skipQuestions() }, ...(step > 0 ? [{ label: 'Back', onClick: () => this.setState((s) => ({ requirementStep: Math.max(0, s.requirementStep - 1) })) }] : [])],
+    });
+  }
 
   renderVals() {
     const S = this.state;
-    const flow = this.getFlow();
-    const check = this.dsIcon('check', 16);
-    const view = S.messages.map((m, i) => {
-      const base = { key: i, isUser: m.role === 'user', isAgent: m.role === 'agent', isStatus: m.role === 'status', isQuestion: m.role === 'question', isTyping: m.role === 'typing' };
-      if (m.role === 'agent') return { ...base, name: m.name, time: m.time, text: m.text };
-      if (m.role === 'user') return { ...base, text: m.text };
-      if (m.role === 'status') return { ...base, text: m.text, done: !!m.done, pending: !m.done, doneClass: m.done ? 'status-row-done' : '', icon: this.dsIcon('check', 16) };
-      if (m.role === 'question') {
-        const q = flow[m.qi];
-        return {
-          ...base,
-          stepLabel: (m.qi + 1) + ' of ' + flow.length,
-          title: q.title,
-          answered: !!m.answered,
-          open: !m.answered,
-          canSkip: !m.answered,
-          chosen: m.chosen || '',
-          checkIcon: check,
-          options: m.answered ? [] : q.options.map((label) => ({ label, onSelect: () => this.answer(m.qi, label) })),
-          onSkip: (e) => { if (e && e.preventDefault) e.preventDefault(); this.answer(m.qi, 'Skipped — use your best judgment'); },
-          onCustomKey: (e) => { if (e.key === 'Enter' && this.state.custom.trim()) { e.preventDefault(); this.answer(m.qi, this.state.custom.trim()); } },
-        };
-      }
-      return base;
-    });
+    const historyItems = S.chats.map((c, i) => ({ id: String(i), title: c, active: i === S.activeChat, onClick: () => this.selectChat(i) }));
     return {
-      view,
-      custom: S.custom,
-      agentName: this.agentName(),
-      onCustomInput: (e) => this.setState({ custom: e.target.value }),
-      onSend: (t) => this.sendMessage(t),
+      messages: S.messages,
+      draft: S.draft,
+      onDraftChange: (v) => this.setState({ draft: v }),
+      onSend: () => this.sendMessage(S.draft),
+      onCopyMessage: (m) => this.copyMessage(m),
+      onFeedback: (m, sentiment, i) => this.setFeedback(i, sentiment),
+      onRetryMessage: () => {},
+      onDownloadMessage: () => {},
+      onSelectComparisonOption: () => {},
+      onSubmitEdit: (m, text, i) => this.editMessage(i, text),
+      onChangeVersion: () => {},
+      historyGroups: [
+        { label: 'Today', items: historyItems.slice(0, 2) },
+        { label: 'Previous 7 days', items: historyItems.slice(2) },
+      ],
       newChat: () => this.newChat(),
-      chats: S.chats.map((c, i) => ({ title: c, activeClass: i === S.activeChat ? 'chat-item-active' : '', onClick: () => this.selectChat(i) })),
-      msgRef: this.msgRef,
-      emptyArr: [],
-      composerModes: ['Search and Discover', 'Build a workflow', 'Analyze data'],
-      composerPlaceholders: ['Send a message…', 'Ask a follow-up, or start something new…', 'Describe the workflow you want to build…'],
-      searchIcon: this.dsIcon('search', 18),
-      bellIcon: this.dsIcon('notification', 20),
-      chevronIcon: this.dsIcon('chevron-down', 16),
-      collapseIcon: this.dsIcon('chevron-left', 18),
-      plusIcon: this.dsIcon('add', 18),
-      cmdkHint: React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', padding: '3px 8px', border: '1px solid var(--salt-color-gray-300)', borderRadius: 6, fontSize: 13, fontWeight: 700, lineHeight: 1, color: 'var(--salt-content-secondary-foreground)', whiteSpace: 'nowrap' } }, '\u2318K'),
+      sidebarCollapsed: S.sidebarCollapsed,
+      onSidebarCollapsedChange: (v) => this.setState({ sidebarCollapsed: v }),
+      chatTitle: S.activeChat === -1 ? 'New chat' : (S.chats[S.activeChat] || 'Advisory desk triage'),
+      onTitleChange: () => {},
+      openLibrary: () => this.setState({ libraryOpen: true }),
+      closeLibrary: () => this.setState({ libraryOpen: false }),
+      libraryOpen: S.libraryOpen,
+      downloadChat: () => {},
+      artifacts: this.artifacts(),
+      downloadAllArtifacts: () => {},
+      downloadArtifact: () => {},
+      requirementsOverlay: this.requirementsOverlay(),
+      composerHelperText: 'Fusion can make mistakes. Verify important information.',
     };
   }
 }
