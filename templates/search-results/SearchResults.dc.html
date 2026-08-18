@@ -11,67 +11,81 @@
 <helmet>
 <script src="./ds-base.js"></script>
 <style>
-  *{box-sizing:border-box}
-  .sr-desc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .sr-card{--saltCard-padding:20px 24px;--saltCard-accent-color:var(--accent);--accent:var(--salt-color-gray-400);--tileBg:var(--salt-color-gray-100);--tileFg:var(--salt-color-gray-700);--eyebrow:var(--salt-content-secondary-foreground);--icon:url(../../icons/file.svg)}
-  .sr-glyph{display:inline-block;width:20px;height:20px;background:currentColor;-webkit-mask:var(--icon) center/contain no-repeat;mask:var(--icon) center/contain no-repeat}
-  .sr-filters-aside{width:280px;transition:width .15s ease}
-  .sr-filters-aside.collapsed{width:48px}
-  .sr-mrow{border-top:1px solid var(--salt-color-gray-100)}
-  .sr-mrow:first-child{border-top:none}
-  .sr-dataset{--accent:var(--domain-data-bold);--tileBg:var(--domain-data-fill);--tileFg:var(--domain-data-bold);--eyebrow:var(--domain-data-text);--icon:url(../../icons/database.svg)}
-  .sr-dataproduct{--accent:var(--domain-data-bold);--tileBg:var(--domain-data-fill);--tileFg:var(--domain-data-bold);--eyebrow:var(--domain-data-text);--icon:url(../../icons/database.svg)}
-  .sr-dashboard{--accent:var(--domain-data-bold);--tileBg:var(--domain-data-fill);--tileFg:var(--domain-data-bold);--eyebrow:var(--domain-data-text);--icon:url(../../icons/chart-column.svg)}
-  .sr-model{--accent:var(--domain-ai-bold);--tileBg:var(--domain-ai-fill);--tileFg:var(--domain-ai-bold);--eyebrow:var(--domain-ai-text);--icon:url(../../icons/tree.svg)}
-  .sr-agentic{--accent:var(--domain-ai-bold);--tileBg:var(--domain-ai-fill);--tileFg:var(--domain-ai-bold);--eyebrow:var(--domain-ai-text);--icon:url(../../icons/settings.svg)}
-  .sr-skill{--accent:var(--domain-ai-bold);--tileBg:var(--domain-ai-fill);--tileFg:var(--domain-ai-bold);--eyebrow:var(--domain-ai-text);--icon:url(../../icons/list.svg)}
-  .sr-usecase{--accent:var(--domain-governance-bold);--tileBg:var(--domain-governance-fill);--tileFg:var(--domain-governance-bold);--eyebrow:var(--domain-governance-text);--icon:url(../../icons/bookmark.svg)}
-  .sr-process{--accent:var(--domain-governance-bold);--tileBg:var(--domain-governance-fill);--tileFg:var(--domain-governance-bold);--eyebrow:var(--domain-governance-text);--icon:url(../../icons/refresh.svg)}
-  .sr-report{--accent:var(--domain-documentation-bold);--tileBg:var(--domain-documentation-fill);--tileFg:var(--domain-documentation-bold);--eyebrow:var(--domain-documentation-text);--icon:url(../../icons/document.svg)}
-  .sr-glossary{--accent:var(--domain-documentation-bold);--tileBg:var(--domain-documentation-fill);--tileFg:var(--domain-documentation-bold);--eyebrow:var(--domain-documentation-text);--icon:url(../../icons/file.svg)}
+html,body{margin:0;overflow:hidden}
+*{box-sizing:border-box}
+.sr-desc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sr-card{--saltCard-padding:20px 24px;--saltCard-accent-color:var(--accent);--accent:var(--salt-color-gray-400);--tileBg:var(--salt-color-gray-100);--tileFg:var(--salt-color-gray-700);--eyebrow:var(--salt-content-secondary-foreground);--icon:url(../../icons/file.svg)}
+.sr-glyph{display:inline-block;width:20px;height:20px;background:currentColor;-webkit-mask:var(--icon) center/contain no-repeat;mask:var(--icon) center/contain no-repeat}
+.sr-filters-aside{width:280px;flex-shrink:0;overflow-y:auto}
+.sr-mrow{border-top:1px solid var(--salt-color-gray-100)}
+.sr-overflow{position:relative;display:inline-flex}
+.sr-overflow-trigger{display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:999px;background:var(--salt-color-gray-100);color:var(--salt-content-secondary-foreground);font-size:12px;font-weight:700;cursor:default}
+.sr-overflow-panel{display:none;flex-direction:column;gap:4px;position:absolute;top:calc(100% + 6px);left:0;z-index:50;background:var(--salt-container-primary-background);border:1px solid var(--salt-color-gray-200);border-radius:10px;box-shadow:var(--salt-overlayable-shadow);padding:8px;min-width:200px}
+.sr-overflow:hover .sr-overflow-panel{display:flex}
+.sr-overflow-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 8px;border-radius:6px;font-size:13px}
+.sr-overflow-row:hover{background:var(--salt-color-gray-100)}
+.sr-overflow-row button{all:unset;cursor:pointer;display:inline-flex;color:var(--salt-content-secondary-foreground)}
+.sr-mrow:first-child{border-top:none}
+.sr-main{margin:8px 16px 16px 16px;min-width:360px}
+.sr-main.panel-open{margin-right:0}
+.sr-dataset{--accent:var(--domain-data-bold);--tileBg:var(--domain-data-fill);--tileFg:var(--domain-data-bold);--eyebrow:var(--domain-data-text);--icon:url(../../icons/database.svg)}
+.sr-dataproduct{--accent:var(--domain-data-bold);--tileBg:var(--domain-data-fill);--tileFg:var(--domain-data-bold);--eyebrow:var(--domain-data-text);--icon:url(../../icons/database.svg)}
+.sr-dashboard{--accent:var(--domain-data-bold);--tileBg:var(--domain-data-fill);--tileFg:var(--domain-data-bold);--eyebrow:var(--domain-data-text);--icon:url(../../icons/chart-column.svg)}
+.sr-model{--accent:var(--domain-ai-bold);--tileBg:var(--domain-ai-fill);--tileFg:var(--domain-ai-bold);--eyebrow:var(--domain-ai-text);--icon:url(../../icons/tree.svg)}
+.sr-agentic{--accent:var(--domain-ai-bold);--tileBg:var(--domain-ai-fill);--tileFg:var(--domain-ai-bold);--eyebrow:var(--domain-ai-text);--icon:url(../../icons/settings.svg)}
+.sr-skill{--accent:var(--domain-ai-bold);--tileBg:var(--domain-ai-fill);--tileFg:var(--domain-ai-bold);--eyebrow:var(--domain-ai-text);--icon:url(../../icons/list.svg)}
+.sr-usecase{--accent:var(--domain-governance-bold);--tileBg:var(--domain-governance-fill);--tileFg:var(--domain-governance-bold);--eyebrow:var(--domain-governance-text);--icon:url(../../icons/bookmark.svg)}
+.sr-process{--accent:var(--domain-governance-bold);--tileBg:var(--domain-governance-fill);--tileFg:var(--domain-governance-bold);--eyebrow:var(--domain-governance-text);--icon:url(../../icons/refresh.svg)}
+.sr-report{--accent:var(--domain-documentation-bold);--tileBg:var(--domain-documentation-fill);--tileFg:var(--domain-documentation-bold);--eyebrow:var(--domain-documentation-text);--icon:url(../../icons/document.svg)}
+.sr-glossary{--accent:var(--domain-documentation-bold);--tileBg:var(--domain-documentation-fill);--tileFg:var(--domain-documentation-bold);--eyebrow:var(--domain-documentation-text);--icon:url(../../icons/file.svg)}
 </style>
 </helmet>
-<div class="salt-theme" style="min-height:100vh;background:var(--salt-palette-background-secondary);font-family:var(--salt-text-fontFamily);color:var(--salt-content-primary-foreground)">
+<div class="salt-theme salt-density-low" style="height:100vh;overflow:hidden;background:var(--salt-palette-background-secondary);font-family:var(--salt-text-fontFamily);color:var(--salt-content-primary-foreground);display:flex;flex-direction:column">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.GlobalNav" hint-size="100%,68px" style="flex-shrink:0"></x-import>
+<div style="display:flex;flex:1;min-height:0;position:relative">
 
-  <x-import component-from-global-scope="FusionDesignSystem_6db751.GlobalNav" search-value="{{ query }}" hint-size="100%,68px" style="position:sticky;top:0;z-index:20;border-bottom:1px solid var(--salt-color-gray-200)"></x-import>
+  <aside class="sr-filters-aside" style="background:transparent;border:none;padding:20px">
+    <x-import component-from-global-scope="FusionDesignSystem_6db751.VerticalFilter" groups="{{ vfGroups }}" values="{{ vfValues }}" onChange="{{ vfOnChange }}" onClearAll="{{ vfClearAll }}" hint-size="100%,600px"></x-import>
+  </aside>
 
-  <div style="display:flex;align-items:flex-start;padding-top:8px">
-  <div style="flex:1;min-width:0">
-  <div style="display:flex;gap:0;max-width:1480px;margin:0 auto;align-items:flex-start">
+  <main class="sr-main {{ mainExtraClass }}" style="flex:1;min-width:0;display:flex;flex-direction:column;background:#FFFFFF;border-radius:var(--salt-palette-corner-stronger);box-shadow:var(--salt-overlayable-shadow);position:relative;z-index:2;min-height:0;overflow:hidden">
+    <div style="flex:1;min-height:0;overflow-y:auto;padding:28px;display:flex;flex-direction:column;gap:20px">
 
-    <aside class="{{ filtersAsideClass }}" style="flex-shrink:0;background:transparent;border:none;border-radius:0;padding:20px 8px 0 20px;overflow:hidden;position:sticky;top:92px;--salt-text-fontSize:16px">
-      <div onClick="{{ toggleFilters }}" style="display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--salt-color-gray-200);cursor:pointer;white-space:nowrap">
-        <h2 style="margin:0;font-size:20px;font-weight:700">{{ filtersCollapsed_label }}</h2>
-        <span style="color:var(--salt-content-secondary-foreground)">{{ filtersToggleIcon }}</span>
+      <div style="display:flex;align-items:center;gap:24px">
+        <h1 style="margin:0;font-size:28px;font-weight:800;line-height:1.2;flex-shrink:0">Browse</h1>
+        <x-import component-from-global-scope="FusionDesignSystem_6db751.Input" placeholder="Search Fusion" value="{{ query }}" onChange="{{ onQueryChange }}" startAdornment="{{ searchIcon }}" hint-size="100%,40px" style="flex:1;min-width:0"></x-import>
       </div>
-      <sc-if value="{{ filtersExpanded }}" hint-placeholder-val="{{ true }}">
-      <div style="display:flex;flex-direction:column;gap:22px;margin-top:20px">
-        <sc-for list="{{ filterGroups }}" as="g" hint-placeholder-count="3">
-          <div style="display:flex;flex-direction:column;gap:12px">
-            <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--salt-content-secondary-foreground)">{{ g.heading }}</div>
-            <div style="display:flex;flex-direction:column;gap:11px">
-              <sc-for list="{{ g.options }}" as="o" hint-placeholder-count="3">
-                <x-import component-from-global-scope="FusionDesignSystem_6db751.Checkbox" label="{{ o.label }}" hint-size="100%,22px"></x-import>
-              </sc-for>
-            </div>
-          </div>
-        </sc-for>
-      </div>
-      </sc-if>
-    </aside>
 
-    <main style="display:flex;flex-direction:column;gap:20px;min-width:0;flex:1;background:#FFFFFF;border-radius:var(--salt-palette-corner-stronger);box-shadow:var(--salt-overlayable-shadow);padding:28px;margin:0 16px 16px 16px">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:16px 20px;flex-wrap:wrap">
-        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0;flex:1 1 420px">
-          <h1 style="margin:0;font-size:28px;font-weight:800;line-height:1.2">Results for &ldquo;{{ query }}&rdquo;</h1>
-          <span style="font-size:15px;color:var(--salt-content-secondary-foreground)">{{ rangeLabel }} of {{ total }}</span>
-          <x-import component-from-global-scope="FusionDesignSystem_6db751.Button" appearance="transparent" sentiment="accented" hint-size="130px,32px">Clear search &times;</x-import>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;min-height:32px;min-width:0;flex:1 1 300px">
+          <span style="font-size:14px;color:var(--salt-content-secondary-foreground);white-space:nowrap">{{ rangeLabel }} of {{ total }}</span>
+          <sc-if value="{{ hasSelectedFilters }}" hint-placeholder-val="{{ false }}">
           <div style="display:flex;align-items:center;gap:8px">
-            <span style="font-size:14px;color:var(--salt-content-secondary-foreground);white-space:nowrap">Sort by</span>
-            <x-import component-from-global-scope="FusionDesignSystem_6db751.Dropdown" options="{{ sortOptions }}" hint-size="170px,40px"></x-import>
+            <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+              <sc-for list="{{ visibleAppliedFilters }}" as="f" hint-placeholder-count="0">
+                <x-import component-from-global-scope="FusionDesignSystem_6db751.Pill" onClose="{{ f.onRemove }}" hint-size="90px,28px">{{ f.label }}</x-import>
+              </sc-for>
+              <sc-if value="{{ hasOverflow }}" hint-placeholder-val="{{ false }}">
+                <div class="sr-overflow">
+                  <span class="sr-overflow-trigger">+{{ overflowCount }}</span>
+                  <div class="sr-overflow-panel">
+                    <sc-for list="{{ overflowAppliedFilters }}" as="f2" hint-placeholder-count="0">
+                      <div class="sr-overflow-row">
+                        <span>{{ f2.label }}</span>
+                        <button onClick="{{ f2.onRemove }}" aria-label="Remove {{ f2.label }}">{{ closeIcon }}</button>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+            <x-import component-from-global-scope="FusionDesignSystem_6db751.Button" appearance="transparent" sentiment="accented" onClick="{{ resetAllFilters }}" hint-size="90px,32px">Reset ({{ totalSelectedFilters }})</x-import>
           </div>
+          </sc-if>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <span style="font-size:14px;color:var(--salt-content-secondary-foreground);white-space:nowrap">Sort by</span>
+          <x-import component-from-global-scope="FusionDesignSystem_6db751.Dropdown" options="{{ sortOptions }}" hint-size="170px,40px"></x-import>
         </div>
       </div>
 
@@ -85,78 +99,98 @@
         </div>
       </sc-if>
 
-      <sc-for list="{{ results }}" as="r" hint-placeholder-count="4">
-        <div class="sr-card sr-{{ r.typeKey }}" onClick="{{ r.onSelect }}" style="display:flex;gap:18px;align-items:flex-start;background:var(--salt-container-primary-background);border:1px solid var(--salt-color-gray-100);border-left:4px solid var(--accent);border-radius:12px;padding:20px 24px;box-shadow:0 1px 2px rgba(16,24,32,.04),0 8px 20px -6px rgba(16,24,32,.12);cursor:pointer;transition:box-shadow .15s ease,transform .15s ease" style-hover="box-shadow:0 2px 4px rgba(16,24,32,.06),0 14px 30px -8px rgba(16,24,32,.18);transform:translateY(-2px)">
-          <span style="display:grid;place-items:center;width:40px;height:40px;border-radius:10px;flex-shrink:0;background:var(--tileBg);color:var(--tileFg)"><span class="sr-glyph"></span></span>
-          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px">
-            <span style="font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--eyebrow)">{{ r.eyebrow }}</span>
-            <h3 style="margin:0;font-size:19px;font-weight:700;line-height:1.25">{{ r.title }}</h3>
-            <p class="sr-desc" style="margin:0;font-size:15px;line-height:1.5;color:var(--salt-content-secondary-foreground)">{{ r.description }}</p>
-            <div style="display:flex;flex-wrap:wrap;gap:22px;margin-top:6px">
-              <sc-for list="{{ r.meta }}" as="m" hint-placeholder-count="2">
-                <span style="display:inline-flex;align-items:center;gap:7px;font-size:14px;color:var(--salt-content-secondary-foreground)">{{ m.icon }}{{ m.label }}</span>
-              </sc-for>
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <sc-for list="{{ results }}" as="r" hint-placeholder-count="4">
+          <div class="sr-card sr-{{ r.typeKey }}" onClick="{{ r.onSelect }}" style="display:flex;gap:18px;align-items:flex-start;background:var(--salt-container-primary-background);border:1px solid var(--salt-color-gray-100);border-left:4px solid var(--accent);border-radius:12px;padding:20px 24px;box-shadow:0 1px 2px rgba(16,24,32,.04),0 8px 20px -6px rgba(16,24,32,.12);cursor:pointer;transition:box-shadow .15s ease,transform .15s ease" style-hover="box-shadow:0 2px 4px rgba(16,24,32,.06),0 14px 30px -8px rgba(16,24,32,.18);transform:translateY(-2px)">
+            <span style="display:grid;place-items:center;width:40px;height:40px;border-radius:10px;flex-shrink:0;background:var(--tileBg);color:var(--tileFg)"><span class="sr-glyph"></span></span>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--eyebrow)">{{ r.eyebrow }}</span>
+              <h3 style="margin:0;font-size:19px;font-weight:700;line-height:1.25">{{ r.title }}</h3>
+              <p class="sr-desc" style="margin:0;font-size:15px;line-height:1.5;color:var(--salt-content-secondary-foreground)">{{ r.description }}</p>
+              <div style="display:flex;flex-wrap:wrap;gap:22px;margin-top:6px">
+                <sc-for list="{{ r.meta }}" as="m" hint-placeholder-count="2">
+                  <span style="display:inline-flex;align-items:center;gap:7px;font-size:14px;color:var(--salt-content-secondary-foreground)">{{ m.icon }}{{ m.label }}</span>
+                </sc-for>
+              </div>
             </div>
+            <x-import component-from-global-scope="FusionDesignSystem_6db751.Button" appearance="solid" sentiment="accented" hint-size="96px,40px" style="flex-shrink:0;align-self:center">View {{ arrowIcon }}</x-import>
           </div>
-          <x-import component-from-global-scope="FusionDesignSystem_6db751.Button" appearance="solid" sentiment="accented" hint-size="96px,40px" style="flex-shrink:0;align-self:center">View {{ arrowIcon }}</x-import>
-        </div>
-      </sc-for>
-    </main>
-  </div>
-  </div>
+        </sc-for>
+      </div>
+    </div>
+  </main>
 
   <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
-    <div class="sr-{{ sel.typeKey }}" style="position:sticky;top:61px;align-self:flex-start;height:calc(100vh - 61px);width:460px;max-width:94vw;flex-shrink:0;background:var(--salt-container-primary-background);border-left:1px solid var(--salt-color-gray-200);display:flex;flex-direction:column;overflow-y:auto">
-      <div style="padding:26px 30px 22px;border-bottom:1px solid var(--salt-color-gray-200)">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
-          <div style="display:flex;align-items:center;gap:10px">
-            <span style="display:grid;place-items:center;width:32px;height:32px;border-radius:9px;background:var(--tileBg);color:var(--tileFg)"><span class="sr-glyph"></span></span>
-            <span style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--eyebrow)">{{ sel.eyebrow }}</span>
+    <div style="flex:0 1 {{ panelWidthPx }}px;min-width:320px;max-width:640px;margin:8px 16px 16px 16px;background:#FFFFFF;border-radius:var(--salt-palette-corner-stronger);box-shadow:var(--salt-overlayable-shadow);display:flex;flex-direction:column;overflow:hidden;position:relative;z-index:2">
+      <div onPointerDown="{{ startPanelResize }}" role="separator" aria-orientation="vertical" aria-label="Resize panel" style="position:absolute;top:0;bottom:0;left:-8px;width:12px;cursor:col-resize;z-index:3"></div>
+      <div class="sr-{{ sel.typeKey }}" style="flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;padding:var(--salt-spacing-200)">
+        <x-import component-from-global-scope="FusionDesignSystem_6db751.SidePanelHeader" title="{{ sel.title }}" secondary-info="{{ sel.detail.id }}" primary-tag="{{ sel.eyebrow }}" description="{{ sel.description }}" actions="{{ panelActions }}" onClose="{{ closePanel }}" hint-size="100%,90px"></x-import>
+
+        <div style="margin-top:var(--salt-spacing-300)">
+          <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--salt-content-secondary-foreground);margin-bottom:12px">Metadata</div>
+          <div style="border:1px solid var(--salt-color-gray-200);border-radius:10px;overflow:hidden">
+            <sc-for list="{{ sel.detail.metadata }}" as="m2" hint-placeholder-count="5">
+              <div class="sr-mrow" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:13px 16px;font-size:14px">
+                <strong style="font-weight:700;color:var(--salt-content-primary-foreground)">{{ m2.label }}</strong>
+                <span style="color:var(--salt-content-primary-foreground)">{{ m2.value }}</span>
+              </div>
+            </sc-for>
           </div>
-          <button onClick="{{ closePanel }}" aria-label="Close" style="display:grid;place-items:center;width:34px;height:34px;border:none;background:none;border-radius:8px;cursor:pointer;color:var(--salt-content-secondary-foreground)" style-hover="background:var(--salt-color-gray-100)">{{ closeIcon }}</button>
-        </div>
-        <h2 style="margin:0 0 8px;font-size:26px;font-weight:800;line-height:1.2">{{ sel.title }}</h2>
-        <div style="display:inline-flex;align-items:center;gap:7px;font-family:var(--salt-text-code-fontFamily,monospace);font-size:14px;color:var(--salt-content-secondary-foreground);margin-bottom:20px">{{ sel.detail.id }}{{ copyIcon }}</div>
-        <div style="display:flex;gap:10px">
-          <x-import component-from-global-scope="FusionDesignSystem_6db751.Button" appearance="solid" sentiment="accented" hint-size="110px,40px">{{ externalIcon }}&nbsp;View</x-import>
-          <x-import component-from-global-scope="FusionDesignSystem_6db751.Button" appearance="bordered" sentiment="neutral" hint-size="130px,40px">{{ favIcon }}&nbsp;Favorite</x-import>
-        </div>
-      </div>
-      <div style="padding:22px 30px;border-bottom:1px solid var(--salt-color-gray-200)">
-        <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--salt-content-secondary-foreground);margin-bottom:10px">Description</div>
-        <p style="margin:0;font-size:15px;line-height:1.55;color:var(--salt-content-primary-foreground)">{{ sel.description }}</p>
-      </div>
-      <div style="padding:22px 30px 32px">
-        <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--salt-content-secondary-foreground);margin-bottom:12px">Metadata</div>
-        <div style="border:1px solid var(--salt-color-gray-200);border-radius:10px;overflow:hidden">
-          <sc-for list="{{ sel.detail.metadata }}" as="m2" hint-placeholder-count="5">
-            <div class="sr-mrow" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:13px 16px;font-size:14px">
-              <strong style="font-weight:700;color:var(--salt-content-primary-foreground)">{{ m2.label }}</strong>
-              <span style="color:var(--salt-content-primary-foreground)">{{ m2.value }}</span>
-            </div>
-          </sc-for>
-        </div>
-        <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--salt-content-secondary-foreground);margin:22px 0 12px">Tags</div>
-        <div style="display:flex;flex-wrap:wrap;gap:8px">
-          <sc-for list="{{ sel.detail.tags }}" as="t" hint-placeholder-count="2">
-            <span style="display:inline-flex;align-items:center;padding:5px 12px;border:1px solid var(--eyebrow);border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--eyebrow)">{{ t }}</span>
-          </sc-for>
+          <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--salt-content-secondary-foreground);margin:22px 0 12px">Tags</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ sel.detail.tags }}" as="t" hint-placeholder-count="2">
+              <span style="display:inline-flex;align-items:center;padding:5px 12px;border:1px solid var(--eyebrow);border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--eyebrow)">{{ t }}</span>
+            </sc-for>
+          </div>
         </div>
       </div>
     </div>
   </sc-if>
-  </div>
+</div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:900},&quot;query&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;AI Research Sample Dataset&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;total&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:49,&quot;min&quot;:0,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;showAiOverview&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:900},&quot;total&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:49,&quot;min&quot;:0,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;showAiOverview&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
 class Component extends DCLogic {
   dsIcon(name, size = 16) {
     const url = `url(../../icons/${name}.svg)`;
     return React.createElement('span', { style: { display: 'inline-block', width: size, height: size, flexShrink: 0, background: 'currentColor', WebkitMask: `${url} center/contain no-repeat`, mask: `${url} center/contain no-repeat` } });
   }
 
-  state = { selected: null, filtersCollapsed: false };
-  toggleFilters() { this.setState((s) => ({ filtersCollapsed: !s.filtersCollapsed })); }
+  state = { selected: null, filterValues: {}, query: '', panelWidth: 460 };
+
+  vfGroupsDef() {
+    return [
+      { id: 'data', label: 'Data', type: 'checkbox', options: [{ label: 'Data Product', value: 'dp' }, { label: 'Dataset', value: 'ds' }, { label: 'Dashboard', value: 'db' }] },
+      { id: 'ai', label: 'AI / ML', type: 'checkbox', options: [{ label: 'Agentic System', value: 'ag' }, { label: 'Model', value: 'mo' }, { label: 'Skill', value: 'sk' }] },
+      { id: 'governance', label: 'Governance', type: 'checkbox', options: [{ label: 'Glossary Term', value: 'gt' }, { label: 'Process', value: 'pr' }, { label: 'Report', value: 're' }, { label: 'Use Case', value: 'uc' }] },
+    ];
+  }
+
+  vfOnChange(groupId, value) { this.setState((s) => ({ filterValues: { ...s.filterValues, [groupId]: value } })); }
+  vfClearAll() { this.setState({ filterValues: {} }); }
+  removeFilter(groupId, value) {
+    this.setState((s) => ({ filterValues: { ...s.filterValues, [groupId]: (s.filterValues[groupId] || []).filter((v) => v !== value) } }));
+  }
+
+  startPanelResize(e) {
+    e.preventDefault();
+    const startX = e.clientX;
+    const startWidth = this.state.panelWidth || 460;
+    const onMove = (ev) => {
+      const next = Math.min(640, Math.max(320, startWidth + (startX - ev.clientX)));
+      this.setState({ panelWidth: next });
+    };
+    const onUp = () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+  }
 
   defaults() {
     const mk = (typeKey, eyebrow, title, description, meta, detail) => {
@@ -164,18 +198,11 @@ class Component extends DCLogic {
     };
     const md = (rows) => rows.map(([label, value]) => ({ label, value }));
     return {
-      query: this.props.query || 'AI Research Sample Dataset',
       total: this.props.total ?? 49,
       rangeLabel: '1–9',
       sortOptions: [{ label: 'Relevance', value: 'rel' }, { label: 'Most recent', value: 'date' }, { label: 'Name (A–Z)', value: 'name' }],
-      viewOptions: [{ label: 'List', value: 'list' }, { label: 'Grid', value: 'grid' }],
       showAiOverview: this.props.showAiOverview ?? true,
       aiSummary: 'Nine assets match your search across datasets, use cases, and models. The strongest match is the AI Research Adoption use case, which bundles the referenced sample dataset with governed models and controls.',
-      filterGroups: [
-        { heading: 'Data', name: 'flt-data', options: [{ label: 'Data Product', value: 'dp' }, { label: 'Dataset', value: 'ds' }, { label: 'Dashboard', value: 'db' }] },
-        { heading: 'AI / ML', name: 'flt-ai', options: [{ label: 'Agentic System', value: 'ag' }, { label: 'Model', value: 'mo' }, { label: 'Skill', value: 'sk' }] },
-        { heading: 'Governance', name: 'flt-gov', options: [{ label: 'Glossary Term', value: 'gt' }, { label: 'Process', value: 'pr' }, { label: 'Report', value: 're' }, { label: 'Use Case', value: 'uc' }] },
-      ],
       results: [
         mk('usecase', 'Use Case', 'AI Research Adoption', 'A stream of projects to speed the adoption of Infinite AI by AI Research.', [{ icon: this.dsIcon('bookmark'), label: 'Phase: Development' }, { icon: this.dsIcon('calendar'), label: 'Apr 9, 2026' }],
           { id: '106650', tags: ['Agentic System - Intended Usage'], metadata: md([['Owner', 'Ade Onigbanjo (U400914)'], ['Business Objective', 'AI Enablement'], ['Phase', 'Development'], ['Development LOB', '—'], ['Consuming LOB', 'Corporate'], ['Last Modified Date', 'Apr 9, 2026']]) }),
@@ -193,30 +220,46 @@ class Component extends DCLogic {
     const d = this.defaults();
     const results = d.results.map((r, i) => ({ ...r, onSelect: () => this.setState({ selected: i }) }));
     const sel = this.state.selected != null ? results[this.state.selected] : null;
+    const groupsDef = this.vfGroupsDef();
+    const filterValues = this.state.filterValues;
+    const appliedFilters = [];
+    groupsDef.forEach((g) => {
+      (filterValues[g.id] || []).forEach((val) => {
+        const opt = g.options.find((o) => o.value === val);
+        appliedFilters.push({ label: (opt && opt.label) || val, onRemove: () => this.removeFilter(g.id, val) });
+      });
+    });
     return {
       ...d,
       results,
       panelOpen: !!sel,
       sel: sel || {},
-      filtersAsideClass: 'sr-filters-aside' + (this.state.filtersCollapsed ? ' collapsed' : ''),
-      filtersExpanded: !this.state.filtersCollapsed,
-      filtersCollapsed_label: this.state.filtersCollapsed ? '' : 'Filters',
-      filtersToggleIcon: this.dsIcon(this.state.filtersCollapsed ? 'filter' : 'chevron-up', 16),
-      toggleFilters: () => this.toggleFilters(),
+      query: this.state.query,
+      onQueryChange: (e) => this.setState({ query: e.target.value }),
+      vfGroups: groupsDef,
+      vfValues: filterValues,
+      vfOnChange: (id, v) => this.vfOnChange(id, v),
+      vfClearAll: () => this.vfClearAll(),
+      hasSelectedFilters: appliedFilters.length > 0,
+      visibleAppliedFilters: appliedFilters.slice(0, 4),
+      overflowAppliedFilters: appliedFilters.slice(4),
+      hasOverflow: appliedFilters.length > 4,
+      overflowCount: appliedFilters.length - 4,
+      totalSelectedFilters: appliedFilters.length,
+      resetAllFilters: () => this.vfClearAll(),
+      closeIcon: this.dsIcon('close', 12),
+      mainExtraClass: sel ? 'panel-open' : '',
       closePanel: () => this.setState({ selected: null }),
-      closeIcon: this.dsIcon('close', 18),
-      copyIcon: this.dsIcon('copy', 15),
-      favIcon: this.dsIcon('bookmark', 15),
-      externalIcon: this.dsIcon('expand', 15),
+      panelWidthPx: this.state.panelWidth,
+      startPanelResize: (e) => this.startPanelResize(e),
+      panelActions: [{ label: 'View', onClick: () => {} }, { label: 'Favorite', onClick: () => {} }],
       searchIcon: this.dsIcon('search', 16),
-      clearIcon: this.dsIcon('close', 16),
-      avatarIcon: this.dsIcon('user', 18),
       sparkleIcon: this.dsIcon('info', 16),
-      chevronUp: this.dsIcon('chevron-up', 16),
       arrowIcon: React.createElement('span', { style: { display: 'inline-block', width: 14, height: 14, marginLeft: 6, verticalAlign: 'middle', background: 'currentColor', WebkitMask: 'url(../../icons/arrow-right.svg) center/contain no-repeat', mask: 'url(../../icons/arrow-right.svg) center/contain no-repeat' } }),
     };
   }
 }
+
 </script>
 </body>
 </html>
