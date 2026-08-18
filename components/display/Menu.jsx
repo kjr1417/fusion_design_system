@@ -48,7 +48,7 @@ export function Menu({ items = [], onSelect = () => {}, trigger = "Menu", trigge
         {trigger}
       </button>
       {open && menuRect ? ReactDOM.createPortal(
-        <div ref={panelRef} className="saltMenuPanel" role="menu" style={{ position: "fixed", ...(menuRect.bottom !== undefined ? { bottom: menuRect.bottom } : { top: menuRect.top }), left: menuRect.left, zIndex: 10000 }}>
+        <div ref={panelRef} className="salt-theme saltMenuPanel" role="menu" style={{ position: "fixed", ...(menuRect.bottom !== undefined ? { bottom: menuRect.bottom } : { top: menuRect.top }), left: menuRect.left, zIndex: 10000 }}>
           <div className="saltMenuPanel-container">
             {items.map((item, i) => (
               <div key={i} className="saltMenuItem" role="menuitem" tabIndex={0} onClick={() => { onSelect(item); setOpen(false); }}>
