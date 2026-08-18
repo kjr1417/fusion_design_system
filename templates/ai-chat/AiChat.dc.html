@@ -15,22 +15,26 @@ html,body{margin:0;overflow:hidden}
 *{box-sizing:border-box}
 a{color:var(--salt-content-accent-foreground);text-decoration:none}
 a:hover{color:var(--salt-color-blue-700)}
+.ai-composer-mount{display:flex;flex-direction:column;min-height:0;flex:0 0 auto}
+.ai-composer-mount>.sc-host-x{display:flex!important;flex-direction:column!important;min-height:0!important;flex:0 0 auto!important;width:100%}
+.ai-conversation-mount{display:flex;flex-direction:column;min-height:0;flex:1 1 auto}
+.ai-conversation-mount>.sc-host-x{display:flex!important;flex-direction:column!important;min-height:0!important;flex:1 1 auto!important;width:100%;height:100%;overflow:hidden!important}
 </style>
 </helmet>
 <div class="salt-theme salt-density-low" style="height:100vh;overflow:hidden;background:var(--salt-palette-background-secondary);font-family:var(--salt-text-fontFamily);color:var(--salt-content-primary-foreground);display:flex;flex-direction:column">
 <x-import component-from-global-scope="FusionDesignSystem_6db751.GlobalNav" hint-size="100%,68px" style="flex-shrink:0"></x-import>
 <div style="display:flex;flex:1;min-height:0;position:relative">
 <x-import component-from-global-scope="FusionDesignSystem_6db751.ChatHistoryPanel" groups="{{ historyGroups }}" onNewChat="{{ newChat }}" collapsed="{{ sidebarCollapsed }}" onCollapsedChange="{{ onSidebarCollapsedChange }}" hint-size="300px,100%" style="flex-shrink:0"></x-import>
-<main style="flex:1;min-width:0;display:flex;flex-direction:column;background:var(--salt-container-primary-background);border-top-left-radius:24px;box-shadow:0 0 24px rgba(16,24,32,.13);position:relative;z-index:2;min-height:0;overflow:hidden">
+<main style="flex:1;min-width:0;display:flex;flex-direction:column;background:#FFFFFF;border-radius:var(--salt-palette-corner-stronger);box-shadow:var(--salt-overlayable-shadow);margin:8px 16px 16px 16px;position:relative;z-index:2;min-height:0;overflow:hidden">
 <x-import component-from-global-scope="FusionDesignSystem_6db751.ChatHeader" title="{{ chatTitle }}" onTitleChange="{{ onTitleChange }}" onOpenLibrary="{{ openLibrary }}" onDownload="{{ downloadChat }}" hint-size="100%,44px" style="flex-shrink:0;position:relative;z-index:2;padding:0 24px;border-bottom:1px solid var(--salt-separable-secondary-borderColor);background:var(--salt-container-primary-background)"></x-import>
 <div style="flex:1 1 auto;min-height:0;display:flex;flex-direction:column;overflow:hidden;padding:0 24px">
-<div style="max-width:820px;width:100%;margin:0 auto;flex:1 1 auto;min-height:0;display:flex;flex-direction:column">
-<x-import component-from-global-scope="FusionDesignSystem_6db751.ConversationArea" messages="{{ messages }}" onCopyMessage="{{ onCopyMessage }}" onSubmitEdit="{{ onSubmitEdit }}" onChangeVersion="{{ onChangeVersion }}" onSelectComparisonOption="{{ onSelectComparisonOption }}" onRetryMessage="{{ onRetryMessage }}" onFeedback="{{ onFeedback }}" onDownloadMessage="{{ onDownloadMessage }}" hint-size="100%,100%" style="flex:1 1 auto;min-height:0;width:100%;display:flex;flex-direction:column"></x-import>
+<div class="ai-conversation-mount" style="max-width:820px;width:100%;margin:0 auto">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.ConversationArea" messages="{{ messages }}" onCopyMessage="{{ onCopyMessage }}" onSubmitEdit="{{ onSubmitEdit }}" onChangeVersion="{{ onChangeVersion }}" onSelectComparisonOption="{{ onSelectComparisonOption }}" onRetryMessage="{{ onRetryMessage }}" onFeedback="{{ onFeedback }}" onDownloadMessage="{{ onDownloadMessage }}" onAtBottomChange="{{ onAtBottomChange }}" scrollToBottomSignal="{{ scrollNonce }}" hint-size="100%,100%" style="flex:1 1 auto;min-height:0;width:100%;display:flex;flex-direction:column"></x-import>
 </div>
 </div>
-<div style="flex-shrink:0;max-height:min(60vh,420px);overflow-y:auto;position:relative;z-index:2;padding:20px 24px;background:var(--salt-container-primary-background)">
-<div style="max-width:820px;margin:0 auto">
-<x-import component-from-global-scope="FusionDesignSystem_6db751.PromptInput" value="{{ draft }}" onChange="{{ onDraftChange }}" onSend="{{ onSend }}" helperText="{{ composerHelperText }}" hint-size="100%,150px" style="width:100%" overlay="{{ requirementsOverlay }}"></x-import>
+<div style="flex:0 0 auto;position:relative;z-index:2;padding:20px 24px;background:var(--salt-container-primary-background);display:flex;flex-direction:column">
+<div class="ai-composer-mount" style="max-width:820px;width:100%;margin:0 auto">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.PromptInput" value="{{ draft }}" onChange="{{ onDraftChange }}" onSend="{{ onSend }}" helperText="{{ composerHelperText }}" scrollToLatest="{{ showScrollToLatest }}" onScrollToLatest="{{ scrollToLatest }}" hint-size="100%,150px" style="width:100%;min-height:0;flex:1 1 auto" overlay="{{ requirementsOverlay }}"></x-import>
 </div>
 </div>
 </main>
@@ -58,6 +62,8 @@ class Component extends DCLogic {
       requirementAnswers: [],
       requirementContext: '',
       draft: '',
+      atBottom: true,
+      scrollNonce: 0,
     };
   }
 
@@ -258,6 +264,10 @@ class Component extends DCLogic {
       onSelectComparisonOption: () => {},
       onSubmitEdit: (m, text, i) => this.editMessage(i, text),
       onChangeVersion: () => {},
+      onAtBottomChange: (atBottom) => this.setState({ atBottom }),
+      scrollNonce: S.scrollNonce,
+      showScrollToLatest: !S.atBottom,
+      scrollToLatest: () => this.setState((s) => ({ scrollNonce: s.scrollNonce + 1, atBottom: true })),
       historyGroups: [
         { label: 'Today', items: historyItems.slice(0, 2) },
         { label: 'Previous 7 days', items: historyItems.slice(2) },
