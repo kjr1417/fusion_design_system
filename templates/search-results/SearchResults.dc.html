@@ -13,60 +13,64 @@
 <style>
   *{box-sizing:border-box}
   .sr-desc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .sr-card{--saltCard-padding:20px 24px;--saltCard-accent-color:var(--accent);--accent:var(--salt-color-gray-400);--tileBg:var(--salt-color-gray-100);--tileFg:var(--salt-color-gray-700);--eyebrow:var(--salt-content-secondary-foreground);--icon:url(../../assets/icons/file.svg)}
+  .sr-card{--saltCard-padding:20px 24px;--saltCard-accent-color:var(--accent);--accent:var(--salt-color-gray-400);--tileBg:var(--salt-color-gray-100);--tileFg:var(--salt-color-gray-700);--eyebrow:var(--salt-content-secondary-foreground);--icon:url(../../icons/file.svg)}
   .sr-glyph{display:inline-block;width:20px;height:20px;background:currentColor;-webkit-mask:var(--icon) center/contain no-repeat;mask:var(--icon) center/contain no-repeat}
+  .sr-filters-aside{width:280px;transition:width .15s ease}
+  .sr-filters-aside.collapsed{width:48px}
   .sr-mrow{border-top:1px solid var(--salt-color-gray-100)}
   .sr-mrow:first-child{border-top:none}
-  .sr-dataset{--accent:var(--domain-data-bold);--tileBg:var(--domain-data-fill);--tileFg:var(--domain-data-bold);--eyebrow:var(--domain-data-text);--icon:url(../../assets/icons/database.svg)}
-  .sr-dataproduct{--accent:var(--domain-data-bold);--tileBg:var(--domain-data-fill);--tileFg:var(--domain-data-bold);--eyebrow:var(--domain-data-text);--icon:url(../../assets/icons/database.svg)}
-  .sr-dashboard{--accent:var(--domain-data-bold);--tileBg:var(--domain-data-fill);--tileFg:var(--domain-data-bold);--eyebrow:var(--domain-data-text);--icon:url(../../assets/icons/chart-column.svg)}
-  .sr-model{--accent:var(--domain-ai-bold);--tileBg:var(--domain-ai-fill);--tileFg:var(--domain-ai-bold);--eyebrow:var(--domain-ai-text);--icon:url(../../assets/icons/tree.svg)}
-  .sr-agentic{--accent:var(--domain-ai-bold);--tileBg:var(--domain-ai-fill);--tileFg:var(--domain-ai-bold);--eyebrow:var(--domain-ai-text);--icon:url(../../assets/icons/settings.svg)}
-  .sr-skill{--accent:var(--domain-ai-bold);--tileBg:var(--domain-ai-fill);--tileFg:var(--domain-ai-bold);--eyebrow:var(--domain-ai-text);--icon:url(../../assets/icons/list.svg)}
-  .sr-usecase{--accent:var(--domain-governance-bold);--tileBg:var(--domain-governance-fill);--tileFg:var(--domain-governance-bold);--eyebrow:var(--domain-governance-text);--icon:url(../../assets/icons/bookmark.svg)}
-  .sr-process{--accent:var(--domain-governance-bold);--tileBg:var(--domain-governance-fill);--tileFg:var(--domain-governance-bold);--eyebrow:var(--domain-governance-text);--icon:url(../../assets/icons/refresh.svg)}
-  .sr-report{--accent:var(--domain-documentation-bold);--tileBg:var(--domain-documentation-fill);--tileFg:var(--domain-documentation-bold);--eyebrow:var(--domain-documentation-text);--icon:url(../../assets/icons/document.svg)}
-  .sr-glossary{--accent:var(--domain-documentation-bold);--tileBg:var(--domain-documentation-fill);--tileFg:var(--domain-documentation-bold);--eyebrow:var(--domain-documentation-text);--icon:url(../../assets/icons/file.svg)}
+  .sr-dataset{--accent:var(--domain-data-bold);--tileBg:var(--domain-data-fill);--tileFg:var(--domain-data-bold);--eyebrow:var(--domain-data-text);--icon:url(../../icons/database.svg)}
+  .sr-dataproduct{--accent:var(--domain-data-bold);--tileBg:var(--domain-data-fill);--tileFg:var(--domain-data-bold);--eyebrow:var(--domain-data-text);--icon:url(../../icons/database.svg)}
+  .sr-dashboard{--accent:var(--domain-data-bold);--tileBg:var(--domain-data-fill);--tileFg:var(--domain-data-bold);--eyebrow:var(--domain-data-text);--icon:url(../../icons/chart-column.svg)}
+  .sr-model{--accent:var(--domain-ai-bold);--tileBg:var(--domain-ai-fill);--tileFg:var(--domain-ai-bold);--eyebrow:var(--domain-ai-text);--icon:url(../../icons/tree.svg)}
+  .sr-agentic{--accent:var(--domain-ai-bold);--tileBg:var(--domain-ai-fill);--tileFg:var(--domain-ai-bold);--eyebrow:var(--domain-ai-text);--icon:url(../../icons/settings.svg)}
+  .sr-skill{--accent:var(--domain-ai-bold);--tileBg:var(--domain-ai-fill);--tileFg:var(--domain-ai-bold);--eyebrow:var(--domain-ai-text);--icon:url(../../icons/list.svg)}
+  .sr-usecase{--accent:var(--domain-governance-bold);--tileBg:var(--domain-governance-fill);--tileFg:var(--domain-governance-bold);--eyebrow:var(--domain-governance-text);--icon:url(../../icons/bookmark.svg)}
+  .sr-process{--accent:var(--domain-governance-bold);--tileBg:var(--domain-governance-fill);--tileFg:var(--domain-governance-bold);--eyebrow:var(--domain-governance-text);--icon:url(../../icons/refresh.svg)}
+  .sr-report{--accent:var(--domain-documentation-bold);--tileBg:var(--domain-documentation-fill);--tileFg:var(--domain-documentation-bold);--eyebrow:var(--domain-documentation-text);--icon:url(../../icons/document.svg)}
+  .sr-glossary{--accent:var(--domain-documentation-bold);--tileBg:var(--domain-documentation-fill);--tileFg:var(--domain-documentation-bold);--eyebrow:var(--domain-documentation-text);--icon:url(../../icons/file.svg)}
 </style>
 </helmet>
 <div class="salt-theme" style="min-height:100vh;background:var(--salt-palette-background-secondary);font-family:var(--salt-text-fontFamily);color:var(--salt-content-primary-foreground)">
 
-  <x-import component-from-global-scope="FusionDesignSystem_5ec875.GlobalNav" search-value="{{ query }}" hint-size="100%,68px" style="position:sticky;top:0;z-index:20;border-bottom:1px solid var(--salt-color-gray-200)"></x-import>
+  <x-import component-from-global-scope="FusionDesignSystem_6db751.GlobalNav" search-value="{{ query }}" hint-size="100%,68px" style="position:sticky;top:0;z-index:20;border-bottom:1px solid var(--salt-color-gray-200)"></x-import>
 
-  <div style="display:flex;align-items:flex-start">
+  <div style="display:flex;align-items:flex-start;padding-top:8px">
   <div style="flex:1;min-width:0">
-  <div style="display:grid;grid-template-columns:300px minmax(0,1fr);gap:28px;padding:28px;max-width:1480px;margin:0 auto;align-items:start">
+  <div style="display:flex;gap:0;max-width:1480px;margin:0 auto;align-items:flex-start">
 
-    <aside style="background:transparent;border:none;border-radius:0;padding:4px 8px 0 0;position:sticky;top:92px;--salt-text-fontSize:16px">
-      <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--salt-color-gray-200)">
-        <h2 style="margin:0;font-size:20px;font-weight:700">Filters</h2>
-        <span style="color:var(--salt-content-secondary-foreground)">{{ chevronUp }}</span>
+    <aside class="{{ filtersAsideClass }}" style="flex-shrink:0;background:transparent;border:none;border-radius:0;padding:20px 8px 0 20px;overflow:hidden;position:sticky;top:92px;--salt-text-fontSize:16px">
+      <div onClick="{{ toggleFilters }}" style="display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--salt-color-gray-200);cursor:pointer;white-space:nowrap">
+        <h2 style="margin:0;font-size:20px;font-weight:700">{{ filtersCollapsed_label }}</h2>
+        <span style="color:var(--salt-content-secondary-foreground)">{{ filtersToggleIcon }}</span>
       </div>
+      <sc-if value="{{ filtersExpanded }}" hint-placeholder-val="{{ true }}">
       <div style="display:flex;flex-direction:column;gap:22px;margin-top:20px">
         <sc-for list="{{ filterGroups }}" as="g" hint-placeholder-count="3">
           <div style="display:flex;flex-direction:column;gap:12px">
             <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--salt-content-secondary-foreground)">{{ g.heading }}</div>
             <div style="display:flex;flex-direction:column;gap:11px">
               <sc-for list="{{ g.options }}" as="o" hint-placeholder-count="3">
-                <x-import component-from-global-scope="FusionDesignSystem_5ec875.Checkbox" label="{{ o.label }}" hint-size="100%,22px"></x-import>
+                <x-import component-from-global-scope="FusionDesignSystem_6db751.Checkbox" label="{{ o.label }}" hint-size="100%,22px"></x-import>
               </sc-for>
             </div>
           </div>
         </sc-for>
       </div>
+      </sc-if>
     </aside>
 
-    <main style="display:flex;flex-direction:column;gap:20px;min-width:0">
+    <main style="display:flex;flex-direction:column;gap:20px;min-width:0;flex:1;background:#FFFFFF;border-radius:var(--salt-palette-corner-stronger);box-shadow:var(--salt-overlayable-shadow);padding:28px;margin:0 16px 16px 16px">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:16px 20px;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0;flex:1 1 420px">
           <h1 style="margin:0;font-size:28px;font-weight:800;line-height:1.2">Results for &ldquo;{{ query }}&rdquo;</h1>
           <span style="font-size:15px;color:var(--salt-content-secondary-foreground)">{{ rangeLabel }} of {{ total }}</span>
-          <x-import component-from-global-scope="FusionDesignSystem_5ec875.Button" appearance="transparent" sentiment="accented" hint-size="130px,32px">Clear search &times;</x-import>
+          <x-import component-from-global-scope="FusionDesignSystem_6db751.Button" appearance="transparent" sentiment="accented" hint-size="130px,32px">Clear search &times;</x-import>
         </div>
         <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
           <div style="display:flex;align-items:center;gap:8px">
             <span style="font-size:14px;color:var(--salt-content-secondary-foreground);white-space:nowrap">Sort by</span>
-            <x-import component-from-global-scope="FusionDesignSystem_5ec875.Dropdown" options="{{ sortOptions }}" hint-size="170px,40px"></x-import>
+            <x-import component-from-global-scope="FusionDesignSystem_6db751.Dropdown" options="{{ sortOptions }}" hint-size="170px,40px"></x-import>
           </div>
         </div>
       </div>
@@ -94,7 +98,7 @@
               </sc-for>
             </div>
           </div>
-          <x-import component-from-global-scope="FusionDesignSystem_5ec875.Button" appearance="solid" sentiment="accented" hint-size="96px,40px" style="flex-shrink:0;align-self:center">View {{ arrowIcon }}</x-import>
+          <x-import component-from-global-scope="FusionDesignSystem_6db751.Button" appearance="solid" sentiment="accented" hint-size="96px,40px" style="flex-shrink:0;align-self:center">View {{ arrowIcon }}</x-import>
         </div>
       </sc-for>
     </main>
@@ -114,8 +118,8 @@
         <h2 style="margin:0 0 8px;font-size:26px;font-weight:800;line-height:1.2">{{ sel.title }}</h2>
         <div style="display:inline-flex;align-items:center;gap:7px;font-family:var(--salt-text-code-fontFamily,monospace);font-size:14px;color:var(--salt-content-secondary-foreground);margin-bottom:20px">{{ sel.detail.id }}{{ copyIcon }}</div>
         <div style="display:flex;gap:10px">
-          <x-import component-from-global-scope="FusionDesignSystem_5ec875.Button" appearance="solid" sentiment="accented" hint-size="110px,40px">{{ externalIcon }}&nbsp;View</x-import>
-          <x-import component-from-global-scope="FusionDesignSystem_5ec875.Button" appearance="bordered" sentiment="neutral" hint-size="130px,40px">{{ favIcon }}&nbsp;Favorite</x-import>
+          <x-import component-from-global-scope="FusionDesignSystem_6db751.Button" appearance="solid" sentiment="accented" hint-size="110px,40px">{{ externalIcon }}&nbsp;View</x-import>
+          <x-import component-from-global-scope="FusionDesignSystem_6db751.Button" appearance="bordered" sentiment="neutral" hint-size="130px,40px">{{ favIcon }}&nbsp;Favorite</x-import>
         </div>
       </div>
       <div style="padding:22px 30px;border-bottom:1px solid var(--salt-color-gray-200)">
@@ -146,14 +150,13 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:900},&quot;query&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;AI Research Sample Dataset&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;total&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:49,&quot;min&quot;:0,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;showAiOverview&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
 class Component extends DCLogic {
-  // Render any Fusion icon (assets/icons/*.svg) as a currentColor-tinted mask,
-  // so every glyph comes from the one design-system icon set.
   dsIcon(name, size = 16) {
-    const url = `url(../../assets/icons/${name}.svg)`;
+    const url = `url(../../icons/${name}.svg)`;
     return React.createElement('span', { style: { display: 'inline-block', width: size, height: size, flexShrink: 0, background: 'currentColor', WebkitMask: `${url} center/contain no-repeat`, mask: `${url} center/contain no-repeat` } });
   }
 
-  state = { selected: null };
+  state = { selected: null, filtersCollapsed: false };
+  toggleFilters() { this.setState((s) => ({ filtersCollapsed: !s.filtersCollapsed })); }
 
   defaults() {
     const mk = (typeKey, eyebrow, title, description, meta, detail) => {
@@ -195,6 +198,11 @@ class Component extends DCLogic {
       results,
       panelOpen: !!sel,
       sel: sel || {},
+      filtersAsideClass: 'sr-filters-aside' + (this.state.filtersCollapsed ? ' collapsed' : ''),
+      filtersExpanded: !this.state.filtersCollapsed,
+      filtersCollapsed_label: this.state.filtersCollapsed ? '' : 'Filters',
+      filtersToggleIcon: this.dsIcon(this.state.filtersCollapsed ? 'filter' : 'chevron-up', 16),
+      toggleFilters: () => this.toggleFilters(),
       closePanel: () => this.setState({ selected: null }),
       closeIcon: this.dsIcon('close', 18),
       copyIcon: this.dsIcon('copy', 15),
@@ -205,7 +213,7 @@ class Component extends DCLogic {
       avatarIcon: this.dsIcon('user', 18),
       sparkleIcon: this.dsIcon('info', 16),
       chevronUp: this.dsIcon('chevron-up', 16),
-      arrowIcon: React.createElement('span', { style: { display: 'inline-block', width: 14, height: 14, marginLeft: 6, verticalAlign: 'middle', background: 'currentColor', WebkitMask: 'url(../../assets/icons/arrow-right.svg) center/contain no-repeat', mask: 'url(../../assets/icons/arrow-right.svg) center/contain no-repeat' } }),
+      arrowIcon: React.createElement('span', { style: { display: 'inline-block', width: 14, height: 14, marginLeft: 6, verticalAlign: 'middle', background: 'currentColor', WebkitMask: 'url(../../icons/arrow-right.svg) center/contain no-repeat', mask: 'url(../../icons/arrow-right.svg) center/contain no-repeat' } }),
     };
   }
 }
