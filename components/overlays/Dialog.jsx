@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
+import ReactDOM from "react-dom";
 
 export function Dialog({ open, title, onClose, children, actions, footer, width = 420, maxHeight, bodyStyle }) {
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e) => { if (e.key === "Escape") { e.stopPropagation(); onClose && onClose(); } };
+    document.addEventListener("keydown", onKeyDown, true);
+    return () => document.removeEventListener("keydown", onKeyDown, true);
+  }, [open, onClose]);
   if (!open) return null;
-  return (
-    <div style={{ position: "fixed", inset: 0, background: "var(--salt-overlayable-backdrop)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100 }} onClick={onClose}>
+  return ReactDOM.createPortal(
+    <div className="salt-theme" style={{ position: "fixed", inset: 0, background: "var(--salt-overlayable-backdrop)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2000 }} onClick={onClose}>
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
@@ -21,6 +28,7 @@ export function Dialog({ open, title, onClose, children, actions, footer, width 
         <div style={{ marginBottom: 20, minHeight: 0, ...(maxHeight ? { flex: "1 1 auto", overflow: "auto" } : {}), ...bodyStyle }}>{children}</div>
         {footer ? <div style={{ flexShrink: 0 }}>{footer}</div> : (actions && <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, flexShrink: 0 }}>{actions}</div>)}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
