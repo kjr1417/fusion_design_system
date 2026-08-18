@@ -109,6 +109,10 @@ export interface ConversationAreaProps {
   onFeedback?: (message: ConversationMessage, sentiment: "up" | "down", index: number) => void;
   /** Agent messages only — enables the Download button in the action strip. */
   onDownloadMessage?: (message: ConversationMessage, index: number) => void;
+  /** Fires whenever the user scrolls within ~48px of the bottom vs. away from it — drive a "Scroll to Latest" affordance (e.g. PromptInput's `scrollToLatest`) with `!atBottom`. */
+  onAtBottomChange?: (atBottom: boolean) => void;
+  /** Bump this value (e.g. a counter) to force an immediate scroll to the latest message, regardless of current scroll position — wire to PromptInput's `onScrollToLatest`. */
+  scrollToBottomSignal?: number | string;
   style?: React.CSSProperties;
 }
 export function ConversationArea(props: ConversationAreaProps): JSX.Element;

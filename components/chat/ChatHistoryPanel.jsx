@@ -113,7 +113,7 @@ export function ChatHistoryPanel({
           width: expanded ? WIDTH_EXPANDED : WIDTH_COLLAPSED, height: "100%",
           display: "flex", flexDirection: "column", boxSizing: "border-box",
           background: "var(--salt-palette-background-secondary)",
-          borderRight: isFlyout ? "none" : "1px solid var(--salt-separable-secondary-borderColor)",
+          borderRight: "none",
           boxShadow: isFlyout ? "var(--salt-shadow-low)" : "none",
           zIndex: isFlyout ? 50 : 1,
           fontFamily: "var(--salt-text-fontFamily)",

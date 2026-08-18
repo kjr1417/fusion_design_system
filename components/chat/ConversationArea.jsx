@@ -626,14 +626,37 @@ function groupTestModeRuns(messages) {
  * blocks) loaded once per page.
  */
 export { ResponseContent };
-export function ConversationArea({ messages = [], emptyState, onCopyMessage, onSubmitEdit, onChangeVersion, onSelectComparisonOption, onRetryMessage, onFeedback, onDownloadMessage, style }) {
+export function ConversationArea({ messages = [], emptyState, onCopyMessage, onSubmitEdit, onChangeVersion, onSelectComparisonOption, onRetryMessage, onFeedback, onDownloadMessage, onAtBottomChange, scrollToBottomSignal, style }) {
   const { Spinner } = window.FusionDesignSystem_6db751;
   const scrollRef = useRef(null);
+  const atBottomRef = useRef(true);
   const [viewportHeight, setViewportHeight] = useState(null);
   useEffect(() => {
     const el = scrollRef.current;
-    if (el) el.scrollTop = el.scrollHeight;
+    if (el && atBottomRef.current) el.scrollTop = el.scrollHeight;
   }, [messages]);
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 48;
+      if (atBottom !== atBottomRef.current) {
+        atBottomRef.current = atBottom;
+        onAtBottomChange && onAtBottomChange(atBottom);
+      }
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [onAtBottomChange]);
+  useEffect(() => {
+    if (scrollToBottomSignal == null) return;
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight;
+    atBottomRef.current = true;
+    onAtBottomChange && onAtBottomChange(true);
+  }, [scrollToBottomSignal]);
   useEffect(() => {
     const el = scrollRef.current;
     if (!el || typeof ResizeObserver === "undefined") return;

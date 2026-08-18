@@ -263,7 +263,7 @@ export function PromptInput({
   const backdropPieces = tokenizePieces(value + (value.endsWith("\n") ? " " : ""));
 
   const content = (
-    <>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: 0, flex: "0 0 auto" }}>
       {banner && (
         <div className={`saltBanner saltBanner-${banner.status || "error"} saltBanner-secondary`} role="status" style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-75)", marginBottom: 4 }}>
           <svg viewBox="0 0 12 12" width="16" height="16" fill="currentColor" aria-hidden="true" style={{ flexShrink: 0, color: `var(--salt-status-${banner.status || "error"}-foreground-decorative)` }}>
@@ -309,6 +309,9 @@ export function PromptInput({
         />
       )}
 
+      {overlay ? (
+        <div style={{ width: "100%", flex: "0 0 auto", boxSizing: "border-box" }}>{overlay}</div>
+      ) : (
       <div
         {...dragHandlers}
         style={{ position: "relative", border: focused ? "1px dotted var(--salt-palette-accent)" : "1px solid var(--salt-separable-primary-borderColor)", borderRadius: "var(--salt-palette-corner-soft, 24px)", background: "var(--salt-container-primary-background)", boxShadow: "var(--salt-shadow-lowest)", display: "flex", flexDirection: "column", padding: "var(--salt-spacing-100)", boxSizing: "border-box" }}
@@ -326,7 +329,7 @@ export function PromptInput({
           </div>
         )}
 
-        {overlay ? overlay : (
+        {(
           <>
             {attachments.length > 0 && (
               <div style={{ padding: "0 var(--salt-spacing-50)", marginBottom: "var(--salt-spacing-100)" }}>
@@ -422,14 +425,15 @@ export function PromptInput({
           </>
         )}
       </div>
-      {helperText && (
-        <div style={{ marginTop: "var(--salt-spacing-100)", fontFamily: "var(--salt-text-label-fontFamily)", fontStyle: "italic", fontSize: "var(--salt-text-label-fontSize)", lineHeight: "var(--salt-text-label-lineHeight)", color: "var(--salt-content-secondary-foreground)", textAlign: "center" }}>{helperText}</div>
       )}
-    </>
+      {helperText && (
+        <div style={{ flexShrink: 0, marginTop: "var(--salt-spacing-100)", fontFamily: "var(--salt-text-label-fontFamily)", fontStyle: "italic", fontSize: "var(--salt-text-label-fontSize)", lineHeight: "var(--salt-text-label-lineHeight)", color: "var(--salt-content-secondary-foreground)", textAlign: "left" }}>{helperText}</div>
+      )}
+    </div>
   );
 
   return (
-    <div style={{ width: "100%", ...style }}>
+    <div style={{ width: "100%", display: "flex", flexDirection: "column", minHeight: 0, ...style }}>
       {scrollToLatest && (
         <div style={{ display: "flex", justifyContent: "center", marginBottom: 4 }}>
           <Button appearance="bordered" sentiment="neutral" onClick={onScrollToLatest} style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-50)", borderRadius: "var(--salt-palette-corner-pill, 999px)" }}>
@@ -459,3 +463,4 @@ export function PromptInput({
     </div>
   );
 }
+
