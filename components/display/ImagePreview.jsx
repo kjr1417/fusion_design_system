@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const CopyIcon = () => (
   <svg viewBox="0 0 12 12" fill="currentColor" width="14" height="14" aria-hidden="true">
@@ -62,6 +62,16 @@ export function ImagePreview({ src, alt = "", images, index = 0, maxHeight = 320
 
   const gallery = images && images.length > 1 ? images : null;
   const current = gallery ? gallery[dialogIndex] : { src, alt };
+
+  useEffect(() => {
+    if (!expanded || !gallery) return;
+    const onKeyDown = (e) => {
+      if (e.key === "ArrowLeft") setDialogIndex((v) => Math.max(0, v - 1));
+      else if (e.key === "ArrowRight") setDialogIndex((v) => Math.min(gallery.length - 1, v + 1));
+    };
+    document.addEventListener("keydown", onKeyDown, true);
+    return () => document.removeEventListener("keydown", onKeyDown, true);
+  }, [expanded, gallery]);
 
   const handleCopy = async (e) => {
     e.stopPropagation();
