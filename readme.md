@@ -77,7 +77,7 @@ Location: `components/<group>/<Name>.jsx` + `.d.ts` + `.prompt.md`. 120+ compone
 - **Forms** — `Input`, `MultilineInput`, `Checkbox`, `CheckboxGroup`, `FormField`, `SectionHeader`, `RadioButton`, `RadioButtonGroup`, `Switch`, `Textarea`, `Dropdown`, `ComboBox`, `ComboBoxMetadataOverlay`, `ComboBoxTreeOverlay`, `Slider`, `ToggleButtonGroup`, `SegmentedButtonGroup`, `OmniInput`, `FileUpload`, `Toggletip`, `SelectableCard`, `DatePicker`, `RangeDatePicker`, `Calendar`, `TimeInput`, `NumberInput`, `CurrencyInput`
 - **Display** — `Card`, `InteractableCard`, `ContentCard`, `Carousel`, `Panel`, `Text` (`H1`–`H4`), `ExpandableText`, `Avatar`, `Divider`, `Tabs`, `Accordion`, `List`, `Tag`, `LinkCard`, `Table`/`TableHead`/`TableBody`/`TableRow`/`TableCell`, `Menu`, `CodeBlock`, `ImagePreview`
 - **Data** — `FileResultsGrid`, `StaticList`, `StaticListGroup`
-- **Navigation** — `Breadcrumbs`, `Stepper`, `NavigationItem`, `ProgressTracker`, `GlobalNav`, `AppHeader`, `PageHeader`, `SubHeader`, `VerticalNavigation`, `NotificationCenter`, `UserPanel`
+- **Navigation** — `Breadcrumbs`, `Stepper`, `NavigationItem`, `ProgressTracker`, `GlobalNav`, `AppHeader`, `PageHeader`, `SubHeader`, `VerticalNavigation`, `VerticalFilter`, `NotificationCenter`, `UserPanel`
 - **Overlays** — `Dialog`, `Drawer`, `SidePanel`, `SidePanelHeader`, `Tooltip`
 - **Chat** — `ChatHeader`, `ChatHistoryPanel`, `ArtifactsPanel`, `ArtifactCard`, `InlineFormCard`, `AnswerComparison`, `PromptInput`, `PromptInputPlanCard`, `ConversationArea`, `AttachmentTile`, `AttachmentTileGroup`
 
