@@ -20,6 +20,8 @@ export interface ChatHeaderProps {
   onViewChange?: (value: string) => void;
   /** Opens the Library/Artifacts panel. */
   onOpenLibrary?: () => void;
+  /** Highlights the Library icon button with the accent fill when the panel is open. */
+  libraryOpen?: boolean;
   onDownload?: () => void;
   style?: React.CSSProperties;
 }

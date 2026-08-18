@@ -27,6 +27,7 @@ export function ChatHeader({
   viewOptions = [{ label: "Chat", value: "Chat" }, { label: "Code", value: "Code" }, { label: "Spec", value: "Spec" }],
   onViewChange,
   onOpenLibrary,
+  libraryOpen = false,
   onDownload,
   style,
 }) {
@@ -56,7 +57,7 @@ export function ChatHeader({
       <div style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-100)", flexShrink: 0 }}>
         <ToggleButtonGroup options={viewOptions} defaultValue={view} onChange={onViewChange} style={{ marginBottom: 0 }} />
         <IconButton appearance="transparent" sentiment="neutral" aria-label="Library" title="Library" onClick={onOpenLibrary}>
-          <ChatIcon name="folder-open" size={16} />
+          <ChatIcon name="folder-open" size={16} color={libraryOpen ? "var(--salt-palette-accent)" : undefined} />
         </IconButton>
         <IconButton appearance="transparent" sentiment="neutral" aria-label="Download chat" title="Download chat" onClick={onDownload}>
           <ChatIcon name="download" size={16} />
