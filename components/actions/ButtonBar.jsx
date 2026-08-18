@@ -186,7 +186,7 @@ export function ButtonBar({
                     <OverflowIcon />
                   </IconButton>
                   {overflowOpen && menuRect ? ReactDOM.createPortal(
-                    <div className="saltMenuPanel" role="menu" style={{ position: "fixed", top: menuRect.top, right: menuRect.right, zIndex: 10000 }}>
+                    <div className="salt-theme saltMenuPanel" role="menu" style={{ position: "fixed", top: menuRect.top, right: menuRect.right, zIndex: 10000 }}>
                       <div className="saltMenuPanel-container">
                         {collapsibleActions.map((a, i) => (
                           <div
