@@ -19,14 +19,33 @@ a:hover{color:var(--salt-color-blue-700)}
 .ai-composer-mount>.sc-host-x{display:flex!important;flex-direction:column!important;min-height:0!important;flex:0 0 auto!important;width:100%}
 .ai-conversation-mount{display:flex;flex-direction:column;min-height:0;flex:1 1 auto}
 .ai-conversation-mount>.sc-host-x{display:flex!important;flex-direction:column!important;min-height:0!important;flex:1 1 auto!important;width:100%;height:100%;overflow:hidden!important}
+.ai-main{margin:8px 16px 16px 16px;min-width:360px}
+.ai-main.panel-open{margin-right:0}
+.ai-main.rail-collapsed{margin-left:8px}
+.ai-history-mount.collapsed>.sc-host-x{margin-left:8px}
 </style>
 </helmet>
 <div class="salt-theme salt-density-low" style="height:100vh;overflow:hidden;background:var(--salt-palette-background-secondary);font-family:var(--salt-text-fontFamily);color:var(--salt-content-primary-foreground);display:flex;flex-direction:column">
 <x-import component-from-global-scope="FusionDesignSystem_6db751.GlobalNav" hint-size="100%,68px" style="flex-shrink:0"></x-import>
 <div style="display:flex;flex:1;min-height:0;position:relative">
-<x-import component-from-global-scope="FusionDesignSystem_6db751.ChatHistoryPanel" groups="{{ historyGroups }}" onNewChat="{{ newChat }}" collapsed="{{ sidebarCollapsed }}" onCollapsedChange="{{ onSidebarCollapsedChange }}" hint-size="300px,100%" style="flex-shrink:0"></x-import>
-<main style="flex:1;min-width:0;display:flex;flex-direction:column;background:#FFFFFF;border-radius:var(--salt-palette-corner-stronger);box-shadow:var(--salt-overlayable-shadow);margin:8px 16px 16px 16px;position:relative;z-index:2;min-height:0;overflow:hidden">
-<x-import component-from-global-scope="FusionDesignSystem_6db751.ChatHeader" title="{{ chatTitle }}" onTitleChange="{{ onTitleChange }}" onOpenLibrary="{{ openLibrary }}" onDownload="{{ downloadChat }}" hint-size="100%,44px" style="flex-shrink:0;position:relative;z-index:2;padding:0 24px;border-bottom:1px solid var(--salt-separable-secondary-borderColor);background:var(--salt-container-primary-background)"></x-import>
+<div class="{{ historyMountClass }}" style="flex-shrink:0"><x-import component-from-global-scope="FusionDesignSystem_6db751.ChatHistoryPanel" groups="{{ historyGroups }}" onNewChat="{{ newChat }}" collapsed="{{ sidebarCollapsed }}" onCollapsedChange="{{ onSidebarCollapsedChange }}" searchValue="{{ historySearch }}" onSearchChange="{{ onHistorySearchChange }}" hint-size="300px,100%" style="flex-shrink:0"></x-import></div>
+<main class="ai-main {{ mainExtraClass }} {{ mainRailClass }}" style="flex:1;min-width:0;display:flex;flex-direction:column;background:#FFFFFF;border-radius:var(--salt-palette-corner-stronger);box-shadow:var(--salt-overlayable-shadow);position:relative;z-index:2;min-height:0;overflow:hidden">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.ChatHeader" title="{{ chatTitle }}" onTitleChange="{{ onTitleChange }}" onOpenLibrary="{{ toggleLibrary }}" libraryOpen="{{ libraryOpen }}" onDownload="{{ downloadChat }}" hint-size="100%,44px" style="flex-shrink:0;position:relative;z-index:2;padding:0 24px;border-bottom:1px solid var(--salt-separable-secondary-borderColor);background:var(--salt-container-primary-background)"></x-import>
+<sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1 1 auto;min-height:0;overflow:auto;display:flex;flex-direction:column">
+<div style="flex-basis:20%;flex-shrink:0"></div>
+<div style="display:flex;flex-direction:column;align-items:center;padding:0 var(--salt-spacing-200)">
+<div style="display:flex;flex-direction:column;align-items:center;width:100%;max-width:700px;min-width:400px;box-sizing:border-box">
+<div style="font-family:var(--salt-text-display2-fontFamily);font-weight:var(--salt-text-display2-fontWeight);font-size:var(--salt-text-display2-fontSize);line-height:var(--salt-text-display2-lineHeight);color:var(--salt-content-primary-foreground);text-align:center">{{ welcomeTitle }}</div>
+<div style="margin-top:var(--salt-spacing-100);font-family:var(--salt-text-h2-fontFamily);font-weight:var(--salt-text-h2-fontWeight);font-size:var(--salt-text-h2-fontSize);line-height:var(--salt-text-h2-lineHeight);color:var(--salt-content-secondary-foreground);text-align:center">{{ welcomeDescription }}</div>
+<div style="margin-top:var(--salt-spacing-800);width:100%">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.PromptInput" value="{{ draft }}" onChange="{{ onDraftChange }}" onSend="{{ onSend }}" helperText="{{ composerHelperText }}" hint-size="100%,150px" style="width:100%"></x-import>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ isChat }}" hint-placeholder-val="{{ true }}">
 <div style="flex:1 1 auto;min-height:0;display:flex;flex-direction:column;overflow:hidden;padding:0 24px">
 <div class="ai-conversation-mount" style="max-width:820px;width:100%;margin:0 auto">
 <x-import component-from-global-scope="FusionDesignSystem_6db751.ConversationArea" messages="{{ messages }}" onCopyMessage="{{ onCopyMessage }}" onSubmitEdit="{{ onSubmitEdit }}" onChangeVersion="{{ onChangeVersion }}" onSelectComparisonOption="{{ onSelectComparisonOption }}" onRetryMessage="{{ onRetryMessage }}" onFeedback="{{ onFeedback }}" onDownloadMessage="{{ onDownloadMessage }}" onAtBottomChange="{{ onAtBottomChange }}" scrollToBottomSignal="{{ scrollNonce }}" hint-size="100%,100%" style="flex:1 1 auto;min-height:0;width:100%;display:flex;flex-direction:column"></x-import>
@@ -37,8 +56,41 @@ a:hover{color:var(--salt-color-blue-700)}
 <x-import component-from-global-scope="FusionDesignSystem_6db751.PromptInput" value="{{ draft }}" onChange="{{ onDraftChange }}" onSend="{{ onSend }}" helperText="{{ composerHelperText }}" scrollToLatest="{{ showScrollToLatest }}" onScrollToLatest="{{ scrollToLatest }}" hint-size="100%,150px" style="width:100%;min-height:0;flex:1 1 auto" overlay="{{ requirementsOverlay }}"></x-import>
 </div>
 </div>
+</sc-if>
 </main>
-<x-import component-from-global-scope="FusionDesignSystem_6db751.ArtifactsPanel" open="{{ libraryOpen }}" onClose="{{ closeLibrary }}" artifacts="{{ artifacts }}" onDownloadAll="{{ downloadAllArtifacts }}" onDownload="{{ downloadArtifact }}" hint-size="0px,0px"></x-import>
+<sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+<div style="flex:0 1 {{ previewWidthPx }}px;min-width:320px;max-width:640px;margin:8px 16px 16px 16px;background:#FFFFFF;border-radius:var(--salt-palette-corner-stronger);box-shadow:var(--salt-overlayable-shadow);display:flex;flex-direction:column;overflow:hidden;position:relative;z-index:2">
+<div onPointerDown="{{ startPreviewResize }}" role="separator" aria-orientation="vertical" aria-label="Resize panel" style="position:absolute;top:0;bottom:0;left:-8px;width:12px;cursor:col-resize;z-index:3"></div>
+<div style="flex:1;min-height:0;display:flex;flex-direction:column;padding:var(--salt-spacing-200)">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.SidePanelHeader" title="{{ panelTitle }}" secondary-info="{{ panelSecondaryInfo }}" onClose="{{ closeSidePanel }}" onBack="{{ panelOnBack }}" description="{{ panelDescription }}" actions="{{ panelActions }}" hint-size="100%,80px"></x-import>
+<sc-if value="{{ previewOpen }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;overflow:auto;margin-top:var(--salt-spacing-200);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--salt-spacing-150);background:var(--salt-palette-background-secondary);border-radius:var(--salt-palette-corner)">
+<span style="display:grid;place-items:center;width:64px;height:64px;border-radius:14px;background:var(--domain-documentation-fill);color:var(--domain-documentation-bold)">{{ previewIcon }}</span>
+<div style="font-size:15px;font-weight:700;color:var(--salt-content-primary-foreground)">{{ previewTitle }}</div>
+<div style="font-size:13px;color:var(--salt-content-secondary-foreground)">Preview not available — download the file to view its contents.</div>
+</div>
+</sc-if>
+<sc-if value="{{ libraryListOpen }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;overflow:auto;margin-top:var(--salt-spacing-200)">
+<sc-if value="{{ libraryEmpty }}" hint-placeholder-val="{{ false }}">
+<div style="padding:24px 0;font-size:13px;color:var(--salt-content-secondary-foreground);text-align:center">Artifacts you create in this conversation will appear here.</div>
+</sc-if>
+<sc-for list="{{ artifactRows }}" as="a" hint-placeholder-count="2">
+<div style="padding:var(--salt-spacing-150) 0;border-bottom:1px solid var(--salt-separable-secondary-borderColor)">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.ArtifactCard" title="{{ a.title }}" description="{{ a.description }}" action-label="View" onAction="{{ a.onView }}" secondary-action="{{ a.downloadButton }}" hint-size="100%,60px"></x-import>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ libraryDetailOpen }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;overflow:auto;margin-top:var(--salt-spacing-200);font-size:14px;line-height:1.6;color:var(--salt-content-primary-foreground)">
+<div style="font-size:13px;color:var(--salt-content-secondary-foreground);margin-bottom:var(--salt-spacing-200)">{{ librarySelectedDescription }}</div>
+<div style="padding:var(--salt-spacing-300);text-align:center;border:1px dashed var(--salt-separable-secondary-borderColor);border-radius:var(--salt-palette-corner-weaker);color:var(--salt-content-secondary-foreground);font-size:13px">Artifact preview — {{ librarySelectedTitle }}</div>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
 </div>
 </div>
 </x-dc>
@@ -64,6 +116,12 @@ class Component extends DCLogic {
       draft: '',
       atBottom: true,
       scrollNonce: 0,
+      isWelcome: false,
+      previewOpen: false,
+      previewArtifact: null,
+      previewWidth: 560,
+      librarySelected: null,
+      historySearch: '',
     };
   }
 
@@ -71,6 +129,10 @@ class Component extends DCLogic {
     if (this.props && this.props.enableClarifyingQuestions === false) setTimeout(() => this.startBuild(), 400);
   }
 
+  dsIcon(name, size = 20) {
+    const url = `url(../../icons/${name}.svg)`;
+    return React.createElement('span', { style: { display: 'inline-block', width: size, height: size, flexShrink: 0, background: 'currentColor', WebkitMask: `${url} center/contain no-repeat`, mask: `${url} center/contain no-repeat` } });
+  }
   agentNameFor(props) { return (props && props.agentName) || 'Builder_Agent_v2'; }
   agentName() { return this.agentNameFor(this.props); }
   now() { const d = new Date(); let h = d.getHours(); const m = d.getMinutes(); const ap = h >= 12 ? 'pm' : 'am'; h = h % 12 || 12; return h + ':' + (m < 10 ? '0' + m : m) + ap; }
@@ -166,7 +228,7 @@ class Component extends DCLogic {
       ] },
       { type: 'image', imageSrc: 'https://picsum.photos/seed/aichat-wide/900/380', imageAlt: 'Weekly triage volume' },
       { type: 'image', imageSrc: 'https://picsum.photos/seed/aichat-square/560/560', imageAlt: 'Theme distribution' },
-      { type: 'artifact', artifact: { eyebrow: 'Report', title: 'Advisory Desk Email Summary.pdf', description: 'Generated from the 60-day mailbox export', items: [{ label: 'Size', value: '2.1 MB' }, { label: 'Created', value: 'Aug 17, 2026' }], actionLabel: 'View', onDownload: () => {} } },
+      { type: 'artifact', artifact: { eyebrow: 'Report', title: 'Advisory Desk Email Summary.pdf', description: 'Generated from the 60-day mailbox export', items: [{ label: 'Size', value: '2.1 MB' }, { label: 'Created', value: 'Aug 17, 2026' }], actionLabel: 'View', onDownload: () => {}, onAction: () => this.openPreview({ title: 'Advisory Desk Email Summary.pdf', secondaryInfo: 'PDF · 2.1 MB', description: 'Generated from the 60-day mailbox export' }) } },
       { type: 'comparison', comparisonOptions: [
         { label: 'Option A — concise', text: "12 items flagged Platinum. Escalate before Friday's sync." },
         { label: 'Option B — detailed', text: "12 items across 8 themes are flagged Platinum tier — escalate all 12 before Friday's leadership sync." },
@@ -193,7 +255,7 @@ class Component extends DCLogic {
   sendMessage(text) {
     const t = (text || '').trim();
     if (!t) return;
-    this.setState((s) => ({ messages: [...s.messages, { role: 'user', text: t }, { role: 'typing', name: this.agentName(), labels: ['Reviewing your request…', 'Checking the latest report…', 'Drafting a reply…'] }], draft: '' }));
+    this.setState((s) => ({ isWelcome: false, messages: [...s.messages, { role: 'user', text: t }, { role: 'typing', name: this.agentName(), labels: ['Reviewing your request…', 'Checking the latest report…', 'Drafting a reply…'] }], draft: '' }));
     setTimeout(() => {
       this.setState((s) => {
         const messages = s.messages.filter((m) => m.role !== 'typing');
@@ -206,17 +268,41 @@ class Component extends DCLogic {
   }
 
   newChat() {
-    this.setState({ activeChat: -1, pendingQuestion: null, draft: '', messages: [
-      { role: 'agent', name: this.agentName(), time: this.now(), text: 'New chat started. What would you like to build, analyze, or discover today?' },
-    ] });
+    this.setState({ activeChat: -1, isWelcome: true, previewOpen: false, pendingQuestion: null, draft: '', messages: [] });
   }
 
   selectChat(i) {
     const title = this.state.chats[i];
-    this.setState({ activeChat: i, pendingQuestion: null, draft: '', messages: [
+    this.setState({ activeChat: i, isWelcome: false, previewOpen: false, pendingQuestion: null, draft: '', messages: [
       { role: 'user', text: title },
       { role: 'agent', name: this.agentName(), time: this.now(), text: 'Sure — here\u2019s a starting point for \u201C' + title + '\u201D. Ask me to go deeper on any part, or send a follow-up below.' },
     ] });
+  }
+
+  openPreview(artifact) { this.setState({ previewOpen: true, previewArtifact: artifact, libraryOpen: false, librarySelected: null }); }
+  closePreview() { this.setState({ previewOpen: false }); }
+  openLibrary() { this.setState({ libraryOpen: true, librarySelected: null, previewOpen: false }); }
+  closeLibrary() { this.setState({ libraryOpen: false, librarySelected: null }); }
+  selectLibraryItem(a) { this.setState({ librarySelected: a }); }
+  backLibrary() { this.setState({ librarySelected: null }); }
+  startPreviewResize(e) {
+    e.preventDefault();
+    const startX = e.clientX;
+    const startWidth = this.state.previewWidth || 560;
+    const onMove = (ev) => {
+      const next = Math.min(640, Math.max(320, startWidth + (startX - ev.clientX)));
+      this.setState({ previewWidth: next });
+    };
+    const onUp = () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
   }
 
   editMessage(i, text) { this.setState((s) => ({ messages: s.messages.map((m, idx) => idx === i ? { ...m, text } : m) })); }
@@ -275,10 +361,13 @@ class Component extends DCLogic {
       newChat: () => this.newChat(),
       sidebarCollapsed: S.sidebarCollapsed,
       onSidebarCollapsedChange: (v) => this.setState({ sidebarCollapsed: v }),
+      historySearch: S.historySearch,
+      onHistorySearchChange: (v) => this.setState({ historySearch: v }),
       chatTitle: S.activeChat === -1 ? 'New chat' : (S.chats[S.activeChat] || 'Advisory desk triage'),
       onTitleChange: () => {},
-      openLibrary: () => this.setState({ libraryOpen: true }),
-      closeLibrary: () => this.setState({ libraryOpen: false }),
+      openLibrary: () => this.openLibrary(),
+      closeLibrary: () => this.closeLibrary(),
+      toggleLibrary: () => (S.libraryOpen ? this.closeLibrary() : this.openLibrary()),
       libraryOpen: S.libraryOpen,
       downloadChat: () => {},
       artifacts: this.artifacts(),
@@ -286,6 +375,41 @@ class Component extends DCLogic {
       downloadArtifact: () => {},
       requirementsOverlay: this.requirementsOverlay(),
       composerHelperText: 'Fusion can make mistakes. Verify important information.',
+      isWelcome: S.isWelcome,
+      isChat: !S.isWelcome,
+      welcomeTitle: 'New chat',
+      welcomeDescription: 'What would you like to build, analyze, or discover today?',
+      mainExtraClass: (S.previewOpen || S.libraryOpen) ? 'panel-open' : '',
+      mainRailClass: S.sidebarCollapsed ? 'rail-collapsed' : '',
+      historyMountClass: 'ai-history-mount' + (S.sidebarCollapsed ? ' collapsed' : ''),
+      panelOpen: S.previewOpen || S.libraryOpen,
+      previewOpen: S.previewOpen,
+      previewTitle: (S.previewArtifact && S.previewArtifact.title) || '',
+      previewSecondaryInfo: (S.previewArtifact && S.previewArtifact.secondaryInfo) || '',
+      previewDescription: (S.previewArtifact && S.previewArtifact.description) || '',
+      previewIcon: this.dsIcon('document', 28),
+      closePreview: () => this.closePreview(),
+      previewWidthPx: S.previewWidth,
+      startPreviewResize: (e) => this.startPreviewResize(e),
+      libraryListOpen: S.libraryOpen && !S.librarySelected,
+      libraryDetailOpen: S.libraryOpen && !!S.librarySelected,
+      libraryEmpty: this.artifacts().length === 0,
+      librarySelectedTitle: (S.librarySelected && S.librarySelected.title) || '',
+      librarySelectedDescription: (S.librarySelected && S.librarySelected.description) || '',
+      artifactRows: this.artifacts().map((a) => {
+        const IconButton = window.FusionDesignSystem_6db751 && window.FusionDesignSystem_6db751.IconButton;
+        return {
+          ...a,
+          onView: () => this.selectLibraryItem(a),
+          downloadButton: IconButton ? React.createElement(IconButton, { appearance: 'transparent', sentiment: 'neutral', 'aria-label': 'Download ' + a.title, title: 'Download' }, this.dsIcon('download', 16)) : null,
+        };
+      }),
+      panelTitle: S.previewOpen ? ((S.previewArtifact && S.previewArtifact.title) || '') : (S.librarySelected ? S.librarySelected.title : 'Library'),
+      panelSecondaryInfo: S.previewOpen ? ((S.previewArtifact && S.previewArtifact.secondaryInfo) || '') : '',
+      panelDescription: S.previewOpen ? ((S.previewArtifact && S.previewArtifact.description) || '') : '',
+      panelOnBack: (S.libraryOpen && S.librarySelected) ? (() => this.backLibrary()) : undefined,
+      panelActions: S.previewOpen ? [] : (S.librarySelected ? [{ label: 'Download' }] : [{ label: 'Download All' }]),
+      closeSidePanel: () => { this.closePreview(); this.closeLibrary(); },
     };
   }
 }
