@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Form Wizard" description="Multi-step form shell: a collapsible ProgressTracker side rail (Vertical Nav Item L0 + L1/Child anatomy) driving a card of step fields, with Back/Continue actions." -->
+<helmet>
+<script src="./ds-base.js"></script>
+<link rel="stylesheet" href="../../components/navigation/AppHeader.css">
+<link rel="stylesheet" href="../../components/navigation/Breadcrumbs.css">
+<style>*{box-sizing:border-box}.fw-shell a{color:var(--salt-content-accent-foreground)}.fw-shell a:hover{color:var(--salt-color-blue-700)}</style>
+</helmet>
+<div class="salt-theme salt-density-low fw-shell" style="min-height:100vh;background:var(--salt-palette-background-secondary);font-family:var(--salt-text-fontFamily);color:var(--salt-content-primary-foreground);display:flex;flex-direction:column">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.GlobalNav" hint-size="100%,68px" style="flex-shrink:0"></x-import>
+<x-import component-from-global-scope="FusionDesignSystem_6db751.AppHeader" breadcrumb-items="{{ breadcrumbItems }}" hint-size="100%,44px" style="flex-shrink:0;padding:0 24px;border-bottom:1px solid var(--salt-separable-secondary-borderColor);background:var(--salt-container-primary-background)"></x-import>
+<div style="flex:1;min-height:0;overflow:auto;padding:40px;display:flex;justify-content:center">
+<div style="width:100%;max-width:920px;display:flex;flex-direction:column;gap:24px">
+<div>
+<h1 style="margin:0 0 4px;font-size:30px;font-weight:800;letter-spacing:-.01em">{{ title }}</h1>
+<p style="margin:0;font-size:17px;line-height:1.5;color:var(--salt-content-secondary-foreground)">{{ description }}</p>
+</div>
+<div style="display:grid;grid-template-columns:240px 1fr;gap:32px;align-items:start">
+<div style="width:240px;height:480px;flex-shrink:0">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.ProgressTracker" header-title="{{ title }}" steps="{{ steps }}" active-step="{{ step }}" on-step-click="{{ goTo }}" dock="left" hint-size="240px,480px"></x-import>
+</div>
+<x-import component-from-global-scope="FusionDesignSystem_6db751.Card" hint-size="100%,480px" style="border-radius:16px;padding:36px 40px;display:flex;flex-direction:column;gap:24px">
+
+<sc-if value="{{ isStep0 }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<h2 style="margin:0;font-size:22px;font-weight:700">Metadata</h2>
+<x-import component-from-global-scope="FusionDesignSystem_6db751.FormField" label="Name" hint-size="100%,64px">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.Input" default-value="Customer Support FAQ" hint-size="100%,36px"></x-import>
+</x-import>
+<x-import component-from-global-scope="FusionDesignSystem_6db751.FormField" label="Description" hint-size="100%,96px">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.Textarea" placeholder="Describe the content, audience, and scope of this knowledge base" hint-size="100%,80px"></x-import>
+</x-import>
+<x-import component-from-global-scope="FusionDesignSystem_6db751.FormField" label="Restricted" hint-size="100%,32px">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.Switch" label="Enable restricted access" hint-size="220px,24px"></x-import>
+</x-import>
+</div>
+</sc-if>
+
+<sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<h2 style="margin:0;font-size:22px;font-weight:700">Ownership</h2>
+<x-import component-from-global-scope="FusionDesignSystem_6db751.FormField" label="Data publisher" hint-size="100%,64px">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.Dropdown" options="{{ publisherOptions }}" default-value="cdao" hint-size="100%,36px"></x-import>
+</x-import>
+<x-import component-from-global-scope="FusionDesignSystem_6db751.FormField" label="Approvers" helper-text="Notified when the knowledge base is published" hint-size="100%,64px">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.Input" placeholder="Add approvers by name or email" hint-size="100%,36px"></x-import>
+</x-import>
+</div>
+</sc-if>
+
+<sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<h2 style="margin:0;font-size:22px;font-weight:700">Connect data</h2>
+<x-import component-from-global-scope="FusionDesignSystem_6db751.FormField" label="Data source" hint-size="100%,64px">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.Dropdown" options="{{ sourceOptions }}" placeholder="Select a source" hint-size="100%,36px"></x-import>
+</x-import>
+<x-import component-from-global-scope="FusionDesignSystem_6db751.Checkbox" label="Re-index automatically when the source updates" hint-size="100%,24px"></x-import>
+</div>
+</sc-if>
+
+<sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<h2 style="margin:0;font-size:22px;font-weight:700">Review</h2>
+<p style="margin:0;font-size:16px;line-height:1.6;color:var(--salt-content-secondary-foreground)">Confirm the details below, then create the knowledge base. You can edit any step from the tracker on the left.</p>
+</div>
+</sc-if>
+
+<div style="flex:1"></div>
+<div style="display:flex;justify-content:space-between;padding-top:20px;border-top:1px solid var(--salt-separable-secondary-borderColor)">
+<x-import component-from-global-scope="FusionDesignSystem_6db751.Button" appearance="bordered" sentiment="neutral" onClick="{{ back }}" disabled="{{ isStep0 }}" hint-size="90px,36px">Back</x-import>
+<x-import component-from-global-scope="FusionDesignSystem_6db751.Button" appearance="solid" sentiment="accented" onClick="{{ next }}" hint-size="120px,36px">{{ continueLabel }}</x-import>
+</div>
+</x-import>
+</div>
+</div>
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { step: 0 };
+  goTo(i) { this.setState({ step: i }); }
+  renderVals() {
+    const step = this.state.step;
+    return {
+      breadcrumbItems: [{ label: 'Studio' }, { label: 'Knowledge Bases' }, { label: 'Create Knowledge Base' }],
+      title: 'Create Knowledge Base',
+      description: 'A knowledge base grounds your agent in your team\'s own documents and data.',
+      step,
+      isStep0: step === 0,
+      isStep1: step === 1,
+      isStep2: step === 2,
+      isStep3: step === 3,
+      continueLabel: step === 3 ? 'Create' : 'Continue',
+      goTo: (i) => this.goTo(i),
+      back: () => this.setState((s) => ({ step: Math.max(0, s.step - 1) })),
+      next: () => this.setState((s) => ({ step: Math.min(3, s.step + 1) })),
+      steps: [
+        { label: 'Metadata', status: step > 0 ? 'complete' : 'active' },
+        { label: 'Ownership', status: step > 1 ? 'complete' : step === 1 ? 'active' : 'todo', children: ['Data publisher', 'Approvers'] },
+        { label: 'Connect Data', status: step > 2 ? 'complete' : step === 2 ? 'active' : 'todo' },
+        { label: 'Review', status: step === 3 ? 'active' : 'todo' },
+      ],
+      publisherOptions: [
+        { label: 'CDAO Data Engineering', value: 'cdao' },
+        { label: 'Markets Tech', value: 'markets' },
+        { label: 'Risk Analytics', value: 'risk' },
+      ],
+      sourceOptions: [
+        { label: 'SharePoint', value: 'sharepoint' },
+        { label: 'Confluence', value: 'confluence' },
+        { label: 'S3 bucket', value: 's3' },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>
