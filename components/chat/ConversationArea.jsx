@@ -237,7 +237,7 @@ const TOOLBAR_SAFE_HEIGHT = TOOLBAR_HEIGHT + TOOLBAR_GAP;
 const EDIT_BOX_COLOR = "#DCF7F7";
 const EDIT_TAG_COLOR = "#2A8285";
 
-function UserMessage({ m, i, onCopy, onSubmitEdit, onChangeVersion }) {
+function UserMessage({ m, i, onCopy, onSubmitEdit, onChangeVersion, rowRef }) {
   const { IconButton, Link, Button, Tag, Textarea } = window.FusionDesignSystem_6db751;
   const [hovered, setHovered] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -269,6 +269,7 @@ function UserMessage({ m, i, onCopy, onSubmitEdit, onChangeVersion }) {
 
   return (
     <div
+      ref={rowRef}
       style={{ paddingLeft: 140, paddingRight: "var(--salt-spacing-200)", boxSizing: "border-box", display: "flex", flexDirection: "column", alignItems: "flex-end", position: "relative", paddingBottom: TOOLBAR_SAFE_HEIGHT, marginBottom: -TOOLBAR_SAFE_HEIGHT }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -363,7 +364,7 @@ function AgentMessage({ m, i, onCopy, onRetry, onFeedback, onDownload, onSelectC
   );
 }
 
-function MessageRow({ m, i, onCopyMessage, onSubmitEdit, onChangeVersion, onSelectComparisonOption, onRetryMessage, onFeedback, onDownloadMessage, agentPad, Spinner }) {
+function MessageRow({ m, i, onCopyMessage, onSubmitEdit, onChangeVersion, onSelectComparisonOption, onRetryMessage, onFeedback, onDownloadMessage, agentPad, Spinner, rowRef }) {
   if (m.role === "user") return (
     <UserMessage
       i={i}
@@ -371,6 +372,7 @@ function MessageRow({ m, i, onCopyMessage, onSubmitEdit, onChangeVersion, onSele
       onCopy={onCopyMessage}
       onSubmitEdit={onSubmitEdit}
       onChangeVersion={onChangeVersion}
+      rowRef={rowRef}
     />
   );
   if (m.role === "agent") return (
@@ -578,6 +580,11 @@ function groupTestModeRuns(messages) {
  * Autoscrolls to the latest message. No header or composer of its own
  * — pair with ChatHeader above and PromptInput below inside
  * ChatLayout's central panel.
+ * Pass `scrollToLatest` (with `onScrollToLatest`) to float a "Scroll to
+ * Latest" button over the bottom of the message list — content scrolls
+ * behind it, cut off only where the button sits. Drive `scrollToLatest`
+ * from `onAtBottomChange`'s `!atBottom`, and `onScrollToLatest` by
+ * bumping `scrollToBottomSignal`.
  * Pass `onCopyMessage` to wire the hover toolbar's Copy button — it
  * swaps to a checkmark and "Copied" title for 1.5s after click.
  * Pass `onSubmitEdit` to enable the Edit button — clicking it swaps
@@ -626,8 +633,8 @@ function groupTestModeRuns(messages) {
  * blocks) loaded once per page.
  */
 export { ResponseContent };
-export function ConversationArea({ messages = [], emptyState, onCopyMessage, onSubmitEdit, onChangeVersion, onSelectComparisonOption, onRetryMessage, onFeedback, onDownloadMessage, onAtBottomChange, scrollToBottomSignal, style }) {
-  const { Spinner } = window.FusionDesignSystem_6db751;
+export function ConversationArea({ messages = [], emptyState, onCopyMessage, onSubmitEdit, onChangeVersion, onSelectComparisonOption, onRetryMessage, onFeedback, onDownloadMessage, onAtBottomChange, scrollToBottomSignal, scrollToLatest = false, onScrollToLatest, style }) {
+  const { Spinner, Button } = window.FusionDesignSystem_6db751;
   const scrollRef = useRef(null);
   const atBottomRef = useRef(true);
   const [viewportHeight, setViewportHeight] = useState(null);
@@ -666,23 +673,47 @@ export function ConversationArea({ messages = [], emptyState, onCopyMessage, onS
   }, []);
 
   const agentPad = { paddingLeft: "var(--salt-spacing-200)", paddingRight: "var(--salt-spacing-200)" };
-  const rowProps = { onCopyMessage, onSubmitEdit, onChangeVersion, onSelectComparisonOption, onRetryMessage, onFeedback, onDownloadMessage, Spinner };
+  const rowRefs = useRef({});
+  const handleChangeVersion = (m, newVersion, i) => {
+    const el = rowRefs.current[i];
+    const before = el ? el.getBoundingClientRect().top : null;
+    atBottomRef.current = false;
+    onChangeVersion && onChangeVersion(m, newVersion, i);
+    requestAnimationFrame(() => {
+      const elAfter = rowRefs.current[i];
+      if (elAfter && before != null && scrollRef.current) {
+        const after = elAfter.getBoundingClientRect().top;
+        scrollRef.current.scrollTop += (after - before);
+      }
+    });
+  };
+  const rowProps = { onCopyMessage, onSubmitEdit, onChangeVersion: handleChangeVersion, onSelectComparisonOption, onRetryMessage, onFeedback, onDownloadMessage, Spinner };
   const groups = groupTestModeRuns(messages);
 
   return (
-    <div ref={scrollRef} style={{ flex: 1, minHeight: 0, overflowY: "auto", paddingTop: "var(--salt-spacing-200)", paddingBottom: "var(--salt-spacing-200)", fontFamily: "var(--salt-text-fontFamily)", ...style }}>
-      <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "var(--salt-spacing-450)" }}>
-        {messages.length === 0 && emptyState}
-        {groups.map((g, gi) => {
-          if (g.type === "test") return <TestModeGroup key={gi} messages={g.messages} startIndex={g.startIndex} rowProps={rowProps} viewportHeight={viewportHeight} />;
-          if (g.type === "status") return (
-            <div key={gi} style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-100)" }}>
-              {g.messages.map((m, gj) => <MessageRow key={gj} m={m} i={g.startIndex + gj} {...rowProps} agentPad={agentPad} />)}
-            </div>
-          );
-          return <MessageRow key={gi} m={g.message} i={g.index} {...rowProps} agentPad={agentPad} />;
-        })}
+    <div style={{ position: "relative", flex: 1, minHeight: 0, display: "flex", flexDirection: "column", ...style }}>
+      <div ref={scrollRef} style={{ flex: 1, minHeight: 0, overflowY: "auto", paddingTop: "var(--salt-spacing-200)", paddingBottom: "var(--salt-spacing-200)", fontFamily: "var(--salt-text-fontFamily)" }}>
+        <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "var(--salt-spacing-450)" }}>
+          {messages.length === 0 && emptyState}
+          {groups.map((g, gi) => {
+            if (g.type === "test") return <TestModeGroup key={gi} messages={g.messages} startIndex={g.startIndex} rowProps={rowProps} viewportHeight={viewportHeight} />;
+            if (g.type === "status") return (
+              <div key={gi} style={{ display: "flex", flexDirection: "column", gap: "var(--salt-spacing-100)" }}>
+                {g.messages.map((m, gj) => <MessageRow key={gj} m={m} i={g.startIndex + gj} {...rowProps} agentPad={agentPad} rowRef={(el) => { rowRefs.current[g.startIndex + gj] = el; }} />)}
+              </div>
+            );
+            return <MessageRow key={gi} m={g.message} i={g.index} {...rowProps} agentPad={agentPad} rowRef={(el) => { rowRefs.current[g.index] = el; }} />;
+          })}
+        </div>
       </div>
+      {scrollToLatest && (
+        <div style={{ position: "absolute", left: "50%", bottom: "var(--salt-spacing-200)", transform: "translateX(-50%)", zIndex: 2, display: "flex", justifyContent: "center" }}>
+          <Button appearance="bordered" sentiment="neutral" onClick={onScrollToLatest} style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-50)", borderRadius: "var(--salt-palette-corner-pill, 999px)", background: "var(--salt-container-primary-background)", boxShadow: "var(--salt-overlayable-shadow)" }}>
+            <ChatIcon name="arrow-down" size={12} />
+            Scroll to Latest
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

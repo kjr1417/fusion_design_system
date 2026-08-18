@@ -132,11 +132,10 @@ function TriggerMenu({ items, onPick, style }) {
  *
  * Pass `banner` (`{ status: "error" | "warning" | "info", message,
  * onDismiss }`) to show a dismissible status banner above the queue/
- * composer. Pass `scrollToLatest` (with `onScrollToLatest`) to show a
- * centered "Scroll to Latest" button above everything else.
+ * composer. The "Scroll to Latest" affordance lives on ConversationArea,
+ * floating above the message list — not here.
  *
- * Pass `testMode` to wrap everything except the Scroll-to-Latest
- * button in a 2px gradient-bordered container (visually distinct from
+ * Pass `testMode` to wrap everything in a 2px gradient-bordered container (visually distinct from
  * the normal composer) with a full-width info banner — tinted with
  * the same gradient at 25% opacity — flush across its top, above even
  * an error `banner`, since that error happened inside the test
@@ -178,8 +177,6 @@ export function PromptInput({
   banner,
   sending = false,
   onCancel,
-  scrollToLatest = false,
-  onScrollToLatest,
   testMode = false,
   testModeMessage = "Test Mode — try prompts against your agent without affecting the live conversation.",
   onExitTestMode,
@@ -434,14 +431,6 @@ export function PromptInput({
 
   return (
     <div style={{ width: "100%", display: "flex", flexDirection: "column", minHeight: 0, ...style }}>
-      {scrollToLatest && (
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: 4 }}>
-          <Button appearance="bordered" sentiment="neutral" onClick={onScrollToLatest} style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-50)", borderRadius: "var(--salt-palette-corner-pill, 999px)" }}>
-            <ChatIcon name="arrow-down" size={12} />
-            Scroll to Latest
-          </Button>
-        </div>
-      )}
       {testMode ? (
         <div style={{ width: "calc(100% + 12px)", margin: "0 -6px", padding: 2, borderRadius: "calc(var(--salt-palette-corner-soft, 24px) + 2px)", background: "linear-gradient(135deg, var(--salt-color-blue-500), var(--salt-color-purple-500), var(--salt-color-teal-500))", boxSizing: "border-box" }}>
           <div style={{ width: "100%", background: "var(--salt-palette-background-secondary)", borderRadius: "var(--salt-palette-corner-soft, 24px)", overflow: "hidden", boxSizing: "border-box" }}>

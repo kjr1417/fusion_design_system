@@ -70,7 +70,6 @@ function App() {
   const [statesFiles, setStatesFiles] = React.useState([{ name: "transcript.pdf", fileType: "pdf", loading: true }]);
   const [statesSending, setStatesSending] = React.useState(false);
   const [statesBanner, setStatesBanner] = React.useState({ status: "error", message: "Something went wrong generating a response. Please try again." });
-  const [statesScrollToLatest, setStatesScrollToLatest] = React.useState(true);
   const [testMode, setTestMode] = React.useState(true);
   const [kbDialogOpen, setKbDialogOpen] = React.useState(false);
 
@@ -109,12 +108,11 @@ function App() {
       />
     </Section>
 
-    <Section label="Composer states — focus border, 3–7 line auto-grow, clear button, banner, sending/stop, uploading attachment, scroll-to-latest">
+    <Section label="Composer states — focus border, 3–7 line auto-grow, clear button, banner, sending/stop, uploading attachment">
       <div style={{ display: "flex", gap: "var(--salt-spacing-100)", marginBottom: 12, flexWrap: "wrap" }}>
         <button onClick={() => setStatesSending((s) => !s)}>{statesSending ? "Stop sending" : "Simulate sending"}</button>
         <button onClick={() => setStatesFiles((f) => f.map((a) => ({ ...a, loading: !a.loading })))}>Toggle upload loading</button>
         <button onClick={() => setStatesBanner((b) => (b ? null : { status: "error", message: "Something went wrong generating a response. Please try again." }))}>{statesBanner ? "Clear banner" : "Show error banner"}</button>
-        <button onClick={() => setStatesScrollToLatest((s) => !s)}>Toggle scroll-to-latest</button>
       </div>
       <PromptInput
         value={statesValue}
@@ -127,8 +125,6 @@ function App() {
         onFilesDropped={(fileList) => setStatesFiles((f) => [...f, ...Array.from(fileList).map((file) => ({ name: file.name }))])}
         onAttachKnowledgeBases={() => setKbDialogOpen(true)}
         banner={statesBanner ? { ...statesBanner, onDismiss: () => setStatesBanner(null) } : undefined}
-        scrollToLatest={statesScrollToLatest}
-        onScrollToLatest={() => setStatesScrollToLatest(false)}
         dropdowns={dropdownsDemo}
       />
     </Section>

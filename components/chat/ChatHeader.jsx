@@ -40,7 +40,7 @@ export function ChatHeader({
   const save = () => { onTitleChange && onTitleChange(draft.trim() || title); setEditing(false); };
 
   return (
-    <div style={{ height: 44, flexShrink: 0, boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--salt-spacing-200)", padding: "0 var(--salt-spacing-200)", borderBottom: "1px solid var(--salt-separable-secondary-borderColor)", background: "var(--salt-container-primary-background)", fontFamily: "var(--salt-text-fontFamily)", ...style }}>
+    <div style={{ height: 44, flexShrink: 0, boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--salt-spacing-200)", padding: "0 var(--salt-spacing-200)", background: "var(--salt-container-primary-background)", fontFamily: "var(--salt-text-fontFamily)", ...style }}>
       <div
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}

@@ -66,10 +66,7 @@ export interface PromptInputProps {
   /** While true, the send button becomes a "Stop" (pause icon) button wired to `onCancel`, for cancelling an in-flight response. */
   sending?: boolean;
   onCancel?: () => void;
-  /** Shows a centered "Scroll to Latest" button above everything else — pair with your ConversationArea's own scroll-position tracking. */
-  scrollToLatest?: boolean;
-  onScrollToLatest?: () => void;
-  /** Wraps everything except the Scroll-to-Latest button in a gradient-bordered container with an info banner on top (shown above even an error `banner`). */
+  /** Wraps everything in a gradient-bordered container with an info banner on top (shown above even an error `banner`). */
   testMode?: boolean;
   testModeMessage?: React.ReactNode;
   /** Shown as a button labeled "Exit Test" inside the Test Mode banner when provided. */

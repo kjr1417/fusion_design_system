@@ -105,6 +105,8 @@ function App() {
   const changeVersion = (m, v, i) => {
     setMessages((prev) => prev.map((msg, idx) => idx === i ? { ...msg, activeVersion: v } : msg));
   };
+  const [atBottom, setAtBottom] = React.useState(true);
+  const [scrollNonce, setScrollNonce] = React.useState(0);
   return <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
     <ConversationArea
       messages={messages}
@@ -114,6 +116,10 @@ function App() {
       onRetryMessage={() => {}}
       onFeedback={(m, sentiment, i) => setMessages((prev) => prev.map((msg, idx) => idx === i ? { ...msg, feedback: sentiment } : msg))}
       onDownloadMessage={() => {}}
+      onAtBottomChange={setAtBottom}
+      scrollToBottomSignal={scrollNonce}
+      scrollToLatest={!atBottom}
+      onScrollToLatest={() => setScrollNonce((n) => n + 1)}
     />
   </div>;
 }
