@@ -23,7 +23,7 @@
   --salt-shadow-low: 0 4px 8px 0 rgba(16, 24, 32, 0.15);
   --salt-shadow-mediumLow: 0 6px 10px 0 rgba(16, 24, 32, 0.2);
   --salt-shadow-medium: 0 12px 40px 0 rgba(16, 24, 32, 0.3);
-  --salt-overlayable-shadow: var(--salt-shadow-lowest);
+  --salt-overlayable-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.10);
   --salt-overlayable-shadow-hover: var(--salt-shadow-low);
   --salt-overlayable-backdrop: rgba(16, 24, 32, 0.5);
 
