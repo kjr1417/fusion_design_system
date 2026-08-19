@@ -20,12 +20,14 @@ html,body{margin:0;overflow:hidden}
 .sr-mrow{border-top:1px solid var(--salt-color-gray-100)}
 .sr-overflow{position:relative;display:inline-flex}
 .sr-overflow-trigger{display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:999px;background:var(--salt-color-gray-100);color:var(--salt-content-secondary-foreground);font-size:12px;font-weight:700;cursor:default}
-.sr-overflow-panel{display:none;flex-direction:column;gap:4px;position:absolute;top:calc(100% + 6px);left:0;z-index:50;background:var(--salt-container-primary-background);border:1px solid var(--salt-color-gray-200);border-radius:10px;box-shadow:var(--salt-overlayable-shadow);padding:8px;min-width:200px}
+.sr-overflow-panel{display:none;flex-direction:column;gap:4px;position:absolute;top:100%;padding-top:6px;left:0;z-index:50;min-width:200px}
+.sr-overflow-panel>div:first-child{background:var(--salt-container-primary-background);border:1px solid var(--salt-color-gray-200);border-radius:10px;box-shadow:var(--salt-overlayable-shadow);padding:8px;display:flex;flex-direction:column;gap:4px}
 .sr-overflow:hover .sr-overflow-panel{display:flex}
 .sr-overflow-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 8px;border-radius:6px;font-size:13px}
 .sr-overflow-row:hover{background:var(--salt-color-gray-100)}
 .sr-overflow-row button{all:unset;cursor:pointer;display:inline-flex;color:var(--salt-content-secondary-foreground)}
 .sr-mrow:first-child{border-top:none}
+.sr-tags-row .saltPill,.sr-tags-measure .saltPill{background:#585858!important;color:#FFFFFF!important}
 .sr-main{margin:8px 16px 16px 16px;min-width:360px}
 .sr-main.panel-open{margin-right:0}
 .sr-dataset{--accent:var(--domain-data-bold);--tileBg:var(--domain-data-fill);--tileFg:var(--domain-data-bold);--eyebrow:var(--domain-data-text);--icon:url(../../icons/database.svg)}
@@ -45,10 +47,10 @@ html,body{margin:0;overflow:hidden}
 <div style="display:flex;flex:1;min-height:0;position:relative">
 
   <aside class="sr-filters-aside" style="background:transparent;border:none;padding:20px">
-    <x-import component-from-global-scope="FusionDesignSystem_6db751.VerticalFilter" groups="{{ vfGroups }}" values="{{ vfValues }}" onChange="{{ vfOnChange }}" onClearAll="{{ vfClearAll }}" hint-size="100%,600px"></x-import>
+    <x-import component-from-global-scope="FusionDesignSystem_6db751.VerticalFilter" show-header="{{ false }}" page-tabs="{{ vfPageTabs }}" selected-page-tab="{{ selectedPageTab }}" on-page-tab-change="{{ onPageTabChange }}" groups="{{ vfGroups }}" values="{{ vfValues }}" onChange="{{ vfOnChange }}" onClearAll="{{ vfClearAll }}" hint-size="100%,600px"></x-import>
   </aside>
 
-  <main class="sr-main {{ mainExtraClass }}" style="flex:1;min-width:0;display:flex;flex-direction:column;background:#FFFFFF;border-radius:var(--salt-palette-corner-stronger);box-shadow:var(--salt-overlayable-shadow);position:relative;z-index:2;min-height:0;overflow:hidden">
+  <main class="sr-main {{ mainExtraClass }}" style="flex:1;min-width:360px;display:flex;flex-direction:column;background:#FFFFFF;border-radius:var(--salt-palette-corner-stronger);box-shadow:var(--salt-overlayable-shadow);position:relative;z-index:2;min-height:0;overflow:hidden">
     <div style="flex:1;min-height:0;overflow-y:auto;padding:28px;display:flex;flex-direction:column;gap:20px">
 
       <div style="display:flex;align-items:center;gap:24px">
@@ -56,32 +58,36 @@ html,body{margin:0;overflow:hidden}
         <x-import component-from-global-scope="FusionDesignSystem_6db751.Input" placeholder="Search Fusion" value="{{ query }}" onChange="{{ onQueryChange }}" startAdornment="{{ searchIcon }}" hint-size="100%,40px" style="flex:1;min-width:0"></x-import>
       </div>
 
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px 20px;flex-wrap:wrap">
-        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;min-height:32px;min-width:0;flex:1 1 300px">
-          <span style="font-size:14px;color:var(--salt-content-secondary-foreground);white-space:nowrap">{{ rangeLabel }} of {{ total }}</span>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:nowrap;min-width:0">
+        <div ref="{{ leftWrapRef }}" style="display:flex;align-items:center;gap:8px;min-height:32px;flex:1 1 auto;min-width:0">
           <sc-if value="{{ hasSelectedFilters }}" hint-placeholder-val="{{ false }}">
-          <div style="display:flex;align-items:center;gap:8px">
-            <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
-              <sc-for list="{{ visibleAppliedFilters }}" as="f" hint-placeholder-count="0">
-                <x-import component-from-global-scope="FusionDesignSystem_6db751.Pill" onClose="{{ f.onRemove }}" hint-size="90px,28px">{{ f.label }}</x-import>
-              </sc-for>
-              <sc-if value="{{ hasOverflow }}" hint-placeholder-val="{{ false }}">
-                <div class="sr-overflow">
-                  <span class="sr-overflow-trigger">+{{ overflowCount }}</span>
-                  <div class="sr-overflow-panel">
-                    <sc-for list="{{ overflowAppliedFilters }}" as="f2" hint-placeholder-count="0">
-                      <div class="sr-overflow-row">
-                        <span>{{ f2.label }}</span>
-                        <button onClick="{{ f2.onRemove }}" aria-label="Remove {{ f2.label }}">{{ closeIcon }}</button>
-                      </div>
-                    </sc-for>
-                  </div>
-                </div>
-              </sc-if>
-            </div>
-            <x-import component-from-global-scope="FusionDesignSystem_6db751.Button" appearance="transparent" sentiment="accented" onClick="{{ resetAllFilters }}" hint-size="90px,32px">Reset ({{ totalSelectedFilters }})</x-import>
+          <div class="sr-tags-row" style="display:flex;align-items:center;gap:4px;overflow:hidden;min-width:0;flex:0 1 auto">
+            <sc-for list="{{ visibleAppliedFilters }}" as="f" hint-placeholder-count="0">
+              <x-import component-from-global-scope="FusionDesignSystem_6db751.Pill" onClose="{{ f.onRemove }}" hint-size="90px,28px" style="flex-shrink:0">{{ f.label }}</x-import>
+            </sc-for>
           </div>
+          <sc-if value="{{ hasOverflow }}" hint-placeholder-val="{{ false }}">
+            <div class="sr-overflow" style="flex-shrink:0">
+              <span class="sr-overflow-trigger">+{{ overflowCount }}</span>
+              <div class="sr-overflow-panel">
+                <div>
+                <sc-for list="{{ overflowAppliedFilters }}" as="f2" hint-placeholder-count="0">
+                  <div class="sr-overflow-row">
+                    <span>{{ f2.label }}</span>
+                    <button onClick="{{ f2.onRemove }}" aria-label="Remove {{ f2.label }}">{{ closeIcon }}</button>
+                  </div>
+                </sc-for>
+                </div>
+              </div>
+            </div>
           </sc-if>
+          <x-import component-from-global-scope="FusionDesignSystem_6db751.Button" appearance="transparent" sentiment="accented" onClick="{{ resetAllFilters }}" hint-size="140px,32px" style="flex-shrink:0;white-space:nowrap">{{ clearAllButtonLabel }}</x-import>
+          </sc-if>
+        </div>
+        <div class="sr-tags-measure" style="position:absolute;top:-9999px;left:-9999px;visibility:hidden;height:0;overflow:hidden;display:flex;gap:4px;pointer-events:none">
+          <sc-for list="{{ measureAppliedFilters }}" as="fm" hint-placeholder-count="0">
+            <span ref="{{ fm.measureRef }}" style="display:inline-flex"><x-import component-from-global-scope="FusionDesignSystem_6db751.Pill" hint-size="90px,28px">{{ fm.label }}</x-import></span>
+          </sc-for>
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
           <span style="font-size:14px;color:var(--salt-content-secondary-foreground);white-space:nowrap">Sort by</span>
@@ -156,7 +162,68 @@ class Component extends DCLogic {
     return React.createElement('span', { style: { display: 'inline-block', width: size, height: size, flexShrink: 0, background: 'currentColor', WebkitMask: `${url} center/contain no-repeat`, mask: `${url} center/contain no-repeat` } });
   }
 
-  state = { selected: null, filterValues: {}, query: '', panelWidth: 460 };
+  state = { selected: null, filterValues: {}, query: '', panelWidth: 460, selectedPageTab: 'data', tagsVisibleCount: 99 };
+
+  pageTabsDef() {
+    return [
+      { id: 'data', label: 'Data', icon: 'dataset', count: 49 },
+      { id: 'models', label: 'Models', icon: 'chart-line', count: 128 },
+      { id: 'agents', label: 'Agents', icon: 'sparkle', count: 12 },
+      { id: 'usecases', label: 'Use Cases', icon: 'lightbulb', count: 34 },
+      { id: 'applications', label: 'Applications', icon: 'grid', count: 21 },
+      { id: 'activities', label: 'Business Activities', icon: 'document-draft', count: 8 },
+      { id: 'glossary', label: 'Glossary Terms', icon: 'guide-closed', count: 210 },
+      { id: 'technical', label: 'Technical Assets', icon: 'maintenance', count: 17 },
+    ];
+  }
+
+  measureEls = [];
+  leftWrapEl = null;
+  recomputeTagsVisible() {
+    const wrap = this.leftWrapEl;
+    if (!wrap) return;
+    const CLEAR_ALL_RESERVE = 8 + 140;
+    const OVERFLOW_RESERVE = 8 + 56;
+    const n = this.measureEls.length;
+    let total = 0;
+    for (let i = 0; i < n; i++) {
+      const el = this.measureEls[i];
+      if (!el) { total = Infinity; break; }
+      total += el.offsetWidth + (i > 0 ? 4 : 0);
+    }
+    const availableNoOverflow = Math.max(0, wrap.clientWidth - CLEAR_ALL_RESERVE);
+    let count;
+    if (total <= availableNoOverflow) {
+      count = n;
+    } else {
+      const available = Math.max(0, availableNoOverflow - OVERFLOW_RESERVE);
+      let used = 0;
+      count = 0;
+      for (let i = 0; i < n; i++) {
+        const el = this.measureEls[i];
+        if (!el) break;
+        const w = el.offsetWidth + (i > 0 ? 4 : 0);
+        if (used + w > available && count > 0) break;
+        used += w; count++;
+      }
+    }
+    if (count !== this.state.tagsVisibleCount) this.setState({ tagsVisibleCount: count });
+  }
+  setLeftWrapRef = (el) => {
+    if (this._ro && this.leftWrapEl !== el) { this._ro.disconnect(); this._ro = null; }
+    this.leftWrapEl = el;
+    if (el && !this._ro && typeof ResizeObserver !== 'undefined') {
+      this._ro = new ResizeObserver(() => this.recomputeTagsVisible());
+      this._ro.observe(el);
+    }
+    if (el) this.recomputeTagsVisible();
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.filterValues !== this.state.filterValues) {
+      requestAnimationFrame(() => this.recomputeTagsVisible());
+    }
+  }
+  componentWillUnmount() { if (this._ro) this._ro.disconnect(); }
 
   vfGroupsDef() {
     return [
@@ -168,6 +235,7 @@ class Component extends DCLogic {
 
   vfOnChange(groupId, value) { this.setState((s) => ({ filterValues: { ...s.filterValues, [groupId]: value } })); }
   vfClearAll() { this.setState({ filterValues: {} }); }
+  onPageTabChange(id) { this.setState({ selectedPageTab: id }); }
   removeFilter(groupId, value) {
     this.setState((s) => ({ filterValues: { ...s.filterValues, [groupId]: (s.filterValues[groupId] || []).filter((v) => v !== value) } }));
   }
@@ -240,12 +308,18 @@ class Component extends DCLogic {
       vfValues: filterValues,
       vfOnChange: (id, v) => this.vfOnChange(id, v),
       vfClearAll: () => this.vfClearAll(),
+      vfPageTabs: this.pageTabsDef().map((t) => ({ ...t, icon: this.dsIcon(t.icon, 12) })),
+      selectedPageTab: this.state.selectedPageTab,
+      onPageTabChange: (id) => this.onPageTabChange(id),
       hasSelectedFilters: appliedFilters.length > 0,
-      visibleAppliedFilters: appliedFilters.slice(0, 4),
-      overflowAppliedFilters: appliedFilters.slice(4),
-      hasOverflow: appliedFilters.length > 4,
-      overflowCount: appliedFilters.length - 4,
+      leftWrapRef: this.setLeftWrapRef,
+      visibleAppliedFilters: appliedFilters.slice(0, this.state.tagsVisibleCount),
+      overflowAppliedFilters: appliedFilters.slice(this.state.tagsVisibleCount),
+      hasOverflow: appliedFilters.length > this.state.tagsVisibleCount,
+      overflowCount: Math.max(0, appliedFilters.length - this.state.tagsVisibleCount),
+      measureAppliedFilters: appliedFilters.map((f, i) => ({ ...f, measureRef: (el) => { this.measureEls[i] = el; } })),
       totalSelectedFilters: appliedFilters.length,
+      clearAllButtonLabel: 'Clear all (' + appliedFilters.length + ')',
       resetAllFilters: () => this.vfClearAll(),
       closeIcon: this.dsIcon('close', 12),
       mainExtraClass: sel ? 'panel-open' : '',
