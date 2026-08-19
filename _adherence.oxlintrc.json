@@ -643,6 +643,10 @@
         "message": "<UserPanelListItem> doesn't accept that prop. Declared props: label, onClick."
       },
       {
+        "selector": "JSXOpeningElement[name.name='VerticalFilterOption'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|value|disabled|key|ref|className|style|children)$/]",
+        "message": "<VerticalFilterOption> doesn't accept that prop. Declared props: label, value, disabled."
+      },
+      {
         "selector": "JSXOpeningElement[name.name='VerticalNavLevel2Item'] > JSXAttribute > JSXIdentifier[name!=/^(?:id|label|href|key|ref|className|style|children)$/]",
         "message": "<VerticalNavLevel2Item> doesn't accept that prop. Declared props: id, label, href."
       }
@@ -949,6 +953,9 @@
         "replaces": []
       },
       "UserPanelListItem": {
+        "replaces": []
+      },
+      "VerticalFilterOption": {
         "replaces": []
       },
       "VerticalNavLevel2Item": {
