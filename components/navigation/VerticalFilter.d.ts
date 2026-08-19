@@ -34,6 +34,10 @@ export interface VerticalFilterProps {
   clearAllLabel?: string;
   /** Optional field rendered below the header with its own top label (no helper text) — e.g. a category jump-to. Omit to skip it. */
   comboBox?: VerticalFilterComboBoxProps;
+  /** Optional vertical page-tab list rendered above everything else (own section, own icon + label per row) — e.g. switching the whole panel's context between content types. 16px gap below. Omit to skip it. */
+  pageTabs?: { id: string; label: string; icon: ReactNode; count?: number | string }[];
+  selectedPageTab?: string;
+  onPageTabChange?: (id: string) => void;
   /** The accordion groups, top to bottom. */
   groups: VerticalFilterGroup[];
   /** Controlled selections keyed by group id — a string[] for "checkbox" groups, a string (or undefined) for "radio" groups. */

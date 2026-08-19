@@ -14,15 +14,20 @@ const SearchGlyph = () => (
     <path d="M8 9a5 5 0 1 1 1-1l3 3-1 1zm1-4a4 4 0 1 1-8 0 4 4 0 0 1 8 0" />
   </svg>
 );
-const CHEVRON_DOWN = "M5.618 8.593 6 9l.382-.407L11 3.661 10.236 3 6 7.524 1.764 3 1 3.66z";
-const CHEVRON_UP = "M5.618 3.407 6 3l.382.407L11 8.339 10.236 9 6 4.476 1.764 9 1 8.34z";
-function DoubleChevron({ direction = "down", size = 14 }) {
-  const d = direction === "down" ? CHEVRON_DOWN : CHEVRON_UP;
-  const offset = direction === "down" ? [-2.4, 2.4] : [2.4, -2.4];
+// verbatim path data from icons/expand-all.svg, icons/collapse-all.svg
+function ExpandAllIcon({ size = 12 }) {
   return (
     <svg viewBox="0 0 12 12" width={size} height={size} fill="currentColor" aria-hidden="true" style={{ flexShrink: 0 }}>
-      <path d={d} transform={`translate(0,${offset[0]})`} />
-      <path d={d} transform={`translate(0,${offset[1]})`} />
+      <path d="M6 0L2 4L3 5L6 2L9 5L10 4L6 0Z" />
+      <path d="M6 12L2 8L3 7L6 10L9 7L10 8L6 12Z" />
+    </svg>
+  );
+}
+function CollapseAllIcon({ size = 12 }) {
+  return (
+    <svg viewBox="0 0 12 12" width={size} height={size} fill="currentColor" aria-hidden="true" style={{ flexShrink: 0 }}>
+      <path d="M6 6.5L2 10.5L3 11.5L6 8.5L9 11.5L10 10.5L6 6.5Z" />
+      <path d="M6 5.5L2 1.5L3 0.5L6 3.5L9 0.5L10 1.5L6 5.5Z" />
     </svg>
   );
 }
@@ -102,6 +107,9 @@ export function VerticalFilter({
   showHeader = true,
   clearAllLabel = "Clear all",
   comboBox,
+  pageTabs,
+  selectedPageTab,
+  onPageTabChange,
   groups = [],
   values = {},
   onChange,
@@ -123,6 +131,7 @@ export function VerticalFilter({
     return Array.isArray(v) ? v.length : 0;
   };
   const totalSelected = groups.reduce((sum, g) => sum + countFor(g), 0);
+  const categoriesWithSelection = groups.filter((g) => countFor(g) > 0).length;
   const allOpen = openIdx.length === groups.length && groups.length > 0;
 
   const toggleAll = () => setOpenIdx(allOpen ? [] : groups.map((_, i) => i));
@@ -139,11 +148,13 @@ export function VerticalFilter({
 
   const items = groups.map((g) => ({
     title: (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: "var(--salt-spacing-100)" }}>
+      <span style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-50)", overflow: "hidden" }}>
         <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{g.label}</span>
         {countFor(g) > 0 && <CountBadge count={countFor(g)} />}
-      </div>
+      </span>
     ),
+    headerStyle: { gap: 4 },
+    contentStyle: { paddingLeft: 24 },
     content: (
       <GroupContent
         group={g}
@@ -162,13 +173,43 @@ export function VerticalFilter({
 
   return (
     <div style={{ display: "flex", flexDirection: "column", fontFamily: "var(--salt-text-fontFamily)", ...style }}>
+      {pageTabs && pageTabs.length > 0 && (
+        <div style={{ display: "flex", flexDirection: "column", marginBottom: 16 }}>
+          {pageTabs.map((t) => {
+            const active = t.id === selectedPageTab;
+            return (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => onPageTabChange && onPageTabChange(t.id)}
+                style={{
+                  all: "unset", boxSizing: "border-box", position: "relative", width: "100%", height: 36,
+                  padding: "4px 8px", display: "flex", alignItems: "center", gap: 4, cursor: "var(--salt-cursor-hover, pointer)",
+                  borderRadius: "var(--salt-palette-corner-weaker)",
+                  background: active ? "var(--salt-palette-accent-weakest, var(--salt-color-blue-50))" : "transparent",
+                  color: active ? "var(--salt-palette-accent)" : "var(--salt-content-primary-foreground)",
+                  fontFamily: "var(--salt-text-fontFamily)", fontSize: "var(--salt-text-fontSize)",
+                  fontWeight: active ? "var(--salt-text-fontWeight-strong)" : "var(--salt-text-fontWeight)",
+                }}
+                onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = "var(--salt-color-gray-100)"; }}
+                onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = "transparent"; }}
+              >
+                {active && <span style={{ position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)", width: 3, height: 20, borderRadius: 2, background: "var(--salt-palette-accent)" }} />}
+                <span style={{ width: 12, height: 28, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>{t.icon}</span>
+                <span style={{ flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", textAlign: "left" }}>{t.label}</span>
+                {t.count != null && <span style={{ flexShrink: 0, fontSize: "var(--salt-text-label-fontSize)", color: active ? "var(--salt-palette-accent)" : "var(--salt-content-secondary-foreground)" }}>{t.count}</span>}
+              </button>
+            );
+          })}
+        </div>
+      )}
       {showHeader && (
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--salt-spacing-100)" }}>
-          <Text variant="h3" style={{ margin: 0 }}>{title}</Text>
-          <div style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-100)" }}>
-            <Button appearance="transparent" sentiment="accented" disabled={totalSelected === 0} onClick={handleClearAll} style={{ padding: "0 var(--salt-spacing-50)" }}>{clearAllLabel}</Button>
-            <IconButton appearance="transparent" sentiment="neutral" aria-label={allOpen ? "Collapse all" : "Expand all"} title={allOpen ? "Collapse all" : "Expand all"} onClick={toggleAll}>
-              <DoubleChevron direction={allOpen ? "up" : "down"} />
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--salt-spacing-100)", height: 28 }}>
+          <Text variant="h3" style={{ margin: 0, lineHeight: "28px" }}>{title}</Text>
+          <div style={{ display: "flex", alignItems: "center", gap: "var(--salt-spacing-100)", height: 28 }}>
+            <Button appearance="transparent" sentiment="accented" disabled={totalSelected === 0} onClick={handleClearAll} style={{ padding: "0 var(--salt-spacing-50)", height: 28 }}>{clearAllLabel} ({categoriesWithSelection})</Button>
+            <IconButton appearance="transparent" sentiment="neutral" aria-label={allOpen ? "Collapse all" : "Expand all"} title={allOpen ? "Collapse all" : "Expand all"} onClick={toggleAll} style={{ height: 28 }}>
+              {allOpen ? <CollapseAllIcon /> : <ExpandAllIcon />}
             </IconButton>
           </div>
         </div>
@@ -180,7 +221,7 @@ export function VerticalFilter({
         </div>
       )}
       <div style={{ marginTop: (showHeader || comboBox) ? 24 : 0 }}>
-        <Accordion items={items} allowMultiple open={openIdx} onOpenChange={setOpenIdx} chevronPosition="end" />
+        <Accordion items={items} allowMultiple open={openIdx} onOpenChange={setOpenIdx} />
       </div>
     </div>
   );
